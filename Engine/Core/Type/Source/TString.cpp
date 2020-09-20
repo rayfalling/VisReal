@@ -4,6 +4,16 @@
 
 #include "TString.h"
 
-namespace {
-    
+using namespace Engine::Core::Types;
+
+TString::TString() {
+    string = nullptr;
+};
+
+TString::~TString() {
+    delete string;
+}
+
+TString::TString(std::string &str) {
+    string = TString::string2wstring(str).data();
 }

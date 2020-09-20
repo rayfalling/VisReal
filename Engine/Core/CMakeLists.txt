@@ -5,11 +5,26 @@ project("Engine.Core" C CXX)
 
 # Set CXX flags
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS   "-std=c++11")             # c++17
-set(CMAKE_CXX_FLAGS   "-Wall")                  # 开启所有警告
 
-set(CMAKE_CXX_FLAGS_DEBUG   "-O0 -g" )             # 调试包不优化
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG " )   # release包优化
+if (!MSVC)
+    set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")             # 调试包不优化
+    set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG ")    # release包优化
+else (!MSVC)
+    set(CMAKE_CXX_FLAGS_DEBUG "/DEBUG")             # 调试包不优化
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2 /NDEBUG ")    # release包优化
+    add_compile_definitions("MSVC")
+endif ()
+
+# judge platform
+IF (CMAKE_CL_64)
+    set(platform x64)
+    message(STATUS "Set Platform Win64")
+    add_compile_definitions("Platform_Win64")
+ELSE (CMAKE_CL_64)
+    set(platform x86)
+    message(STATUS "Set Platform Win32")
+    add_compile_definitions("Platform_Win32")
+ENDIF (CMAKE_CL_64)
 
 add_subdirectory(Object)
 add_subdirectory(Render)

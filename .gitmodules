@@ -4,3 +4,6 @@
 [submodule "libs/glad"]
 	path = libs/glad
 	url = https://github.com/Dav1dde/glad.git
+[submodule "libs/DirectXShaderCompiler"]
+	path = libs/DirectXShaderCompiler
+	url = https://github.com/microsoft/DirectXShaderCompiler.git

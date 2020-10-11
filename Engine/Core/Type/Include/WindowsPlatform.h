@@ -1,6 +1,10 @@
-//
-// Created by rayfalling on 2020/8/30.
-//
+/**
+ * Created by rayfalling on 2020/8/30.
+ * 
+ * Typedef file for project.
+ * Use for cross platform data type.
+ * Windows platform definition to override generic definition.
+ * */
 #pragma once
 
 #ifndef VISREAL_WINDOWS_PLATFORM_H

@@ -1,6 +1,10 @@
-//
-// Created by rayfalling on 2020/8/30.
-//
+/**
+ * Created by rayfalling on 2020/8/30.
+ * 
+ * Typedef file for project.
+ * Use for cross platform data type.
+ * Generic platform definition.
+ * */
 #pragma once
 
 #ifndef VISREAL_GENERIC_PLATFORM_TYPES_HPP

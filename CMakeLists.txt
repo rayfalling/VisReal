@@ -9,5 +9,3 @@ set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "main")
 
 # include libs cmake
 include(CmakeInclude/Engine.cmake)
-include(CmakeInclude/glad.cmake)
-include(CmakeInclude/glfw.cmake)

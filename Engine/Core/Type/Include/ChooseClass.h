@@ -7,7 +7,9 @@
 #define VISREAL_CHOOSE_CLASS_H
 
 namespace Engine::Core::Types {
-    /** Chooses between two different classes based on a boolean. */
+    /** 
+     * Chooses between two different classes based on a boolean. 
+     * */
     template<bool Predicate, typename TrueClass, typename FalseClass>
     class TChooseClass;
 
@@ -22,7 +24,6 @@ namespace Engine::Core::Types {
     public:
         typedef FalseClass Result;
     };
-
 }
 
 #endif //VISREAL_CHOOSE_CLASS_H

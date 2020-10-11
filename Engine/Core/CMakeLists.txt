@@ -15,20 +15,16 @@ else (!MSVC)
     add_compile_definitions("MSVC")
 endif ()
 
-# judge platform
-IF (CMAKE_CL_64)
-    set(platform x64)
-    message(STATUS "Set Platform Win64")
-    add_compile_definitions("Platform_Win64")
-ELSE (CMAKE_CL_64)
-    set(platform x86)
-    message(STATUS "Set Platform Win32")
-    add_compile_definitions("Platform_Win32")
-ENDIF (CMAKE_CL_64)
+set(ENGINE_CORE_OBJECT_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/Object/Include)
+set(ENGINE_CORE_RENDER_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/Render/Include)
+set(ENGINE_CORE_TYPE_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/Type/Include)
 
 add_subdirectory(Object)
 add_subdirectory(Render)
 add_subdirectory(Type)
+
+add_dependencies("Engine.Core.Render" glad)
+add_dependencies("Engine.Core.Render" glfw)
 
 add_library(${PROJECT_NAME} INTERFACE)
 

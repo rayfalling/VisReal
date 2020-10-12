@@ -20,4 +20,5 @@ if (MSVC)
     set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "/EHsc")
 endif ()
 
+# expose include headers
 target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_CORE_TYPE_INCLUDE})

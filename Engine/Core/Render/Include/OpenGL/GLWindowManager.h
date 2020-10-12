@@ -12,6 +12,9 @@
 
 #include "SingletonObject.h"
 #include "Types.h"
+#include "VersionCheck.h"
+
+using namespace Engine::Core;
 
 namespace Engine::Render::OPENGL {
     class GLWindowManager : public ISingletonObject<GLWindowManager> {
@@ -21,7 +24,8 @@ namespace Engine::Render::OPENGL {
     private:
         GLWindowManager();
 
-        void InitOpenGL(float width, float height, int8 major, int8 minor);
+        void InitOpenGL(float width, float height);
+        void InitOpenGL(float width, float height, GLVersion version);
     };
 }
 

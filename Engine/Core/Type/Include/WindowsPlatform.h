@@ -17,7 +17,7 @@ namespace Engine::Core::Types {
     * Windows specific types
     **/
     struct FWindowsPlatformTypes : public GenericPlatformTypes {
-#ifdef Platform_Win64
+#ifdef Platform_x64
         typedef unsigned __int64 USIZE_T;
         typedef __int64          SIZE_T;
 #else

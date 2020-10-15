@@ -8,8 +8,8 @@
 #ifndef VISREAL_TYPES_H
 #define VISREAL_TYPES_H
 
-#include "TString.h"
 #include "PlatformTypes.h"
+#include "FString.h"
 
 using namespace Engine::Core::Types;
 

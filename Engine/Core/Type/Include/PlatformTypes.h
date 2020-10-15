@@ -51,12 +51,12 @@ typedef FPlatformTypes::CHAR16 UTF16CHAR;
 typedef FPlatformTypes::CHAR32 UTF32CHAR;
 
 // An unsigned integer the same size as a pointer
-typedef FPlatformTypes::UPTR_SIZE UPTR_SIZE;
+typedef FPlatformTypes::UPTR_SIZE VISREAL_UNSIGNED_PTR_SIZE;
 // A signed integer the same size as a pointer
-typedef FPlatformTypes::PTR_SIZE  PTR_SIZE;
-// An unsigned integer the same size as a pointer, the same as UPTR_SIZE
-typedef FPlatformTypes::USIZE_T   USIZE_T;
+typedef FPlatformTypes::PTR_SIZE  VISREAL_PTR_SIZE;
+// An unsigned integer the same size as a pointer, the same as VISREAL_UNSIGNED_SIZE_T
+typedef FPlatformTypes::USIZE_T   VISREAL_UNSIGNED_SIZE_T;
 // An integer the same size as a pointer, the same as PTR_SIZE
-typedef FPlatformTypes::SIZE_T    SIZE_T;
+typedef FPlatformTypes::SIZE_T    VISREAL_SIZE_T;
 
 #endif //VISREAL_PLATFORM_TYPES_H

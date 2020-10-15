@@ -6,14 +6,14 @@
 #ifndef VISREAL_OBJECT_H
 #define VISREAL_OBJECT_H
 
-#include "TString.h"
+#include "FString.h"
 
 namespace Engine::Core {
     using namespace Types;
 
     class Object {
     private:
-        TString Name;
+        FString Name;
     protected:
         Object() = default;
 

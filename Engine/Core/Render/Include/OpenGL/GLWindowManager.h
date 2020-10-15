@@ -10,6 +10,8 @@
 #ifndef VISREAL_GL_WINDOW_MANAGER_H
 #define VISREAL_GL_WINDOW_MANAGER_H
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include "SingletonObject.h"
 #include "Types.h"
 #include "VersionCheck.h"

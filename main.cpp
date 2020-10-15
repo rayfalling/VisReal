@@ -1,9 +1,15 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include "CoreLog.h"
 
 int main() {
+    FString test = FString(L"VisReal Start");
+    auto& log = Engine::Core::CoreLog::GetInstance();
+    log.LogInfo(test);
+
     glfwInit();
+    // commit this to use max support opengl version
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -16,11 +22,21 @@ int main() {
         return -1;
     }
     glfwMakeContextCurrent(window);
+
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
+
+    //TODO check max opengl version
+    GLint majorVersion;
+    GLint minorVersion;
+
+    glGetIntegerv(GL_MINOR_VERSION, &minorVersion);
+    glGetIntegerv(GL_MAJOR_VERSION, &majorVersion);
+    std::cout << majorVersion << "." << minorVersion << std::endl;
+
     glViewport(0, 0, 800, 600);
     while(!glfwWindowShouldClose(window))
     {

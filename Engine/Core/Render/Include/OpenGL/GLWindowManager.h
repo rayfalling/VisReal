@@ -21,13 +21,18 @@ using namespace Engine::Core;
 namespace Engine::Render::OPENGL {
     class GLWindowManager : public ISingletonObject<GLWindowManager> {
     public:
+        void SetWindowSize(int width, int height);
         //TODO methods here
+
 
     private:
         GLWindowManager();
 
-        void InitOpenGL(float width, float height);
-        void InitOpenGL(float width, float height, GLVersion version);
+        void InitOpenGL(int width, int height);
+        void InitOpenGL(int width, int height, GLVersion version);
+
+        /* Current window to draw */
+        GLFWwindow* window;
     };
 }
 

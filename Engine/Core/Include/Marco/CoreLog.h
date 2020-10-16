@@ -5,9 +5,9 @@
 #ifndef VISREAL_LOG_TRACE_H
 #define VISREAL_LOG_TRACE_H
 
-#include "SingletonObject.h"
-#include "FString.h"
-#include "FTime.h"
+#include "Object/SingletonObject.h"
+#include "Types/FString.h"
+#include "Types/FTime.h"
 
 #include <spdlog/logger.h>
 

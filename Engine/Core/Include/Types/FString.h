@@ -37,7 +37,7 @@ namespace Engine::Core::Types {
     public:
         FString();
 
-        explicit FString(const FString &string);
+        FString(const FString &string);
 
         explicit FString(std::string &str);
 

@@ -8,5 +8,7 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/libs/glfw)
 
 set(GLFW_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/libs/glfw/include)
 
+SET_TARGET_PROPERTIES(glfw PROPERTIES FOLDER libs)
+
 target_link_libraries(${PROJECT_NAME} glfw)
 target_include_directories(${PROJECT_NAME} PUBLIC ${GLFW_INCLUDE_DIRS})

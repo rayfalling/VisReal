@@ -12,21 +12,34 @@ if (!MSVC)
 else (!MSVC)
     set(CMAKE_CXX_FLAGS_DEBUG "/DEBUG")             # 调试包不优化
     set(CMAKE_CXX_FLAGS_RELEASE "/O2 /NDEBUG ")    # release包优化
-    add_compile_definitions("MSVC")
 endif ()
 
-add_subdirectory(Marco)
-add_subdirectory(Object)
-add_subdirectory(Render)
-add_subdirectory(Type)
+set("ENGINE_CORE_INCLUDE_DIR" ${CMAKE_CURRENT_SOURCE_DIR}/Include)
+include_directories(${ENGINE_CORE_INCLUDE_DIR}/)
+file(GLOB_RECURSE ENGINE_CORE_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/Include/*)
+aux_source_directory(Source ENGINE_CORE_SOURCE)
+aux_source_directory(Source/Marco ENGINE_CORE_SOURCE)
+aux_source_directory(Source/Object ENGINE_CORE_SOURCE)
+aux_source_directory(Source/Types ENGINE_CORE_SOURCE)
 
-add_library(${PROJECT_NAME} INTERFACE)
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${ENGINE_CORE_INCLUDE} ${ENGINE_CORE_SOURCE})
 
-target_link_libraries(
+add_library(${PROJECT_NAME} ${LIB_TYPE} ${ENGINE_CORE_INCLUDE} ${ENGINE_CORE_SOURCE})
+target_compile_definitions(${PROJECT_NAME} PUBLIC ENGINE_CORE_SHARED_LIB)
+GENERATE_EXPORT_HEADER(
         ${PROJECT_NAME}
-        INTERFACE
-        "Engine.Core.Marco"
-        "Engine.Core.Object"
-        "Engine.Core.Render"
-        "Engine.Core.Type"
+        BASE_NAME ${PROJECT_NAME}
+        EXPORT_MACRO_NAME ENGINE_CORE_EXPORTS
+        EXPORT_FILE_NAME engine_core_export.h
+        STATIC_DEFINE ENGINE_CORE_EXPORTS_BUILT_AS_STATIC
 )
+
+set_target_properties(${PROJECT_NAME} PROPERTIES IMPORT_SUFFIX ".dll.lib")
+set_target_properties(${PROJECT_NAME} PROPERTIES DEFINE_SYMBOL _ENGINE_CORE_BUILD_DLL)
+set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER Engine)
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_CORE_INCLUDE_DIR})
+
+link_directories(${ENGINE_CORE_INCLUDE_DIR} ${SPDLOG_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog)

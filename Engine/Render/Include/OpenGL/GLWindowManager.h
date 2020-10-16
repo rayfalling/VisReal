@@ -12,8 +12,8 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "SingletonObject.h"
-#include "Types.h"
+#include "Object/SingletonObject.h"
+#include "Types/Types.h"
 #include "VersionCheck.h"
 
 using namespace Engine::Core;

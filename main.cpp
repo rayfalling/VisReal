@@ -1,7 +1,7 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "CoreLog.h"
+#include "Marco/CoreLog.h"
 
 int main() {
     FString test = FString(L"VisReal Start");

@@ -5,7 +5,7 @@
  * Not use std::string in project because it not support utf-8.
  * Base type is WCHAR.
  * */
-#include "FString.h"
+#include "Types/FString.h"
 
 using namespace Engine::Core::Types;
 

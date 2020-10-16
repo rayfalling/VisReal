@@ -3,9 +3,18 @@ project(VisReal C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# Set Cmake build output
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary/libs)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary)
+
+#set(BUILD_SHARED_LIBS ON)
+
 # add executable before include library for test use
 add_executable(${PROJECT_NAME} main.cpp)
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "main")
+
+add_custom_target(uninstall)
 
 # include libs cmake
 include(CmakeInclude/Engine.cmake)

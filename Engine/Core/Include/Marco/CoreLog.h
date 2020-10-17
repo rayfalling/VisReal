@@ -17,6 +17,7 @@ namespace Engine::Core {
     public:
         void LogInfo(FString &message);
 
+    protected:
         CoreLog() noexcept;
 
         ~CoreLog() noexcept override;

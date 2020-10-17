@@ -23,7 +23,7 @@ namespace Engine::Core::Types {
         /** 
          * Data ptr
          * */
-        TCHAR *_string = nullptr;
+        std::shared_ptr<TCHAR[]> _string = nullptr;
 
         /**
          * String Length
@@ -35,23 +35,25 @@ namespace Engine::Core::Types {
          * */
         bool _const = false;
     public:
-        FString();
+        FString() noexcept;
 
-        FString(const FString &string);
+        FString(const FString &string) noexcept;
 
-        explicit FString(std::string &str);
+        FString(FString &&string) noexcept;
 
-        explicit FString(const std::string &str);
+        explicit FString(std::string &str) noexcept;
 
-        explicit FString(std::wstring &str);
+        explicit FString(const std::string &str) noexcept;
 
-        explicit FString(const std::wstring &str);
+        explicit FString(std::wstring &str) noexcept;
 
-        explicit FString(char *string);
+        explicit FString(const std::wstring &str) noexcept;
 
-        explicit FString(const char *string);
+        explicit FString(char *string) noexcept;
 
-        explicit FString(char string[], int length);
+        explicit FString(const char *string) noexcept;
+
+        explicit FString(char string[], int length) noexcept;
 
         ~FString();
 
@@ -104,9 +106,9 @@ namespace Engine::Core::Types {
         /**
          * convert from WCHAR* to string
          * */
-        static std::string wstring2string(const WCHAR *src) {
+        static std::string wstring2string(const WCHAR *src, int length) {
             std::wstring_convert<converter, WCHAR> WStringConverter;
-            return WStringConverter.to_bytes(src);
+            return WStringConverter.to_bytes(src, src + sizeof(TCHAR) * length);
         }
     };
 }

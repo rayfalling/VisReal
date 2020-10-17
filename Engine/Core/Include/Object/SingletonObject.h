@@ -28,7 +28,7 @@ namespace Engine::Core {
     private:
         // Use shared_ptr to make sure that the allocated memory for instance
         // will be released when program exits (after main() ends).
-        static std::unique_ptr<T> _instance;
+        static T *_instance;
     private:
         /** disallow copy external */
         ISingletonObject(const ISingletonObject &other);
@@ -40,11 +40,9 @@ namespace Engine::Core {
     template<typename T>
     T &ISingletonObject<T>::GetInstance() {
         static std::mutex _mutex;
-        if (_instance.get() == nullptr) {
+        if (_instance == nullptr) {
             _mutex.lock();
-            if (_instance.get() == nullptr) {
-                _instance =  std::make_unique<T>();
-            }
+                _instance = new T();
             _mutex.unlock();
         }
         return *_instance;
@@ -57,6 +55,6 @@ namespace Engine::Core {
     ISingletonObject<T>::ISingletonObject() noexcept = default;
 
     template<typename T>
-    std::unique_ptr<T> ISingletonObject<T>::_instance = nullptr;
+    T *ISingletonObject<T>::_instance = nullptr;
 }
 #endif //VISREAL_SINGLETON_OBJECT_H

@@ -14,6 +14,8 @@ else (!MSVC)
     set(CMAKE_CXX_FLAGS_RELEASE "/O2 /NDEBUG ")    # release包优化
 endif ()
 
+find_package(Threads REQUIRED)
+
 set("ENGINE_CORE_INCLUDE_DIR" ${CMAKE_CURRENT_SOURCE_DIR}/Include)
 include_directories(${ENGINE_CORE_INCLUDE_DIR}/)
 file(GLOB_RECURSE ENGINE_CORE_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/Include/*)
@@ -42,4 +44,4 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER Engine)
 target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_CORE_INCLUDE_DIR})
 
 link_directories(${ENGINE_CORE_INCLUDE_DIR} ${SPDLOG_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog)
+target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog Threads::Threads)

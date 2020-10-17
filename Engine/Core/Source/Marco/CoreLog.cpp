@@ -8,6 +8,7 @@
 #include <spdlog/sinks/basic_file_sink.h>
 
 Engine::Core::CoreLog::CoreLog() noexcept {
+    /* Create sinks for logger */
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
     console_sink->set_level(spdlog::level::info);
 
@@ -16,16 +17,34 @@ Engine::Core::CoreLog::CoreLog() noexcept {
     auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(out_file_path, true);
     file_sink->set_level(spdlog::level::info);
 
-    std::vector<spdlog::sink_ptr> sinks;
-    sinks.push_back(console_sink);
-    sinks.push_back(file_sink);
+    _sinks.emplace_back(console_sink);
+    _sinks.emplace_back(file_sink);
 
-    logger = std::make_shared<spdlog::logger>("VisReal", begin(sinks), end(sinks));
+    /* register core logger */
+    FString coreLog = FString("VisReal Core");
+    logger = std::make_shared<spdlog::logger>(coreLog.toString(), begin(_sinks), end(_sinks));
+    /* TODO using custom map container*/
+//    _registerLoggers.insert(std::make_pair(coreLog,logger));
     logger->set_level(spdlog::level::info);
 }
 
 void Engine::Core::CoreLog::LogInfo(FString &message) {
     logger->info(message.toString());
+    logger->flush();
+}
+
+void Engine::Core::CoreLog::LogWarning(FString &message) {
+    logger->warn(message.toString());
+    logger->flush();
+}
+
+void Engine::Core::CoreLog::LogError(FString &message) {
+    logger->error(message.toString());
+    logger->flush();
+}
+
+void Engine::Core::CoreLog::Debug(FString &message) {
+    logger->debug(message.toString());
     logger->flush();
 }
 

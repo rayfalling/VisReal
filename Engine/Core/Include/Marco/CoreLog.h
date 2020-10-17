@@ -13,10 +13,6 @@
 
 namespace Engine::Core {
     class CoreLog : public ISingletonObject<CoreLog> {
-
-    public:
-        void LogInfo(FString &message);
-
     protected:
         CoreLog() noexcept;
 
@@ -30,7 +26,22 @@ namespace Engine::Core {
         CoreLog &operator=(const CoreLog &);
 
     private:
+        /* Core logger */
         std::shared_ptr<spdlog::logger> logger;
+
+        /* Module Names Register to CoreLog */
+        /* TODO using custom map container*/
+//        static std::unordered_map<FString, std::shared_ptr<spdlog::logger>> _registerLoggers;
+
+        /* Shared sinks between different loggers */
+        std::vector<spdlog::sink_ptr> _sinks;
+
+    public:
+        void LogInfo(FString &message);
+        void Debug(FString &message);
+        void LogWarning(FString &message);
+        void LogError(FString &message);
+
     };
 }
 

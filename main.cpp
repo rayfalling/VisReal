@@ -4,7 +4,7 @@
 #include "Marco/CoreLog.h"
 
 int main() {
-    FString test = FString(L"VisReal Start");
+    FString test = FString("VisReal Start");
     auto& log = Engine::Core::CoreLog::GetInstance();
     log.LogInfo(test);
 

@@ -8,13 +8,14 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary/libs)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary)
 
-#set(BUILD_SHARED_LIBS ON)
+set(BUILD_SHARED_LIBS TRUE)
 
 # add executable before include library for test use
 add_executable(${PROJECT_NAME} main.cpp)
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "main")
 
 add_custom_target(uninstall)
+set_target_properties(uninstall PROPERTIES FOLDER Uninstall)
 
 # include libs cmake
 include(CmakeInclude/Engine.cmake)

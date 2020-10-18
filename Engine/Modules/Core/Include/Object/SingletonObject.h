@@ -10,6 +10,8 @@
 #include <memory>
 #include <mutex>
 
+#include "EngineCoreExport.generate.h"
+
 namespace Engine::Core {
     template<typename T>
     class ISingletonObject {

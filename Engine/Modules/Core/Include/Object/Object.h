@@ -7,11 +7,12 @@
 #define VISREAL_OBJECT_H
 
 #include "Types/FString.h"
+#include "EngineCoreExport.generate.h"
 
 namespace Engine::Core {
     using namespace Types;
 
-    class Object {
+    class ENGINE_CORE_EXPORTS Object {
     private:
         FString Name;
     protected:

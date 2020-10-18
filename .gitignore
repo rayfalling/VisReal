@@ -360,3 +360,6 @@ MigrationBackup/
 
 # vs cmake dir
 [Oo]ut/
+
+# Cmake generate header for dymaic libs
+*.generate.h

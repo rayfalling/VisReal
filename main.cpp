@@ -33,9 +33,9 @@ int main() {
     GLint majorVersion;
     GLint minorVersion;
 
-    glGetIntegerv(GL_MINOR_VERSION, &minorVersion);
-    glGetIntegerv(GL_MAJOR_VERSION, &majorVersion);
-    std::cout << majorVersion << "." << minorVersion << std::endl;
+//    glGetIntegerv(GL_MINOR_VERSION, &minorVersion);
+//    glGetIntegerv(GL_MAJOR_VERSION, &majorVersion);
+//    std::cout << majorVersion << "." << minorVersion << std::endl;
 
     glViewport(0, 0, 800, 600);
     while(!glfwWindowShouldClose(window))

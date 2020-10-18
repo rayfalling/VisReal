@@ -56,7 +56,7 @@ namespace Engine::Core::Types {
         explicit FString(const char *string);
 
         /* construct from char[] */
-        explicit FString(char string[], int length);
+        FString(char string[], int length);
 
         ~FString();
 

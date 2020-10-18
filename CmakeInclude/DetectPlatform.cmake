@@ -12,6 +12,9 @@ if (MSVC)
         set(DXC_BUILD_ARCH "Win32")
     endif (CMAKE_CL_64)
     message("Set DXC_BUILD_ARCH ${DXC_BUILD_ARCH}")
+    if (BUILD_SHARED_LIBS)
+        set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+    endif (BUILD_SHARED_LIBS)
 endif (MSVC)
 
 # judge platform

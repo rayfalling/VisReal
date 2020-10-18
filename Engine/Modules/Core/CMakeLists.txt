@@ -23,6 +23,8 @@ aux_source_directory(Source ENGINE_CORE_SOURCE)
 aux_source_directory(Source/Marco ENGINE_CORE_SOURCE)
 aux_source_directory(Source/Object ENGINE_CORE_SOURCE)
 aux_source_directory(Source/Types ENGINE_CORE_SOURCE)
+aux_source_directory(Source/Hash ENGINE_CORE_SOURCE)
+aux_source_directory(Source/Logger ENGINE_CORE_SOURCE)
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${ENGINE_CORE_INCLUDE} ${ENGINE_CORE_SOURCE})
 
@@ -44,4 +46,4 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER Engine)
 target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_CORE_INCLUDE_DIR})
 
 link_directories(${ENGINE_CORE_INCLUDE_DIR} ${SPDLOG_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog Threads::Threads)
+target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog PRIVATE Threads::Threads)

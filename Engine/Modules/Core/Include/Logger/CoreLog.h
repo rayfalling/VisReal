@@ -12,7 +12,7 @@
 #include <spdlog/logger.h>
 
 namespace Engine::Core {
-    class CoreLog : public ISingletonObject<CoreLog> {
+    class CoreLog final : public ISingletonObject<CoreLog> {
     protected:
         CoreLog() noexcept;
 
@@ -31,17 +31,21 @@ namespace Engine::Core {
 
         /* Module Names Register to CoreLog */
         /* TODO using custom map container*/
-//        static std::unordered_map<FString, std::shared_ptr<spdlog::logger>> _registerLoggers;
 
         /* Shared sinks between different loggers */
         std::vector<spdlog::sink_ptr> _sinks;
 
     public:
+        void LogInfo(FString message);
         void LogInfo(FString &message);
+        void Debug(FString message);
         void Debug(FString &message);
+        void LogWarning(FString message);
         void LogWarning(FString &message);
+        void LogError(FString message);
         void LogError(FString &message);
 
+        void RegisterLoggerModule(FString &name);
     };
 }
 

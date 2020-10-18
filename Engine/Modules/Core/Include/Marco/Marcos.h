@@ -18,6 +18,8 @@ namespace Engine::Core {
      * Unsupported OpenGL version (less than 3.3) Text Tips
      * */
     #define GLVersionNotSupport "This version is to old, pls use version >= 3.3"
+
+    #define ENGINE_START_TIPS "VisReal Engine Start."
 }
 
 #endif //VISREAL_MARCOS_H

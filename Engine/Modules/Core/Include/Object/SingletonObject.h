@@ -19,6 +19,7 @@ namespace Engine::Core {
     public:
         // Get Singleton Instance
         static T &GetInstance();
+        static T *GetInstancePtr();
 
     protected:
         /** disallow construct external */
@@ -44,10 +45,21 @@ namespace Engine::Core {
         static std::mutex _mutex;
         if (_instance == nullptr) {
             _mutex.lock();
-                _instance = new T();
+            _instance = new T();
             _mutex.unlock();
         }
         return *_instance;
+    }
+
+    template<typename T>
+    T *ISingletonObject<T>::GetInstancePtr() {
+        static std::mutex _mutex;
+        if (_instance == nullptr) {
+            _mutex.lock();
+            _instance = new T();
+            _mutex.unlock();
+        }
+        return _instance;
     }
 
     template<typename T>

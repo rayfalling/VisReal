@@ -1,7 +1,7 @@
 /**
  * Created by rayfalling on 2020/10/12.
  * */
-#include "Marco/CoreLog.h"
+#include "Logger/CoreLog.h"
 
 #include <iostream>
 #include <spdlog/sinks/stdout_color_sinks.h>
@@ -28,8 +28,18 @@ Engine::Core::CoreLog::CoreLog() noexcept {
     logger->set_level(spdlog::level::info);
 }
 
+void Engine::Core::CoreLog::LogInfo(FString message) {
+    logger->info(message.toString());
+    logger->flush();
+}
+
 void Engine::Core::CoreLog::LogInfo(FString &message) {
     logger->info(message.toString());
+    logger->flush();
+}
+
+void Engine::Core::CoreLog::LogWarning(FString message) {
+    logger->warn(message.toString());
     logger->flush();
 }
 
@@ -38,14 +48,28 @@ void Engine::Core::CoreLog::LogWarning(FString &message) {
     logger->flush();
 }
 
+void Engine::Core::CoreLog::LogError(FString message) {
+    logger->error(message.toString());
+    logger->flush();
+}
+
 void Engine::Core::CoreLog::LogError(FString &message) {
     logger->error(message.toString());
+    logger->flush();
+}
+
+void Engine::Core::CoreLog::Debug(FString message) {
+    logger->debug(message.toString());
     logger->flush();
 }
 
 void Engine::Core::CoreLog::Debug(FString &message) {
     logger->debug(message.toString());
     logger->flush();
+}
+
+void Engine::Core::CoreLog::RegisterLoggerModule(FString &name) {
+
 }
 
 Engine::Core::CoreLog::~CoreLog() noexcept = default;

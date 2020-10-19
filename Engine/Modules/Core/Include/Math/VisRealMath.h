@@ -60,8 +60,10 @@ namespace Engine::Core::Math {
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "cert-msc50-cpp"
+
     /* Returns a random integer between 0 and RAND_MAX, inclusive */
     static int32 Rand() { return std::rand(); }
+
 #pragma clang diagnostic pop
 
     /* Seeds global random number functions Rand() and FRand() */
@@ -191,7 +193,7 @@ namespace Engine::Core::Math {
 
     /* Rounds the given number up to the next highest power of two. */
     static uint32 RoundUpToPowerOfTwo(uint32 value) {
-        return 1 << CeilLogTwo(value);
+        return 1u << CeilLogTwo(value);
     }
 
     static uint64 RoundUpToPowerOfTwo64(uint64 V) {

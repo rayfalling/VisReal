@@ -32,9 +32,9 @@ namespace Engine::Core::Types {
         /* Data ptr */
         std::shared_ptr<TCHAR[]> _string = nullptr;
         /* String Length */
-        uint32 _length = 0;
+        SIZE_T _length = 0;
         /* String max Length */
-        uint32 _capacity = 0;
+        SIZE_T _capacity = 0;
         /* is constructed from const value */
         bool _const = false;
 
@@ -60,7 +60,7 @@ namespace Engine::Core::Types {
 
         ~FString();
 
-        [[nodiscard]] uint32 Length() const;
+        [[nodiscard]] SIZE_T Length() const;
 
         /**
          * override operator method
@@ -74,6 +74,11 @@ namespace Engine::Core::Types {
         bool operator==(const FString &string);
 
         std::string toString();
+
+    protected:
+        std::shared_ptr<TCHAR[]> &GetSharedPtr() {
+            return _string;
+        }
 
         /**
          * Static method region for FString

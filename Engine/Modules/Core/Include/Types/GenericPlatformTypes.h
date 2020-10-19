@@ -50,10 +50,10 @@ namespace Engine::Core::Types {
         typedef uint32  CHAR32;                 // A 32-bit character type - In-memory only.  32-bit representation.  Should really be char32_t but making this the generic option is easier for compilers which don't fully support C++11 yet (i.e. MSVC).
         typedef WCHAR   TCHAR;                  // A switchable character  - In-memory only.  Either CHAR or CHAR, depending on a licensee's requirements.
 
-        typedef SelectIntPointerType<uint32, uint64, sizeof(void *)>::TIntPointer UPTR_SIZE;        // unsigned int the same size as a pointer
-        typedef SelectIntPointerType<int32, int64, sizeof(void *)>::TIntPointer   PTR_SIZE;         // signed int the same size as a pointer
-        typedef UPTR_SIZE                                                         USIZE_T;          // unsigned int the same size as a pointer
-        typedef PTR_SIZE                                                          SIZE_T;           // signed int the same size as a pointer
+        typedef SelectIntPointerType<uint32, uint64, sizeof(void *)>::TIntPointer PTR_SIZE;        // unsigned int the same size as a pointer
+        typedef SelectIntPointerType<int32, int64, sizeof(void *)>::TIntPointer   SPTR_SIZE;       // signed int the same size as a pointer
+        typedef PTR_SIZE                                                          SIZE_T;          // unsigned int the same size as a pointer
+        typedef SPTR_SIZE                                                         SSIZE_T;         // signed int the same size as a pointer
     };
 }
 

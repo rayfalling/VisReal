@@ -19,7 +19,6 @@ namespace Engine::Core {
     public:
         // Get Singleton Instance
         static T &GetInstance();
-        static T *GetInstancePtr();
 
     protected:
         /** disallow construct external */
@@ -32,6 +31,7 @@ namespace Engine::Core {
         // Use shared_ptr to make sure that the allocated memory for instance
         // will be released when program exits (after main() ends).
         static T *_instance;
+        static std::mutex _mutex;
     private:
         /** disallow copy external */
         ISingletonObject(const ISingletonObject &other);
@@ -42,7 +42,6 @@ namespace Engine::Core {
 
     template<typename T>
     T &ISingletonObject<T>::GetInstance() {
-        static std::mutex _mutex;
         if (_instance == nullptr) {
             _mutex.lock();
             _instance = new T();
@@ -52,23 +51,15 @@ namespace Engine::Core {
     }
 
     template<typename T>
-    T *ISingletonObject<T>::GetInstancePtr() {
-        static std::mutex _mutex;
-        if (_instance == nullptr) {
-            _mutex.lock();
-            _instance = new T();
-            _mutex.unlock();
-        }
-        return _instance;
-    }
-
-    template<typename T>
     ISingletonObject<T>::~ISingletonObject() noexcept = default;
 
     template<typename T>
     ISingletonObject<T>::ISingletonObject() noexcept = default;
 
     template<typename T>
-    T *ISingletonObject<T>::_instance = nullptr;
+    T *ISingletonObject<T>::_instance;
+
+    template<typename T>
+    std::mutex ISingletonObject<T>::_mutex;
 }
 #endif //VISREAL_SINGLETON_OBJECT_H

@@ -18,11 +18,11 @@ namespace Engine::Core::Types {
     **/
     struct FWindowsPlatformTypes : public GenericPlatformTypes {
 #ifdef Platform_x64
-        typedef unsigned __int64 USIZE_T;
-        typedef __int64          SIZE_T;
+        typedef unsigned __int64 SIZE_T;
+        typedef __int64          SSIZE_T;
 #else
-        typedef unsigned long USIZE_T;
-        typedef long		  SIZE_T;
+        typedef unsigned long SIZE_T;
+        typedef long		  SSIZE_T;
 #endif
     };
 

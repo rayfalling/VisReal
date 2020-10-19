@@ -106,7 +106,7 @@ FString &FString::operator=(const std::string &Another) {
 
 FString &FString::operator=(const FString &Another) = default;
 
-uint32 FString::Length() const {
+SIZE_T FString::Length() const {
     return _length;
 }
 

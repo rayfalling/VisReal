@@ -30,7 +30,7 @@ namespace Engine::Core::Types {
         };
 
     private:
-        int32 _size;
+        SIZE_T _size;
         std::mutex _mutex;
     };
 

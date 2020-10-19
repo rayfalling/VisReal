@@ -12,7 +12,6 @@ set(CMAKE_CXX_STANDARD 17)
 if (!MSVC)
     set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")             # 调试包不优化
     set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG ")    # release包优化
-    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 else (!MSVC)
     set(CMAKE_CXX_FLAGS_DEBUG "/DEBUG")             # 调试包不优化
     set(CMAKE_CXX_FLAGS_RELEASE "/O2 /NDEBUG ")    # release包优化

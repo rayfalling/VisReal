@@ -1,12 +1,15 @@
-//
-// Created by rayfalling on 2020/8/30.
-//
+/**
+ * Created by rayfalling on 2020/8/30.
+ *
+ * From Unreal Engine
+ * */
+
 #pragma once
 
 #ifndef VISREAL_CHOOSE_CLASS_H
 #define VISREAL_CHOOSE_CLASS_H
 
-namespace Engine::Core::Types {
+namespace Engine::Core {
     /** 
      * Chooses between two different classes based on a boolean. 
      * */

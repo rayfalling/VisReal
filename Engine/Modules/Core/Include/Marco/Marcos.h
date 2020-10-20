@@ -2,6 +2,8 @@
  * Created by rayfalling on 2020/10/12.
  * */
 
+#pragma once
+
 #ifndef VISREAL_MARCOS_H
 #define VISREAL_MARCOS_H
 
@@ -19,7 +21,7 @@ namespace Engine::Core {
      * */
     #define GLVersionNotSupport "This version is to old, pls use version >= 3.3"
 
-    #define ENGINE_START_TIPS "VisReal Engine Start."
+    #define ARE_TYPES_EQUAL(A, B) TAreTypesEqual<A,B>::Value
 }
 
 #endif //VISREAL_MARCOS_H

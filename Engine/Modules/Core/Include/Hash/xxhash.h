@@ -76,6 +76,8 @@ XXH64       13.8 GB/s            1.9 GB/s
 XXH32        6.8 GB/s            6.0 GB/s
 */
 
+#pragma warning(disable:4819)
+
 #if defined (__cplusplus)
 extern "C" {
 #endif

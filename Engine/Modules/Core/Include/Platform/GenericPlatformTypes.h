@@ -5,10 +5,12 @@
  * Use for cross platform data type.
  * Generic platform definition.
  * */
+
 #pragma once
 
 #ifndef VISREAL_GENERIC_PLATFORM_TYPES_HPP
 #define VISREAL_GENERIC_PLATFORM_TYPES_HPP
+
 namespace Engine::Core::Types {
     //---------------------------------------------------------------------
     // Utility for automatically setting up the pointer-sized integer type

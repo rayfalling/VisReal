@@ -2,10 +2,12 @@
  * Created by rayfalling on 2020/10/18.
  * */
 
+#pragma once
+
 #ifndef VISREAL_TMAP_H
 #define VISREAL_TMAP_H
 
-#include "PlatformTypes.h"
+#include "Platform/PlatformTypes.h"
 #include <mutex>
 
 namespace Engine::Core::Types {

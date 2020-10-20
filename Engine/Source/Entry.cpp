@@ -2,12 +2,14 @@
  * Created by rayfalling on 2020/10/18.
  * */
 
+#include "Marco/Constant.h"
+#include "Container/TArray.h"
 #include "Entry.h"
 
 bool Engine::InitEngine() {
     /* Init Engine Logger */
     CoreLog = &Core::CoreLog::GetInstance();
-    CoreLog->LogInfo(FString(ENGINE_START_TIPS));
+    CoreLog->LogInfo(Core::ENGINE_START);
 
     return true;
 }

@@ -2,6 +2,8 @@
  * Created by rayfalling on 2020/10/15.
  * */
 
+#pragma once
+
 #ifndef VISREAL_TIME_H
 #define VISREAL_TIME_H
 

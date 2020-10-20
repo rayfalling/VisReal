@@ -4,6 +4,8 @@
  * Singleton Factory Class Interface
  * */
 
+#pragma once
+
 #ifndef VISREAL_SINGLETON_OBJECT_H
 #define VISREAL_SINGLETON_OBJECT_H
 

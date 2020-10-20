@@ -10,7 +10,7 @@
 #ifndef VISREAL_FSTRING_H
 #define VISREAL_FSTRING_H
 
-#include "PlatformTypes.h"
+#include "Platform/PlatformTypes.h"
 #include <codecvt>
 
 namespace Engine::Core::Types {
@@ -44,19 +44,19 @@ namespace Engine::Core::Types {
         FString(FString &&string) noexcept;
 
         /* construct from std::string */
-        explicit FString(std::string &str);
-        explicit FString(const std::string &str);
+        explicit FString(std::string &str) noexcept;
+        explicit FString(const std::string &str) noexcept;
 
         /* construct from std::wstring */
-        explicit FString(std::wstring &str);
-        explicit FString(const std::wstring &str);
+        explicit FString(std::wstring &str) noexcept;
+        explicit FString(const std::wstring &str) noexcept;
 
         /* construct from char* */
-        explicit FString(char *string);
-        explicit FString(const char *string);
+        explicit FString(char *string) noexcept;
+        explicit FString(const char *string) noexcept;
 
         /* construct from char[] */
-        FString(char string[], int length);
+        FString(char string[], int length) noexcept;
 
         ~FString();
 
@@ -73,7 +73,8 @@ namespace Engine::Core::Types {
         /* overload operator==() */
         bool operator==(const FString &string);
 
-        std::string toString();
+        [[nodiscard]] std::string toString();
+        [[nodiscard]] std::string toString() const;
 
     protected:
         std::shared_ptr<TCHAR[]> &GetSharedPtr() {

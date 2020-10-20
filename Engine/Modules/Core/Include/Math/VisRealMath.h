@@ -1,15 +1,17 @@
-#pragma warning(disable:4068)
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "hicpp-signed-bitwise"
 /**
  * Created by rayfalling on 2020/10/18.
  * */
+
+#pragma warning(disable:4068)
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "hicpp-signed-bitwise"
+#pragma once
 
 #ifndef VISREAL_VISREAL_MATH_H
 #define VISREAL_VISREAL_MATH_H
 
 #include <cmath>
-#include "Types/PlatformTypes.h"
+#include "Platform/PlatformTypes.h"
 
 namespace Engine::Core::Math {
     /** Converts a float to an integer with truncation towards zero. */

@@ -6,7 +6,7 @@
  * Base type is WCHAR.
  * */
 #include <iostream>
-#include "Types/FString.h"
+#include "Container/FString.h"
 
 using namespace Engine::Core::Types;
 
@@ -24,14 +24,9 @@ FString::FString(const FString &string) noexcept {
     this->_const = string._const;
 }
 
-FString::FString(FString &&string) noexcept:
-        _string(std::move(string._string)),
-        _length(string._length),
-        _capacity(string._capacity),
-        _const(string._const) {
-}
+FString::FString(FString &&string) noexcept = default;
 
-FString::FString(std::string &string) {
+FString::FString(std::string &string) noexcept {
     std::wstring w_str = string2wstring(string);
     this->_string = std::shared_ptr<TCHAR[]>(new TCHAR[w_str.length() + 1], std::default_delete<TCHAR[]>());
     std::memcpy(this->_string.get(), w_str.c_str(), (w_str.length() + 1) * sizeof(TCHAR));
@@ -40,7 +35,7 @@ FString::FString(std::string &string) {
     _const = false;
 }
 
-FString::FString(const std::string &string) {
+FString::FString(const std::string &string) noexcept {
     std::wstring w_str = string2wstring(string);
     this->_string = std::shared_ptr<TCHAR[]>(new TCHAR[w_str.length() + 1], std::default_delete<TCHAR[]>());
     std::memcpy(this->_string.get(), w_str.c_str(), (w_str.length() + 1) * sizeof(TCHAR));
@@ -49,7 +44,7 @@ FString::FString(const std::string &string) {
     _const = true;
 }
 
-FString::FString(char *string) {
+FString::FString(char *string) noexcept {
     std::wstring w_str = string2wstring(string);
     this->_string = std::shared_ptr<TCHAR[]>(new TCHAR[w_str.length() + 1], std::default_delete<TCHAR[]>());
     std::memcpy(this->_string.get(), w_str.c_str(), (w_str.length() + 1) * sizeof(TCHAR));
@@ -58,7 +53,7 @@ FString::FString(char *string) {
     _const = false;
 }
 
-FString::FString(const char *string) {
+FString::FString(const char *string) noexcept {
     std::wstring w_str = string2wstring(string);
     this->_string = std::shared_ptr<TCHAR[]>(new TCHAR[w_str.length() + 1], std::default_delete<TCHAR[]>());
     std::memcpy(this->_string.get(), w_str.c_str(), (w_str.length() + 1) * sizeof(TCHAR));
@@ -67,7 +62,7 @@ FString::FString(const char *string) {
     _const = true;
 }
 
-FString::FString(std::wstring &str) {
+FString::FString(std::wstring &str) noexcept {
     this->_string = std::shared_ptr<TCHAR[]>(new TCHAR[str.length() + 1], std::default_delete<TCHAR[]>());
     std::memcpy(this->_string.get(), str.c_str(), (str.length() + 1) * sizeof(TCHAR));
     this->_length = str.length();
@@ -75,7 +70,7 @@ FString::FString(std::wstring &str) {
     _const = false;
 }
 
-FString::FString(const std::wstring &str) {
+FString::FString(const std::wstring &str) noexcept {
     this->_string = std::shared_ptr<TCHAR[]>(new TCHAR[str.length() + 1], std::default_delete<TCHAR[]>());
     std::memcpy(this->_string.get(), str.c_str(), (str.length() + 1) * sizeof(TCHAR));
     this->_length = str.length();
@@ -83,7 +78,7 @@ FString::FString(const std::wstring &str) {
     _const = true;
 }
 
-FString::FString(char string[], int length) {
+FString::FString(char string[], int length) noexcept {
     std::wstring w_str = string2wstring(string);
     this->_string = std::shared_ptr<TCHAR[]>(new TCHAR[w_str.length() + 1], std::default_delete<TCHAR[]>());
     std::memcpy(this->_string.get(), w_str.c_str(), (w_str.length() + 1) * sizeof(TCHAR));
@@ -111,6 +106,10 @@ SIZE_T FString::Length() const {
 }
 
 std::string FString::toString() {
+    return wstring2string(_string.get());
+}
+
+std::string FString::toString() const {
     return wstring2string(_string.get());
 }
 

@@ -2,14 +2,18 @@
  * Created by rayfalling on 2020/10/12.
  * */
 
+#pragma once
+
 #ifndef VISREAL_LOG_TRACE_H
 #define VISREAL_LOG_TRACE_H
 
 #include "Object/SingletonObject.h"
-#include "Types/FString.h"
-#include "Types/FTime.h"
+#include "Container/FString.h"
+#include "Container/FTime.h"
 
 #include <spdlog/logger.h>
+
+#include "EngineCoreExport.generate.h"
 
 namespace Engine::Core {
     class CoreLog final : public ISingletonObject<CoreLog> {
@@ -27,13 +31,13 @@ namespace Engine::Core {
 
     private:
         /* Core logger */
-        std::shared_ptr<spdlog::logger> logger;
+        static std::shared_ptr<spdlog::logger> logger;
 
         /* Module Names Register to CoreLog */
         /* TODO using custom map container*/
 
         /* Shared sinks between different loggers */
-        std::vector<spdlog::sink_ptr> _sinks;
+        static std::vector<spdlog::sink_ptr> _sinks;
 
     public:
         void LogInfo(FString message);
@@ -48,6 +52,5 @@ namespace Engine::Core {
         void RegisterLoggerModule(FString &name);
     };
 }
-
 
 #endif //VISREAL_LOG_TRACE_H

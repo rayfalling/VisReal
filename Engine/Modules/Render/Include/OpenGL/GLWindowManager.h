@@ -13,7 +13,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "Object/SingletonObject.h"
-#include "Types/Types.h"
+#include "Platform/Types.h"
 #include "VersionCheck.h"
 
 using namespace Engine::Core;

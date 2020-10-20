@@ -5,12 +5,14 @@
  * Use for cross platform data type.
  * Windows platform definition to override generic definition.
  * */
+
 #pragma once
 
 #ifndef VISREAL_WINDOWS_PLATFORM_H
 #define VISREAL_WINDOWS_PLATFORM_H
 
 #include "GenericPlatformTypes.h"
+#include "Marco/MSVCPlatfrom.h"
 
 namespace Engine::Core::Types {
     /**

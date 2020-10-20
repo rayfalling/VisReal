@@ -8,7 +8,7 @@
 #define VISREAL_GL_CONSTANT_H
 
 #include <string>
-#include "Types/PlatformTypes.h"
+#include "Platform/PlatformTypes.h"
 
 namespace Engine::Render::OPENGL {
     const GLVersion CMinGLVersion = OPENGL_VERSION_3_3;

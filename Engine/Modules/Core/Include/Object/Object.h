@@ -6,7 +6,7 @@
 #ifndef VISREAL_OBJECT_H
 #define VISREAL_OBJECT_H
 
-#include "Types/FString.h"
+#include "Container/FString.h"
 #include "EngineCoreExport.generate.h"
 
 namespace Engine::Core {

@@ -3,13 +3,16 @@
  * 
  * Include this file in other modules to use custom types
  */
+
 #pragma once
 
 #ifndef VISREAL_TYPES_H
 #define VISREAL_TYPES_H
 
 #include "PlatformTypes.h"
-#include "FString.h"
+#include "Container/FString.h"
+#include "Container/TArray.h"
+#include "Container/TMap.h"
 
 using namespace Engine::Core::Types;
 

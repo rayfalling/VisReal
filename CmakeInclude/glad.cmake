@@ -11,6 +11,3 @@ set(GLAD_API "gl=,gles=" CACHE STRING "API type/version pairs, like \"gl=3.2,gle
 set(GLAD_SPEC "gl" CACHE STRING "Name of the spec")
 
 SET_TARGET_PROPERTIES(glad glad-generate-files PROPERTIES FOLDER libs)
-
-target_link_libraries(${PROJECT_NAME} glad)
-target_include_directories(${PROJECT_NAME} PUBLIC ${GLAD_INCLUDE_DIRS})

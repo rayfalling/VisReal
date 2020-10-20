@@ -18,5 +18,4 @@ include(${CMAKE_SOURCE_DIR}/CmakeInclude/spdlog.cmake)
 include(${CMAKE_SOURCE_DIR}/CmakeInclude/FindD3D12.cmake)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/Engine)
-
-target_link_libraries(${PROJECT_NAME} Engine)
+add_subdirectory(${CMAKE_SOURCE_DIR}/Test)

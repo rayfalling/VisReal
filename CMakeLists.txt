@@ -10,10 +10,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary)
 
 set(BUILD_SHARED_LIBS TRUE)
 
-# add executable before include library for test use
-add_executable(${PROJECT_NAME} main.cpp)
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "main")
-
 # hacker for glfw uninstall target
 add_custom_target(uninstall)
 set_target_properties(uninstall PROPERTIES FOLDER Uninstall)

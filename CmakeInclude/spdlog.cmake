@@ -12,6 +12,3 @@ if (BUILD_SHARED_LIBS)
 endif(BUILD_SHARED_LIBS)
 
 SET_TARGET_PROPERTIES(spdlog PROPERTIES FOLDER libs)
-
-target_link_libraries(${PROJECT_NAME} spdlog::spdlog)
-target_include_directories(${PROJECT_NAME} PUBLIC ${SPDLOG_INCLUDE_DIRS})

@@ -7,35 +7,45 @@
 #ifndef VISREAL_TMAP_H
 #define VISREAL_TMAP_H
 
+#include "TArray.h"
 #include "Platform/PlatformTypes.h"
 #include <mutex>
 
 namespace Engine::Core::Types {
-    template<typename Key, typename Value, typename Hash>
-    class TMap {
-    public:
-        TMap(int size);
-        ~TMap();
-        bool Insert(const Key &key, const Value &value);
-        bool Remove(const Key &key);
-        Value &Find(const Key &key);
-        Value &operator[](const Key &key);
-    public:
-        class MapItem {
-        public:
-            MapItem(Key key, Value value);
+    /* forward declaration for TArray */
+    template<typename T>
+    class TArray;
 
+    template<typename Key, typename Value>
+    class MapItem {
+    public:
+        MapItem() noexcept = default;
 
-        private:
-            Key _key;
-            Value _value;
+        MapItem(Key key, Value value) noexcept: _key(key), _value(value) {
         };
+
+    private:
+        Key _key;
+        Value _value;
+    };
+
+    /* TODO think about how to store KeyValuePair */
+    template<typename Key, typename Value>
+    class TMap {
+        typedef MapItem<Key, Value> ElementType;
+
+    public:
+        explicit TMap(SIZE_T size) {
+            _size = size;
+            _hashtable = std::make_shared<TArray<ElementType>>(size);
+        };
+        ~TMap() = default;
 
     private:
         SIZE_T _size;
         std::mutex _mutex;
+        std::shared_ptr<TArray<ElementType>> _hashtable{};
     };
-
 }
 
 #endif //VISREAL_TMAP_H

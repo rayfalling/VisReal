@@ -10,7 +10,7 @@ add_compile_definitions(_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING)
 set(CMAKE_CXX_STANDARD 17)
 
 set("ENGINE_TEST_INCLUDE_DIR" ${CMAKE_CURRENT_SOURCE_DIR}/Include)
-include_directories(${ENGINE_INCLUDE_DIR}/)
+include_directories(${ENGINE_TEST_INCLUDE_DIR}/)
 file(GLOB_RECURSE ENGINE_TEST_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/Include/*)
 aux_source_directory(Source ENGINE_TEST_SOURCE)
 
@@ -18,7 +18,7 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${ENGINE_INCLUDE} ${ENGINE_S
 
 # add executable before include library for test use
 add_executable(${PROJECT_NAME} ${ENGINE_TEST_INCLUDE} ${ENGINE_TEST_SOURCE})
-set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "test.main")
+set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "VisReal.Test")
 
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER Engine/Test)

@@ -1,19 +1,14 @@
-#include <iostream>
 //#include <glad/glad.h>
 //#include <GLFW/glfw3.h>
 #include "Entry.h"
-#include "Container/TArray.h"
+#include "TestTMap.h"
+#include "TestTArray.h"
 
 int main() {
     Engine::InitEngine();
+    TestTArray();
+    TestTMap();
 
-    /* test area */
-    TArray<int> array = { 1, 2, 3, 4, 5, 6, 7, 8 };
-    array.Add(9);
-    std::cout << array[3] << std::endl;
-    array.RemoveRange(0,8);
-    std::cout << array[0] << std::endl;
-//
 //    glfwInit();
 //    // commit this to use max support opengl version
 //    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

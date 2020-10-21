@@ -6,14 +6,6 @@ project("Engine.Core" C CXX)
 # Set CXX flags
 set(CMAKE_CXX_STANDARD 17)
 
-if (!MSVC)
-    set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")             # 调试包不优化
-    set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG ")    # release包优化
-else (!MSVC)
-    set(CMAKE_CXX_FLAGS_DEBUG "/DEBUG")             # 调试包不优化
-    set(CMAKE_CXX_FLAGS_RELEASE "/O2 /NDEBUG ")    # release包优化
-endif ()
-
 find_package(Threads REQUIRED)
 
 set("ENGINE_CORE_INCLUDE_DIR" ${CMAKE_CURRENT_SOURCE_DIR}/Include)

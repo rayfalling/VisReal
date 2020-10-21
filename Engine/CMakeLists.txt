@@ -9,14 +9,6 @@ add_compile_definitions(_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING)
 # Set CXX flags
 set(CMAKE_CXX_STANDARD 17)
 
-if (!MSVC)
-    set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")             # 调试包不优化
-    set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG ")    # release包优化
-else (!MSVC)
-    set(CMAKE_CXX_FLAGS_DEBUG "/DEBUG")             # 调试包不优化
-    set(CMAKE_CXX_FLAGS_RELEASE "/O2 /NDEBUG ")    # release包优化
-endif ()
-
 add_subdirectory(Modules/Core)
 add_subdirectory(Modules/Render)
 

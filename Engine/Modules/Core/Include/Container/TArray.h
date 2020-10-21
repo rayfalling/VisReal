@@ -76,7 +76,7 @@ namespace Engine::Core::Types {
     public:
         /* operator[] if index out of bound will return T()*/
         T &operator[](int index) {
-            if (index > _size - 1) {
+            if (index > _size - 1 || _size == 0) {
                 CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
                 return *new T();
             }
@@ -169,13 +169,22 @@ namespace Engine::Core::Types {
             RemoveAtImpl(_size - 1, 1);
         }
 
-        /* Remove array elements at index */
-        void RemoveRange(SIZE_T index, SIZE_T count) {
-            if (count > 0 && index > 0)
+        /* Remove array elements at index with count */
+        void RemoveAtRange(SIZE_T index, SIZE_T count) {
+            if (count > 0 && index >= 0)
                 if (index + count > _size - 1)
                     CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
                 else
                     RemoveAtImpl(index, count);
+        }
+
+        /* Remove array elements from start to end */
+        void RemoveRange(SIZE_T startIndex, SIZE_T endIndex) {
+            if (endIndex > 0 && startIndex >= 0)
+                if (endIndex > _size - 1)
+                    CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
+                else
+                    RemoveAtImpl(startIndex, endIndex - startIndex + 1);
         }
 
         /* Clear all Element in Array */

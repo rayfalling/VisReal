@@ -11,7 +11,7 @@ int main() {
     TArray<int> array = { 1, 2, 3, 4, 5, 6, 7, 8 };
     array.Add(9);
     std::cout << array[3] << std::endl;
-    array.RemoveFirst();
+    array.RemoveRange(0,8);
     std::cout << array[0] << std::endl;
 //
 //    glfwInit();

@@ -44,7 +44,7 @@ namespace Engine::Core::Types {
             _size = initList.size();
             _capacity = initList.size();
             _data = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
-            std::memcpy(_data.get(), initList.begin(), sizeof(T) * _size);
+            Engine::Core::CopyAssignItems<T, SIZE_T>(_data.get(), initList.begin(), initList.size());
         };
 
         /* copy construct */
@@ -53,7 +53,7 @@ namespace Engine::Core::Types {
             if (_capacity < array._size) {
                 _size = array._size;
                 _capacity = array._capacity;
-                Grow();
+                GrowArrayCapacity();
             }
 
             return *this;
@@ -107,7 +107,7 @@ namespace Engine::Core::Types {
             _mutex.lock();
             _size++;
             if (_size >= _capacity)
-                Grow();
+                GrowArrayCapacity();
             _data.get()[_size - 1] = data;
             _mutex.unlock();
             return _data.get()[_size - 1];
@@ -118,7 +118,7 @@ namespace Engine::Core::Types {
             _mutex.lock();
             _size++;
             if (_size >= _capacity)
-                Grow();
+                GrowArrayCapacity();
             _data.get()[_size - 1] = data;
             _mutex.unlock();
             return _data.get()[_size - 1];
@@ -129,8 +129,8 @@ namespace Engine::Core::Types {
             auto old_size = _size;
             _size += initList.size();
             if (_size > _capacity)
-                Grow();
-            std::memcpy(_data.get() + sizeof(T) * old_size, initList.begin(), sizeof(T) * initList.size());
+                GrowArrayCapacity();
+            Engine::Core::CopyAssignItems<T, SIZE_T>(_data.get() + old_size, initList.begin(), initList.size());
         }
 
         /* Add new Elements */
@@ -138,8 +138,8 @@ namespace Engine::Core::Types {
             auto old_size = _size;
             _size += array.GetSize();
             if (_size > _capacity)
-                Grow();
-            std::memcpy(_data.get() + sizeof(T) * old_size, array.GetData(), sizeof(T) * array.GetSize());
+                GrowArrayCapacity();
+            Engine::Core::CopyAssignItems<T, SIZE_T>(_data.get() + old_size, array.GetData(), array.GetSize());
         }
 
         /* Add new Elements */
@@ -147,18 +147,35 @@ namespace Engine::Core::Types {
             auto old_size = _size;
             _size += vector.size();
             if (_size > _capacity)
-                Grow();
-            std::memcpy(_data.get() + sizeof(T) * old_size, vector.data(), sizeof(T) * vector.size());
+                GrowArrayCapacity();
+            Engine::Core::CopyAssignItems<T, SIZE_T>(_data.get() + old_size, vector.data(), vector.size());
         }
 
+        /* Remove array element at index */
+        void RemoveAt(SIZE_T index) {
+            if (index > _size - 1)
+                CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
+            else
+                RemoveAtImpl(index, 1);
+        }
+
+        /* Remove first array element */
         void RemoveFirst() {
             RemoveAtImpl(0, 1);
-            _size--;
         }
 
+        /* Remove last array element */
         void RemoveLast() {
             RemoveAtImpl(_size - 1, 1);
-            _size--;
+        }
+
+        /* Remove array elements at index */
+        void RemoveRange(SIZE_T index, SIZE_T count) {
+            if (count > 0 && index > 0)
+                if (index + count > _size - 1)
+                    CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
+                else
+                    RemoveAtImpl(index, count);
         }
 
         /* Clear all Element in Array */
@@ -168,7 +185,7 @@ namespace Engine::Core::Types {
             _mutex.unlock();
         }
 
-        void Resize(SIZE_T size, bool allowShrink = false) {
+        void Resize(SIZE_T size, bool allowShrink = true) {
             if (size < _capacity) {
                 ResizeShrink(size, allowShrink);
             } else if (size == _capacity) {
@@ -179,36 +196,41 @@ namespace Engine::Core::Types {
         }
 
     protected:
+        /* shrink array capacity to match it size */
         void ResizeShrink(SIZE_T size, bool allowShrink = false) {
             _capacity = size;
             std::shared_ptr<T[]> new_space = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
-            std::memcpy(new_space.get(), _data.get(), sizeof(T) * size);
+            Engine::Core::CopyAssignItems<T, SIZE_T>(new_space.get(), _data.get(), size);
             _size = size;
             _data.reset();
             _data.swap(new_space);
         }
 
+        /* grow array capacity to given size */
         void ResizeGrow(SIZE_T size) {
             _capacity = size;
             std::shared_ptr<T[]> new_space = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
-            std::memcpy(new_space.get(), _data.get(), sizeof(T) * _size);
+            Engine::Core::CopyAssignItems<T, SIZE_T>(new_space.get(), _data.get(), _size);
             _data.reset();
             _data.swap(new_space);
         }
 
-        void Grow() {
+        /* auto grow array capacity policy */
+        void GrowArrayCapacity() {
             SIZE_T new_capacity = _capacity + _capacity / 2;
             if (new_capacity < _size) new_capacity = _size;
-            std::shared_ptr<T[]> new_space = std::shared_ptr<T[]>(new T[new_capacity](), std::default_delete<T[]>());
-            std::memcpy(new_space.get(), _data.get(), sizeof(T) * _capacity);
-            _data.reset();
-            _data.swap(new_space);
+            ResizeGrow(new_capacity);
         }
 
+        /* remove implementation */
         void RemoveAtImpl(SIZE_T index, SIZE_T count, bool allowShrink = true) {
             if (count > 0) {
-                /* Do destruct for removed element*/
-                Engine::Core::DestructItems<T, SIZE_T>(_data.get(), count);
+                /* Do destruct for removed element to avoid ptr in element */
+                Engine::Core::DestructItems<T, SIZE_T>(_data.get() + index, count);
+                /* move elements */
+                Engine::Core::MoveAssignItems<T, SIZE_T>(_data.get() + index, _data.get() + (index + count), count);
+                /* shrink array size */
+                ResizeShrink(_size - count, allowShrink);
             }
         }
     };

@@ -12,7 +12,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "Object/SingletonObject.h"
+#include "Object/ISingletonObject.h"
 #include "Platform/Types.h"
 #include "VersionCheck.h"
 

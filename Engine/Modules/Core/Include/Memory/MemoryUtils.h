@@ -15,7 +15,7 @@
 
 #include <cstring>
 #include "Platform/Types.h"
-#include "Marco/MSVCPlatfrom.h"
+#include "Marco/MSVCPlatform.h"
 #include "Templates/TEnableIf.h"
 #include "Templates/TAndOrNot.h"
 #include "Templates/TTypeTraits.h"

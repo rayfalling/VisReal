@@ -4,8 +4,8 @@
 
 #pragma once
 
-#ifndef VISREAL_TARETYPESEQUAL_H
-#define VISREAL_TARETYPESEQUAL_H
+#ifndef VISREAL_T_ARE_TYPES_EQUAL_H
+#define VISREAL_T_ARE_TYPES_EQUAL_H
 
 namespace Engine::Core {
     /** Tests whether two typenames refer to the same type. */
@@ -26,4 +26,4 @@ namespace Engine::Core {
         };
     };
 }
-#endif //VISREAL_TARETYPESEQUAL_H
+#endif //VISREAL_T_ARE_TYPES_EQUAL_H

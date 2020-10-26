@@ -6,8 +6,8 @@
 
 #pragma once
 
-#ifndef VISREAL_TISPODTYPE_H
-#define VISREAL_TISPODTYPE_H
+#ifndef VISREAL_T_IS_POD_TYPE_H
+#define VISREAL_T_IS_POD_TYPE_H
 
 namespace Engine::Core {
 
@@ -22,4 +22,4 @@ namespace Engine::Core {
     };
 
 }
-#endif //VISREAL_TISPODTYPE_H
+#endif //VISREAL_T_IS_POD_TYPE_H

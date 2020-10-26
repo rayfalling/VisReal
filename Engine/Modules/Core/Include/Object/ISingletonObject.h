@@ -6,8 +6,8 @@
 
 #pragma once
 
-#ifndef VISREAL_SINGLETON_OBJECT_H
-#define VISREAL_SINGLETON_OBJECT_H
+#ifndef VISREAL_I_SINGLETON_OBJECT_H
+#define VISREAL_I_SINGLETON_OBJECT_H
 
 #include <memory>
 #include <mutex>
@@ -64,4 +64,4 @@ namespace Engine::Core {
     template<typename T>
     std::mutex ISingletonObject<T>::_mutex;
 }
-#endif //VISREAL_SINGLETON_OBJECT_H
+#endif //VISREAL_I_SINGLETON_OBJECT_H

@@ -7,8 +7,8 @@
  * */
 #pragma once
 
-#ifndef VISREAL_FSTRING_H
-#define VISREAL_FSTRING_H
+#ifndef VISREAL_F_STRING_H
+#define VISREAL_F_STRING_H
 
 #include "Platform/PlatformTypes.h"
 #include <codecvt>
@@ -112,4 +112,4 @@ namespace Engine::Core::Types {
     };
 } // namespace Engine::Core::Types
 
-#endif // VISREAL_FSTRING_H
+#endif // VISREAL_F_STRING_H

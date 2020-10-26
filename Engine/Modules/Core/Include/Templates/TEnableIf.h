@@ -6,8 +6,8 @@
 
 #pragma once
 
-#ifndef VISREAL_TENABLE_IF_H
-#define VISREAL_TENABLE_IF_H
+#ifndef VISREAL_T_ENABLE_IF_H
+#define VISREAL_T_ENABLE_IF_H
 
 namespace Engine::Core {
     /**
@@ -36,4 +36,4 @@ namespace Engine::Core {
     };
 }
 
-#endif //VISREAL_TENABLE_IF_H
+#endif //VISREAL_T_ENABLE_IF_H

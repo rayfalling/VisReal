@@ -7,7 +7,7 @@
 #ifndef VISREAL_LOG_TRACE_H
 #define VISREAL_LOG_TRACE_H
 
-#include "Object/SingletonObject.h"
+#include "Object/ISingletonObject.h"
 #include "Container/FString.h"
 #include "Container/FTime.h"
 
@@ -17,16 +17,14 @@
 
 namespace Engine::Core {
     class CoreLog final : public ISingletonObject<CoreLog> {
+        friend class ISingletonObject<CoreLog>;
+
     protected:
         CoreLog() noexcept;
-
         ~CoreLog() noexcept override;
 
     private:
-        friend class ISingletonObject<CoreLog>;
-
         CoreLog(const CoreLog &);
-
         CoreLog &operator=(const CoreLog &);
 
     private:

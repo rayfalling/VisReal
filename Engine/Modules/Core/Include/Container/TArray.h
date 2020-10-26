@@ -6,8 +6,8 @@
 
 #pragma once
 
-#ifndef VISREAL_TARRAY_H
-#define VISREAL_TARRAY_H
+#ifndef VISREAL_T_ARRAY_H
+#define VISREAL_T_ARRAY_H
 
 #include <initializer_list>
 #include <cstring>
@@ -392,4 +392,4 @@ namespace Engine::Core::Types {
     };
 }
 
-#endif //VISREAL_TARRAY_H
+#endif //VISREAL_T_ARRAY_H

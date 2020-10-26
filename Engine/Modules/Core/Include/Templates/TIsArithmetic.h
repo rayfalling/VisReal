@@ -4,8 +4,8 @@
 
 #pragma once
 
-#ifndef VISREAL_TISARITHMETIC_H
-#define VISREAL_TISARITHMETIC_H
+#ifndef VISREAL_T_IS_ARITHMETIC_H
+#define VISREAL_T_IS_ARITHMETIC_H
 
 #include "Platform/Types.h"
 
@@ -39,4 +39,4 @@ namespace Engine::Core {
     template <typename T> struct TIsArithmetic<const volatile T> { enum { Value = TIsArithmetic<T>::Value }; };
 }
 
-#endif //VISREAL_TISARITHMETIC_H
+#endif //VISREAL_T_IS_ARITHMETIC_H

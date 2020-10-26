@@ -6,8 +6,8 @@
 
 #pragma once
 
-#ifndef VISREAL_CHOOSE_CLASS_H
-#define VISREAL_CHOOSE_CLASS_H
+#ifndef VISREAL_T_CHOOSE_CLASS_H
+#define VISREAL_T_CHOOSE_CLASS_H
 
 namespace Engine::Core {
     /** 
@@ -29,4 +29,4 @@ namespace Engine::Core {
     };
 }
 
-#endif //VISREAL_CHOOSE_CLASS_H
+#endif //VISREAL_T_CHOOSE_CLASS_H

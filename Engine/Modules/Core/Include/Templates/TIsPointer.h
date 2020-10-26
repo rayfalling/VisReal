@@ -4,8 +4,8 @@
 
 #pragma once
 
-#ifndef VISREAL_TISPOINTER_H
-#define VISREAL_TISPOINTER_H
+#ifndef VISREAL_T_IS_POINTER_H
+#define VISREAL_T_IS_POINTER_H
 
 namespace Engine::Core {
     /**
@@ -24,4 +24,4 @@ namespace Engine::Core {
     template <typename T> struct TIsPointer<const volatile T> { enum { Value = TIsPointer<T>::Value }; };
 }
 
-#endif //VISREAL_TISPOINTER_H
+#endif //VISREAL_T_IS_POINTER_H

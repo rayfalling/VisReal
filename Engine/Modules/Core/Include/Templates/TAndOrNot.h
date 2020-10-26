@@ -6,8 +6,8 @@
 
 #pragma once
 
-#ifndef VISREAL_TAND_OR_NOT_H
-#define VISREAL_TAND_OR_NOT_H
+#ifndef VISREAL_T_AND_OR_NOT_H
+#define VISREAL_T_AND_OR_NOT_H
 
 namespace Engine::Core {
     /**
@@ -84,4 +84,4 @@ namespace Engine::Core {
 
 }
 
-#endif
+#endif //VISREAL_T_AND_OR_NOT_H

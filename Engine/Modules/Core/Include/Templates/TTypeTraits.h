@@ -5,8 +5,8 @@
 #pragma warning(disable:4068)
 #pragma once
 
-#ifndef VISREAL_TTYPE_TRAITS_H
-#define VISREAL_TTYPE_TRAITS_H
+#ifndef VISREAL_T_TYPE_TRAITS_H
+#define VISREAL_T_TYPE_TRAITS_H
 
 #include "Platform/Types.h"
 #include "TIsPODType.h"
@@ -466,4 +466,4 @@ namespace Engine::Core {
     };
 }
 
-#endif //VISREAL_TTYPE_TRAITS_H
+#endif //VISREAL_T_TYPE_TRAITS_H

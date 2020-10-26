@@ -2,10 +2,13 @@
  * Created by rayfalling on 2020/10/20.
  * */
 
+#pragma warning(disable:4068)
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "CannotResolve"
 #pragma once
 
-#ifndef VISREAL_TISTRIVIALLYDESTRUCTIBLE_H
-#define VISREAL_TISTRIVIALLYDESTRUCTIBLE_H
+#ifndef VISREAL_T_IS_TRIVIALLY_DESTRUCTIBLE_H
+#define VISREAL_T_IS_TRIVIALLY_DESTRUCTIBLE_H
 
 namespace Engine::Core {
     namespace IsTriviallyDestructiblePrivate
@@ -35,4 +38,6 @@ namespace Engine::Core {
     };
 }
 
-#endif //VISREAL_TISTRIVIALLYDESTRUCTIBLE_H
+#endif //VISREAL_T_IS_TRIVIALLY_DESTRUCTIBLE_H
+
+#pragma clang diagnostic pop

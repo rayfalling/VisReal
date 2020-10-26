@@ -2,10 +2,13 @@
  * Created by rayfalling on 2020/10/20.
  * */
 
+#pragma warning(disable:4068)
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "CannotResolve"
 #pragma once
 
-#ifndef VISREAL_TISTRIVIALLYCOPYASSIGNABLE_H
-#define VISREAL_TISTRIVIALLYCOPYASSIGNABLE_H
+#ifndef VISREAL_T_IS_TRIVIALLY_COPY_ASSIGNABLE_H
+#define VISREAL_T_IS_TRIVIALLY_COPY_ASSIGNABLE_H
 
 namespace Engine::Core {
     /**
@@ -18,4 +21,6 @@ namespace Engine::Core {
     };
 }
 
-#endif //VISREAL_TISTRIVIALLYCOPYASSIGNABLE_H
+#endif //VISREAL_T_IS_TRIVIALLY_COPY_ASSIGNABLE_H
+
+#pragma clang diagnostic pop

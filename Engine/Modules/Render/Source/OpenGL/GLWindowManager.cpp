@@ -69,4 +69,8 @@ namespace Engine::Render::OPENGL {
             return;
         glViewport(0, 0, width, height);
     }
+
+    void GLWindowManager::InitOpenGL(int width, int height, GLVersion version) {
+
+    }
 }

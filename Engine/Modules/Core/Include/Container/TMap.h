@@ -4,8 +4,8 @@
 
 #pragma once
 
-#ifndef VISREAL_TMAP_H
-#define VISREAL_TMAP_H
+#ifndef VISREAL_T_MAP_H
+#define VISREAL_T_MAP_H
 
 #include "TArray.h"
 #include "Platform/PlatformTypes.h"
@@ -48,4 +48,4 @@ namespace Engine::Core::Types {
     };
 }
 
-#endif //VISREAL_TMAP_H
+#endif //VISREAL_T_MAP_H

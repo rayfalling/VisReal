@@ -4,8 +4,8 @@
 
 #pragma once
 
-#ifndef VISREAL_TISENUM_H
-#define VISREAL_TISENUM_H
+#ifndef VISREAL_T_IS_ENUM_H
+#define VISREAL_T_IS_ENUM_H
 
 namespace Engine::Core {
     template<typename T>
@@ -16,4 +16,4 @@ namespace Engine::Core {
     };
 }
 
-#endif //VISREAL_TISENUM_H
+#endif //VISREAL_T_IS_ENUM_H

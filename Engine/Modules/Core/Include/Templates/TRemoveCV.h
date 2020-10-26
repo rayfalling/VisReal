@@ -4,8 +4,8 @@
 
 #pragma once
 
-#ifndef VISREAL_TREMOVECV_H
-#define VISREAL_TREMOVECV_H
+#ifndef VISREAL_T_REMOVE_CV_H
+#define VISREAL_T_REMOVE_CV_H
 
 namespace Engine::Core{
     /**
@@ -19,4 +19,4 @@ namespace Engine::Core{
     template <typename T> struct TRemoveCV<const volatile T> { typedef T Type; };
 }
 
-#endif //VISREAL_TREMOVECV_H
+#endif //VISREAL_T_REMOVE_CV_H

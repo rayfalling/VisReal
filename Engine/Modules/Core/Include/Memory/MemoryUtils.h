@@ -14,7 +14,7 @@
 #define VISREAL_MEMORY_UTILS_H
 
 #include <cstring>
-#include "Platform/Types.h"
+#include "CoreTypes.h"
 #include "Marco/MSVCPlatform.h"
 #include "Templates/TEnableIf.h"
 #include "Templates/TAndOrNot.h"

@@ -19,21 +19,21 @@
 using namespace Engine::Core;
 
 namespace Engine::Render::OPENGL {
-    class GLWindowManager : public ISingletonObject<GLWindowManager> {
-    public:
-        void SetWindowSize(int width, int height);
-        //TODO methods here
+	class GLWindowManager : public ISingletonObject<GLWindowManager> {
+		public:
+			void SetWindowSize(int width, int height);
+			//TODO methods here
 
 
-    private:
-        GLWindowManager();
+		private:
+			GLWindowManager();
 
-        void InitOpenGL(int width, int height);
-        void InitOpenGL(int width, int height, GLVersion version);
+			void InitOpenGL(int width, int height);
+			void InitOpenGL(int width, int height, GLVersion version);
 
-        /* Current window to draw */
-        GLFWwindow* window;
-    };
+			/* Current window to draw */
+			GLFWwindow* window;
+	};
 }
 
 #endif //VISREAL_GL_WINDOW_MANAGER_H

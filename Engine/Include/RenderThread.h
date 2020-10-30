@@ -10,16 +10,16 @@
 #include "Render.h"
 
 namespace Engine {
-    static Render::Renderer *Renderer;
-    static std::thread renderThread;
-    /* only when render should exit then set value true */
-    static bool ShouldRenderExit = false;
+	static Render::Renderer* Renderer;
+	static std::thread       renderThread;
+	/* only when render should exit then set value true */
+	static bool ShouldRenderExit = false;
 
-    /* Init render thread, logger, and other needed */
-    void InitRenderThread();
+	/* Init render thread, logger, and other needed */
+	void InitRenderThread();
 
-    /* main render loop function */
-    void RenderLoop();
+	/* main render loop function */
+	void RenderLoop();
 }
 
 

@@ -10,16 +10,16 @@
 #include "EngineCoreExport.generate.h"
 
 namespace Engine::Core {
-    using namespace Types;
+	using namespace Types;
 
-    class ENGINE_CORE_EXPORTS Object {
-    private:
-        FString Name;
-    protected:
-        Object() = default;
+	class ENGINE_CORE_EXPORTS Object {
+		private:
+			FString Name;
+		protected:
+			Object() = default;
 
-        virtual ~Object() = default;
-    };
+			virtual ~Object() = default;
+	};
 }
 
 #endif //VISREAL_OBJECT_H

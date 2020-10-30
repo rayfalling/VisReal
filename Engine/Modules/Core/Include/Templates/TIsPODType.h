@@ -11,15 +11,15 @@
 
 namespace Engine::Core {
 
-    /**
-     * Traits class which tests if a type is POD.
-     */
-    template<typename T>
-    struct TIsPODType {
-        enum {
-            Value = __is_pod(T)
-        };
-    };
+	/**
+	 * Traits class which tests if a type is POD.
+	 */
+	template <typename T>
+	struct TIsPODType {
+		enum {
+			Value = __is_pod(T)
+		};
+	};
 
 }
 #endif //VISREAL_T_IS_POD_TYPE_H

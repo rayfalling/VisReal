@@ -12,9 +12,9 @@
 using namespace Engine::Render;
 
 namespace Engine::Render::OPENGL {
-    class GLDevice : public Interface::IRenderDevice {
+	class GLDevice : public Interface::IRenderDevice {
 
-    };
+	};
 }
 
 #endif //VISREAL_GL_DEVICE_H

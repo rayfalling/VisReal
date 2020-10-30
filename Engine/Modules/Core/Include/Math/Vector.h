@@ -8,11 +8,11 @@
 #define VISREAL_VECTOR_H
 
 namespace Engine::Core {
-    class Vector {
-    public:
-        float x;
-        float y;
-    };
+	class Vector {
+		public:
+			float x;
+			float y;
+	};
 }
 
 

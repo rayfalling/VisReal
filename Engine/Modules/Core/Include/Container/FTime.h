@@ -12,10 +12,10 @@
 using namespace Engine::Core::Types;
 
 namespace Engine::Core::Types {
-    class FTime {
-    public:
-        static FString getCurrentTime();
-    };
+	class FTime {
+		public:
+			static FString getCurrentTime();
+	};
 }
 
 #endif //VISREAL_TIME_H

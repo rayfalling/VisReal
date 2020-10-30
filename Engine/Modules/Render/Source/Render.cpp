@@ -6,9 +6,9 @@
 
 using namespace Engine::Render;
 
-RenderManager *Renderer::GetRenderManager() {
-    /* This must be initialed from construct */
-    return _renderManager;
+RenderManager* Renderer::GetRenderManager() {
+	/* This must be initialed from construct */
+	return _renderManager;
 }
 
 Renderer::Renderer() noexcept {

@@ -6,11 +6,11 @@
 #define VISREAL_MSVC_PLATFORM_H
 
 namespace Engine::Core {
-    #if _MSC_FULL_VER >= 191125507 && defined(__cpp_if_constexpr)
-    #define PLATFORM_COMPILER_HAS_IF_CONSTEXPR 1
-    #else
+	#if _MSC_FULL_VER >= 191125507 && defined(__cpp_if_constexpr)
+	#define PLATFORM_COMPILER_HAS_IF_CONSTEXPR 1
+	#else
     #define PLATFORM_COMPILER_HAS_IF_CONSTEXPR 0
-    #endif
+	#endif
 }
 
 #endif //VISREAL_MSVC_PLATFORM_H

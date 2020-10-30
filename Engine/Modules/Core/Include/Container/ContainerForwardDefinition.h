@@ -8,19 +8,19 @@
 #define VISREAL_CONTAINER_FORWARD_DEFINITION_H
 
 namespace Engine::Core::Types {
-    class FString;
+	class FString;
 
-    template<typename T>
-    class TArray;
+	template <typename T>
+	class TArray;
 
-    template<typename KeyType, typename ValueType, typename KeyFuncs>
-    class TMap;
+	template <typename KeyType, typename ValueType, typename KeyFuncs>
+	class TMap;
 
-    template<typename>
-    struct TTypeTraits;
+	template <typename>
+	struct TTypeTraits;
 
-    template<typename InElementType, typename KeyFuncs>
-    class TSet;
+	template <typename InElementType, typename KeyFuncs>
+	class TSet;
 }
 
 #endif //VISREAL_CONTAINER_FORWARD_DEFINITION_H

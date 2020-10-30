@@ -11,7 +11,7 @@
 #include "Platform/PlatformTypes.h"
 
 namespace Engine::Render::OPENGL {
-    const GLVersion CMinGLVersion = OPENGL_VERSION_3_3;
+	const GLVersion CMinGLVersion = OPENGL_VERSION_3_3;
 }
 
 #endif //VISREAL_GL_CONSTANT_H

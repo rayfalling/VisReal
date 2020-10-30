@@ -11,11 +11,11 @@
 #include "ThreadPool/ThreadPool.h"
 
 namespace Engine {
-    /* Global static logger variable */
-    static Core::CoreLog *CoreLog;
+	/* Global static logger variable */
+	static Core::CoreLog* CoreLog;
 
-    /* Init engine thread, logger, and other needed */
-    bool InitEngine();
+	/* Init engine thread, logger, and other needed */
+	bool InitEngine();
 }
 
 #endif //VISREAL_ENTRY_H

@@ -5,12 +5,12 @@
 #include "RenderThread.h"
 
 void Engine::InitRenderThread() {
-    Renderer = &Render::Renderer::GetInstance();
-    renderThread = std::thread(RenderLoop);
+	Renderer     = &Render::Renderer::GetInstance();
+	renderThread = std::thread(RenderLoop);
 }
 
 void Engine::RenderLoop() {
-    while (!ShouldRenderExit) {
-        Renderer->Draw();
-    }
+	while (!ShouldRenderExit) {
+		Renderer->Draw();
+	}
 }

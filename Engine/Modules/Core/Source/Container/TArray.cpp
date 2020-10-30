@@ -6,5 +6,5 @@
 
 using namespace Engine::Core::Types;
 
-template<typename T>
+template <typename T>
 const uint32 TArray<T>::_defaultArraySize = 8;

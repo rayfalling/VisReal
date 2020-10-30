@@ -16,39 +16,39 @@
 #include "EngineCoreExport.generate.h"
 
 namespace Engine::Core {
-    class CoreLog final : public ISingletonObject<CoreLog> {
-        friend class ISingletonObject<CoreLog>;
+	class CoreLog final : public ISingletonObject<CoreLog> {
+		friend class ISingletonObject<CoreLog>;
 
-    protected:
-        CoreLog() noexcept;
-        ~CoreLog() noexcept override;
+		protected:
+			CoreLog() noexcept;
+			~CoreLog() noexcept override;
 
-    private:
-        CoreLog(const CoreLog &);
-        CoreLog &operator=(const CoreLog &);
+		private:
+			CoreLog(const CoreLog&);
+			CoreLog& operator=(const CoreLog&);
 
-    private:
-        /* Core logger */
-        static std::shared_ptr<spdlog::logger> logger;
+		private:
+			/* Core logger */
+			static std::shared_ptr<spdlog::logger> logger;
 
-        /* Module Names Register to CoreLog */
-        /* TODO using custom map container*/
+			/* Module Names Register to CoreLog */
+			/* TODO using custom map container*/
 
-        /* Shared sinks between different loggers */
-        static std::vector<spdlog::sink_ptr> _sinks;
+			/* Shared sinks between different loggers */
+			static std::vector<spdlog::sink_ptr> _sinks;
 
-    public:
-        void LogInfo(FString message);
-        void LogInfo(FString &message);
-        void Debug(FString message);
-        void Debug(FString &message);
-        void LogWarning(FString message);
-        void LogWarning(FString &message);
-        void LogError(FString message);
-        void LogError(FString &message);
+		public:
+			void LogInfo(FString message);
+			void LogInfo(FString& message);
+			void Debug(FString message);
+			void Debug(FString& message);
+			void LogWarning(FString message);
+			void LogWarning(FString& message);
+			void LogError(FString message);
+			void LogError(FString& message);
 
-        void RegisterLoggerModule(FString &name);
-    };
+			void RegisterLoggerModule(FString& name);
+	};
 }
 
 #endif //VISREAL_LOG_TRACE_H

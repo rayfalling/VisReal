@@ -8,7 +8,7 @@
 #ifndef VISREAL_T_TYPE_TRAITS_H
 #define VISREAL_T_TYPE_TRAITS_H
 
-#include "Platform/Types.h"
+#include "CoreTypes.h"
 #include "TIsPODType.h"
 #include "TIsArithmetic.h"
 #include "TIsEnum.h"

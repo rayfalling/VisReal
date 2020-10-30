@@ -6,14 +6,14 @@
 
 #pragma once
 
-#ifndef VISREAL_TYPES_H
-#define VISREAL_TYPES_H
+#ifndef VISREAL_CORE_TYPES_H
+#define VISREAL_CORE_TYPES_H
 
-#include "PlatformTypes.h"
+#include "Platform/PlatformTypes.h"
 #include "Container/FString.h"
 #include "Container/TArray.h"
 #include "Container/TMap.h"
 
 using namespace Engine::Core::Types;
 
-#endif //VISREAL_TYPES_H
+#endif //VISREAL_CORE_TYPES_H

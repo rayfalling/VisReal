@@ -17,15 +17,16 @@ namespace Engine::Render::Interface {
      * @author Rayfalling
      * */
     class IRenderManager {
+    protected:
+        /* Construct */
+        inline IRenderManager() = default;
+
     public:
         /* Init Render Device */
         virtual void Init() = 0;
 
         /* Static method to get only render device */
-        static virtual IRenderManager GetRenderManager() = 0;
-
-        /* Construct */
-        virtual IRenderManager() = default;
+        virtual IRenderManager GetRenderManager() = 0;
     };
 }
 

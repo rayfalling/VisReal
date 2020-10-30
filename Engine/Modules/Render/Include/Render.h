@@ -18,7 +18,8 @@ namespace Engine::Render {
     typedef Interface::IRenderManager RenderManager;
 
     /* exposed to outer engine renderer */
-    class Renderer: public Engine::Core::ISingletonObject<Renderer> {
+    class Renderer : public Engine::Core::ISingletonObject<Renderer> {
+        friend class Engine::Core::ISingletonObject<Renderer>;
     protected:
         Renderer() noexcept;
         ~Renderer() noexcept override;
@@ -29,15 +30,16 @@ namespace Engine::Render {
 
     private:
         /* Get appropriate render manager */
-        RenderManager _renderManager;
+        RenderManager *_renderManager = nullptr;
 
     public:
         /* Get appropriate render manager */
-        RenderManager GetRenderManager();
+        RenderManager *GetRenderManager();
 
         /* push draw command */
         void AddDrawCommand();
 
+        /* draw frame */
         void Draw();
     };
 }

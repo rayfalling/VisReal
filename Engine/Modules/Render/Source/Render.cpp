@@ -6,12 +6,12 @@
 
 using namespace Engine::Render;
 
-RenderManager Renderer::GetRenderManager() {
+RenderManager *Renderer::GetRenderManager() {
     /* This must be initialed from construct */
     return _renderManager;
 }
 
-Renderer::Renderer() {
+Renderer::Renderer() noexcept {
 }
 
 Renderer::~Renderer() noexcept {

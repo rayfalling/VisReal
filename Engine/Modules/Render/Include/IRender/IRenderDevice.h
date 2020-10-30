@@ -19,14 +19,14 @@ namespace Engine::Render::Interface {
     class IRenderDevice {
     protected:
         /* Construct */
-        virtual IRenderDevice() = default;
+        inline IRenderDevice() = default;
 
     public:
         /* Init Render Device */
         virtual void Init() = 0;
 
         /* Static method to get only render device */
-        static virtual IRenderDevice GetRenderDevice() = 0;
+        virtual IRenderDevice GetRenderDevice() = 0;
 
         /* Set main window size */
         virtual void SetWindowSize() = 0;

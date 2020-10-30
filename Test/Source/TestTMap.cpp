@@ -13,5 +13,5 @@ void TestTMap() {
 	/* test area */
 	std::cout << "initialize TMap" << std::endl;
 	int a= 9;
-    TMap<int,double> map(static_cast<SIZE_T>(a));
+//    TMap<int,double> map(static_cast<SIZE_T>(a));
 }

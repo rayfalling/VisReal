@@ -30,7 +30,7 @@ namespace Engine::Core::Types {
     };
 
     /* TODO think about how to store KeyValuePair */
-    template<typename Key, typename Value>
+    template<typename Key, typename Value, typename KeyFuncs>
     class TMap {
         typedef MapItem<Key, Value> ElementType;
 

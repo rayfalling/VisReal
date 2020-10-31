@@ -33,32 +33,30 @@ namespace Engine::Core::Types {
 	// Base defines, must define these for the platform, there are no defaults
 	#define PLATFORM_DESKTOP                    1
 	#if defined( _WIN64 )
-	#define PLATFORM_64BITS                    1
+	#define PLATFORM_64BITS						1
 	#else
-#define PLATFORM_64BITS					0
+	#define PLATFORM_64BITS						0
 	#endif
 	#if defined( _MANAGED ) || defined( _M_CEE )
-#define PLATFORM_COMPILER_COMMON_LANGUAGE_RUNTIME_COMPILATION	1
+	#define PLATFORM_COMPILER_COMMON_LANGUAGE_RUNTIME_COMPILATION	1
 	#endif
-	#define PLATFORM_CAN_SUPPORT_EDITORONLY_DATA                1
+	#define PLATFORM_CAN_SUPPORT_EDITORONLY_DATA					1
 
 	// Base defines, defaults are commented out
 
-	#define PLATFORM_LITTLE_ENDIAN                                1
-	#define PLATFORM_SUPPORTS_UNALIGNED_LOADS                    1
+	#define PLATFORM_LITTLE_ENDIAN									1
+	#define PLATFORM_SUPPORTS_UNALIGNED_LOADS						1
 	#if defined(__clang__)
     // @todo clang: Clang compiler on Windows doesn't support SEH exception handling yet (__try/__except)
-#define PLATFORM_SEH_EXCEPTIONS_DISABLED				1
+	#define PLATFORM_SEH_EXCEPTIONS_DISABLED						1
 
     // @todo clang: Clang compiler on Windows doesn't support C++ exception handling yet (try/throw/catch)
-#define PLATFORM_EXCEPTIONS_DISABLED					1
+	#define PLATFORM_EXCEPTIONS_DISABLED							1
 	#endif
 
 	#define PLATFORM_SUPPORTS_PRAGMA_PACK                           1
 	#define PLATFORM_ENABLE_VECTORINTRINSICS                        1
 	#define PLATFORM_USE_LS_SPEC_FOR_WIDECHAR                       0
-	//#define PLATFORM_USE_SYSTEM_VSWPRINTF						    1
-	//#define PLATFORM_TCHAR_IS_4_BYTES							    0
 	#define PLATFORM_HAS_BSD_TIME                                   0
 	#define PLATFORM_USE_PTHREADS                                   0
 	#define PLATFORM_MAX_FILEPATH_LENGTH_DEPRECATED                 WINDOWS_MAX_PATH

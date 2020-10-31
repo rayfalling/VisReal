@@ -7,4 +7,4 @@
 using namespace Engine::Core::Types;
 
 template <typename T>
-const uint32 TArray<T>::_defaultArraySize = 8;
+const uint32 TArray<T>::defaultArraySize = 8;

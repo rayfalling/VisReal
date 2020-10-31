@@ -27,18 +27,28 @@ namespace Engine::Core::Types {
 		private:
 			Key   _key;
 			Value _value;
+
+		public:
+			Key& GetKey() {
+				return _key;
+			}
+
+			Value& GetValue() {
+				return _value;
+			}
 	};
 
 	/* TODO think about how to store KeyValuePair */
-	template <typename Key, typename Value, typename KeyFuncs>
+	template <typename Key, typename Value, typename KeyFunc>
 	class TMap {
 		typedef MapItem<Key, Value> ElementType;
 
 		public:
 			explicit TMap(SIZE_T size) {
-				_size      = size;
+				_size = size;
 				_hashtable = std::make_shared<TArray<ElementType>>(size);
-			};
+			}
+
 			~TMap() = default;
 
 		private:

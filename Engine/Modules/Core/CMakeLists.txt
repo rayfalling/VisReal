@@ -32,11 +32,11 @@ if (BUILD_SHARED_LIBS)
             EXPORT_FILE_NAME ${ENGINE_CORE_INCLUDE_DIR}/EngineCoreExport.generate.h
             STATIC_DEFINE ENGINE_CORE_EXPORTS_BUILT_AS_STATIC
     )
-endif(BUILD_SHARED_LIBS)
+endif (BUILD_SHARED_LIBS)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
-set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER Engine)
+set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER VisReal/Engine/Modules)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_CORE_INCLUDE_DIR})
 
-target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog PRIVATE xxhash Threads::Threads)
+target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog PUBLIC xxhash PRIVATE Threads::Threads)

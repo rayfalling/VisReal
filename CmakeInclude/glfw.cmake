@@ -8,4 +8,4 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/libs/glfw)
 
 set(GLFW_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/libs/glfw/include)
 
-set_target_properties(glfw PROPERTIES FOLDER libs)
+set_target_properties(glfw PROPERTIES FOLDER VisReal/Engine/libs)

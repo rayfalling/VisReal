@@ -25,7 +25,7 @@ if (BUILD_SHARED_LIBS)
 endif(BUILD_SHARED_LIBS)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
-set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER Engine)
+set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER VisReal/Engine/Modules)
 
 # expose include headers
 target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_RENDER_INCLUDE_DIR})

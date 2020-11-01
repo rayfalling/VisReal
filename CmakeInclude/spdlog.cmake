@@ -11,4 +11,4 @@ if (BUILD_SHARED_LIBS)
     set(SPDLOG_BUILD_SHARED ON)
 endif(BUILD_SHARED_LIBS)
 
-set_target_properties(spdlog PROPERTIES FOLDER libs)
+set_target_properties(spdlog PROPERTIES FOLDER VisReal/Engine/libs)

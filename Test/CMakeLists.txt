@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 
 # Project Name
-project("VisReal.Test" LANGUAGES C CXX)
+project("Engine.Core.Test" LANGUAGES C CXX)
 
 # Make codecvt work for c++17
 add_compile_definitions(_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING)
@@ -21,7 +21,7 @@ add_executable(${PROJECT_NAME} ${ENGINE_TEST_INCLUDE} ${ENGINE_TEST_SOURCE})
 set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "VisReal.Test")
 
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
-set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER Engine/Test)
+set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER VisReal/Engine/Test)
 
 # expose include headers
 target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_INCLUDE_DIR})

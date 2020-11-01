@@ -575,6 +575,9 @@ namespace Engine::Core::Types {
 				}
 			}
 	};
+
+	template <typename T>
+	const uint32 TArray<T>::defaultArraySize = 8;
 }
 
 #endif //VISREAL_T_ARRAY_H

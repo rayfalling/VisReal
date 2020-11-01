@@ -10,4 +10,4 @@ endif (${TARGET_ARCH} STREQUAL "x64")
 set(GLAD_API "gl=,gles=" CACHE STRING "API type/version pairs, like \"gl=3.2,gles=\", no version means latest")
 set(GLAD_SPEC "gl" CACHE STRING "Name of the spec")
 
-set_target_properties(glad glad-generate-files PROPERTIES FOLDER libs)
+set_target_properties(glad glad-generate-files PROPERTIES FOLDER VisReal/Engine/libs)

@@ -30,6 +30,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER Engine)
 # expose include headers
 target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_RENDER_INCLUDE_DIR})
 
-# link opengl
-link_directories(${ENGINE_CORE_INCLUDE_DIR} ${GLAD_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS})
+## link opengl
+#link_directories(${ENGINE_CORE_INCLUDE_DIR} ${GLAD_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} PUBLIC Engine.Core PRIVATE glad PRIVATE glfw)

@@ -8,11 +8,9 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary/libs)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary)
 
-OPTION(BUILD_SHARED_LIBS "Build shared library such as dll" OFF)
-
 # hacker for glfw uninstall target
 add_custom_target(uninstall)
-set_target_properties(uninstall PROPERTIES FOLDER Uninstall)
+set_target_properties(uninstall PROPERTIES FOLDER CMakePredefinedTargets)
 
 # include libs cmake
 include(CmakeInclude/Engine.cmake)

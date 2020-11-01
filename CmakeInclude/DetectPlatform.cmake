@@ -6,7 +6,7 @@ if (MSVC)
     # set character set unicode to make TCHAR is alias of wchar_t
     add_definitions(-DUNICODE -D_UNICODE)
     add_compile_definitions(MSVC)
-    add_compile_options(/MP)
+    add_compile_options(/MP /wd4819 /wd5045)
     if (CMAKE_CL_64)
         set(DXC_BUILD_ARCH "x64")
     else (CMAKE_CL_64)

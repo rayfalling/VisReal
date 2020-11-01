@@ -10,3 +10,6 @@
 [submodule "libs/spdlog"]
 	path = libs/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "libs/xxhash"]
+	path = libs/xxhash
+	url = https://github.com/Cyan4973/xxHash.git

@@ -7,7 +7,7 @@
 #ifndef VISREAL_HASH_H
 #define VISREAL_HASH_H
 
-#include "xxhash.h"
+#include <xxhash.h>
 #include "Platform/PlatformTypes.h"
 
 #ifdef PLATFORM_64BITS

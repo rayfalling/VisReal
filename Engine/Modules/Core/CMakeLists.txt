@@ -39,5 +39,4 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER Engine)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_CORE_INCLUDE_DIR})
 
-link_directories(${ENGINE_CORE_INCLUDE_DIR} ${SPDLOG_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog PRIVATE Threads::Threads)
+target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog PRIVATE xxhash Threads::Threads)

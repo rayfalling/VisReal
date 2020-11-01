@@ -12,7 +12,6 @@
 #define VISREAL_WINDOWS_PLATFORM_H
 
 #include "Platform/GenericPlatformTypes.h"
-#include "Marco/MSVCPlatform.h"
 
 namespace Engine::Core::Types {
 	/**

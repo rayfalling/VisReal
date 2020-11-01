@@ -9,18 +9,17 @@
 #ifndef VISREAL_I_SINGLETON_OBJECT_H
 #define VISREAL_I_SINGLETON_OBJECT_H
 
-#include <memory>
 #include <mutex>
-
-#include "EngineCoreExport.generate.h"
 
 namespace Engine::Core {
 	template <typename T>
 	class ISingletonObject {
-
+		friend class std::shared_ptr<T>;
+		
 		public:
 			// Get Singleton Instance
 			static T& GetInstance();
+			static T* GetInstancePtr();
 
 		protected:
 			/** disallow construct external */
@@ -52,6 +51,16 @@ namespace Engine::Core {
 		return *_instance;
 	}
 
+	template <typename T>
+	T* ISingletonObject<T>::GetInstancePtr() {
+		if (_instance == nullptr) {
+			_mutex.lock();
+			_instance = new T();
+			_mutex.unlock();
+		}
+		return _instance;
+	}
+	
 	template <typename T>
 	ISingletonObject<T>::~ISingletonObject() noexcept = default;
 

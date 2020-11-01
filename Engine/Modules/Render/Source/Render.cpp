@@ -11,6 +11,10 @@ RenderManager* Renderer::GetRenderManager() {
 	return _renderManager;
 }
 
+void Renderer::Draw() {
+	Core::CoreLog::GetInstance().LogDebug(FString("Rendering Loop"));
+}
+
 Renderer::Renderer() noexcept {
 }
 

@@ -17,7 +17,6 @@
 #include <cmath>
 #include <Marco/Constant.h>
 #include "PlatformTypes.h"
-#include "Container/ContainerForwardDefinition.h"
 
 namespace Engine::Core::Math {
 	struct FGenericPlatformMath {

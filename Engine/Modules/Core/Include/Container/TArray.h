@@ -62,7 +62,7 @@ namespace Engine::Core::Types {
 					_data.reset();
 					_size = array._size;
 					_capacity = array._capacity;
-					_data = array._data;
+					_data.swap(array._data);
 				}
 				return *this;
 			}
@@ -72,14 +72,15 @@ namespace Engine::Core::Types {
 				_size = array._size;
 				_capacity = array._capacity;
 				_data = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
-				Core::CopyAssignItems<T, SIZE_T>(_data.get(), array.GetData(), array._capacity());
+				Core::CopyAssignItems<T, SIZE_T>(_data.get(), array.GetData(), array._capacity);
 			}
 
 			/* Move Construct, copy deep data to new Instance */
 			TArray(const TArray<T>&& array) noexcept {
+				_data.reset();
 				_size = array._size;
 				_capacity = array._capacity;
-				_data = array._data;
+				_data.swap(array._data);
 			}
 
 			~TArray() = default;
@@ -99,6 +100,15 @@ namespace Engine::Core::Types {
 		public:
 			/* operator[] if index out of bound will return T()*/
 			T& operator[](int index) {
+				if (index > _size - 1 || _size == 0) {
+					CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
+					return *new T();
+				}
+				return _data.get()[index];
+			}
+
+			/* operator[] if index out of bound will return T()*/
+			T& operator[](int& index) {
 				if (index > _size - 1 || _size == 0) {
 					CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
 					return *new T();
@@ -128,17 +138,6 @@ namespace Engine::Core::Types {
 
 		public:
 			/* Add new Element */
-			T& Add(T data) {
-				_mutex.lock();
-				_size++;
-				if (_size >= _capacity)
-					GrowArrayCapacity();
-				_data.get()[_size - 1] = data;
-				_mutex.unlock();
-				return _data.get()[_size - 1];
-			}
-
-			/* Add new Element */
 			T& Add(T& data) {
 				_mutex.lock();
 				_size++;
@@ -149,8 +148,19 @@ namespace Engine::Core::Types {
 				return _data.get()[_size - 1];
 			}
 
+			/* Add new Element */
+			T& Add(T&& data) {
+				_mutex.lock();
+				_size++;
+				if (_size >= _capacity)
+					GrowArrayCapacity();
+				_data.get()[_size - 1] = data;
+				_mutex.unlock();
+				return _data.get()[_size - 1];
+			}
+
 			/* Add new Elements */
-			void AddRange(std::initializer_list<T> initList) {
+			void AddRange(std::initializer_list<T>& initList) {
 				_mutex.lock();
 				auto oldSize = _size;
 				_size += initList.size();
@@ -161,7 +171,30 @@ namespace Engine::Core::Types {
 			}
 
 			/* Add new Elements */
+			void AddRange(std::initializer_list<T>&& initList) {
+				_mutex.lock();
+				auto oldSize = _size;
+				_size += initList.size();
+				if (_size > _capacity)
+					GrowArrayCapacity();
+				Core::CopyAssignItems<T, SIZE_T>(_data.get() + oldSize, initList.begin(), initList.size());
+				_mutex.unlock();
+			}
+		
+
+			/* Add new Elements */
 			void AddRange(TArray<T>& array) {
+				_mutex.lock();
+				auto oldSize = _size;
+				_size += array.GetSize();
+				if (_size > _capacity)
+					GrowArrayCapacity();
+				Core::CopyAssignItems<T, SIZE_T>(_data.get() + oldSize, array.GetData(), array.GetSize());
+				_mutex.unlock();
+			}
+
+			/* Add new Elements */
+			void AddRange(TArray<T>&& array) {
 				_mutex.lock();
 				auto oldSize = _size;
 				_size += array.GetSize();
@@ -182,8 +215,30 @@ namespace Engine::Core::Types {
 				_mutex.unlock();
 			}
 
+			/* Add new Elements */
+			void AddRange(std::vector<T>&& vector) {
+				_mutex.lock();
+				auto oldSize = _size;
+				_size += vector.size();
+				if (_size > _capacity)
+					GrowArrayCapacity();
+				Core::CopyAssignItems<T, SIZE_T>(_data.get() + oldSize, vector.data(), vector.size());
+				_mutex.unlock();
+			}
+
 			/* Set new Elements */
-			void Assign(std::initializer_list<T> initList) {
+			void Assign(std::initializer_list<T>& initList) {
+				_mutex.lock();
+				_size = initList.size();
+				_data.reset();
+				if (_size > _capacity)
+					GrowArrayCapacity();
+				Core::CopyAssignItems<T, SIZE_T>(_data.get(), initList.begin(), initList.size());
+				_mutex.unlock();
+			}
+
+			/* Set new Elements */
+			void Assign(std::initializer_list<T>&& initList) {
 				_mutex.lock();
 				_size = initList.size();
 				_data.reset();
@@ -205,7 +260,29 @@ namespace Engine::Core::Types {
 			}
 
 			/* Set new Elements */
+			void Assign(TArray<T>&& array) {
+				_mutex.lock();
+				_size = array.GetSize();
+				_data.reset();
+				if (_size > _capacity)
+					GrowArrayCapacity();
+				Core::CopyAssignItems<T, SIZE_T>(_data.get(), array.GetData(), array.GetSize());
+				_mutex.unlock();
+			}
+
+			/* Set new Elements */
 			void Assign(std::vector<T>& vector) {
+				_mutex.lock();
+				_size = vector.size();
+				_data.reset();
+				if (_size > _capacity)
+					GrowArrayCapacity();
+				Core::CopyAssignItems<T, SIZE_T>(_data.get(), vector.data(), vector.size());
+				_mutex.unlock();
+			}
+
+			/* Set new Elements */
+			void Assign(std::vector<T>&& vector) {
 				_mutex.lock();
 				_size = vector.size();
 				_data.reset();
@@ -313,8 +390,52 @@ namespace Engine::Core::Types {
 				return INDEX_NONE;
 			}
 
+			/**
+			 * get the index of given element
+			 *
+			 * @return index in the array or -1 not found
+			 * */
+			int32 IndexOf(T&& element) {
+				const T* start = GetData();
+				for (const T *data = start, *dataEnd = start + _size; data != dataEnd; ++data) {
+					if (*data == element) {
+						return static_cast<int32>(data - start);
+					}
+				}
+				return INDEX_NONE;
+			}
+
+			/**
+				 * get the index of given element
+				 *
+				 * @return index in the array or -1 not found
+				 * */
+			int32 IndexOf(T& element) const {
+				return const_cast<TArray*>(this)->IndexOf(element);
+			}
+
+			/**
+				 * get the index of given element
+				 *
+				 * @return index in the array or -1 not found
+				 * */
+			int32 IndexOf(T&& element) const {
+				return const_cast<TArray*>(this)->IndexOf(element);
+			}
+
 			/* Finds an element which matches a predicate functor. */
 			int32 IndexLast(T& element) {
+				for (T *start = GetData(), *data = start + _size; data != start;) {
+					--data;
+					if (*data == element) {
+						return static_cast<int32>(data - start);
+					}
+				}
+				return INDEX_NONE;
+			}
+
+			/* Finds an element which matches a predicate functor. */
+			int32 IndexLast(T&& element) {
 				for (T *start = GetData(), *data = start + _size; data != start;) {
 					--data;
 					if (*data == element) {
@@ -329,17 +450,13 @@ namespace Engine::Core::Types {
 				return const_cast<TArray*>(this)->IndexLast(element);
 			}
 
-			/**
-			 * get the index of given element
-			 *
-			 * @return index in the array or -1 not found
-			 * */
-			int32 IndexOf(T& element) const {
-				return const_cast<TArray*>(this)->IndexOf(element);
+			/* Finds an element which matches a predicate functor. */
+			int32 IndexLast(T&& element) const {
+				return const_cast<TArray*>(this)->IndexLast(element);
 			}
 
 			/* Remove array element at index */
-			void RemoveAt(SIZE_T index) {
+			void RemoveAt(const SIZE_T index) {
 				_mutex.lock();
 				if (index > _size - 1)
 					CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
@@ -363,7 +480,7 @@ namespace Engine::Core::Types {
 			}
 
 			/* Remove array elements at index with count */
-			void RemoveAtRange(SIZE_T index, SIZE_T count) {
+			void RemoveAtRange(const SIZE_T index, const SIZE_T count) {
 				_mutex.lock();
 				if (count > 0 && index >= 0)
 					if (index + count > _size - 1)
@@ -374,7 +491,7 @@ namespace Engine::Core::Types {
 			}
 
 			/* Remove array elements from start to end */
-			void RemoveRange(SIZE_T startIndex, SIZE_T endIndex) {
+			void RemoveRange(const SIZE_T startIndex, const SIZE_T endIndex) {
 				_mutex.lock();
 				if (endIndex > 0 && startIndex >= 0)
 					if (endIndex > _size - 1)
@@ -385,7 +502,7 @@ namespace Engine::Core::Types {
 			}
 
 			/* resize the array */
-			void Resize(SIZE_T size, bool allowShrink = true) {
+			void Resize(const SIZE_T size, const bool allowShrink = true) {
 				_mutex.lock();
 				if (size < _capacity) {
 					ResizeShrink(size, allowShrink);

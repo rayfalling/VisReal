@@ -3,9 +3,7 @@
 #include <functional>
 #include <future>
 #include <mutex>
-#include <queue>
 #include <thread>
-#include <utility>
 #include <vector>
 
 #include "SafeQueue.h"

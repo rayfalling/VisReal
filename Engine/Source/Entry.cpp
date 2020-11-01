@@ -7,8 +7,8 @@
 
 bool Engine::InitEngine() {
 	/* Init Engine Logger */
-	CoreLog = &Core::CoreLog::GetInstance();
-	CoreLog->LogInfo(Core::ENGINE_START);
+	Logger = Core::CoreLog::GetInstancePtr();
+	Logger->LogInfo(Core::ENGINE_START);
 
 	/* Start Render Thread */
 	return true;

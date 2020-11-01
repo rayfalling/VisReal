@@ -14,7 +14,6 @@
 
 #include <intrin.h>
 #include "Platform/GenericPlatformMath.h"
-#include "Marco/MSVCPlatform.h"
 
 namespace Engine::Core::Math {
 	/**

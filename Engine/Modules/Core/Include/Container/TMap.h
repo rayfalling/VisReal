@@ -7,7 +7,6 @@
 #ifndef VISREAL_T_MAP_H
 #define VISREAL_T_MAP_H
 
-#include "TArray.h"
 #include "Platform/PlatformTypes.h"
 #include <mutex>
 

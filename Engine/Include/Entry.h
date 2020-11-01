@@ -5,14 +5,11 @@
 #ifndef VISREAL_ENTRY_H
 #define VISREAL_ENTRY_H
 
-#include "Container/FString.h"
-#include "Marco/Marcos.h"
 #include "Logger/CoreLog.h"
-#include "ThreadPool/ThreadPool.h"
 
 namespace Engine {
 	/* Global static logger variable */
-	static Core::CoreLog* CoreLog;
+	inline Core::CoreLog* Logger;
 
 	/* Init engine thread, logger, and other needed */
 	bool InitEngine();

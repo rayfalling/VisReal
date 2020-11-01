@@ -5,10 +5,10 @@
  * Unreal Engine's accelerate for compile optimize
  * */
 
+#pragma once
 #pragma warning(disable:4068)
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "err_redefinition"
-#pragma once
 
 #ifndef VISREAL_MEMORY_UTILS_H
 #define VISREAL_MEMORY_UTILS_H

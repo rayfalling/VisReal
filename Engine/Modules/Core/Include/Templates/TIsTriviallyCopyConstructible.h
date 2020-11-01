@@ -2,10 +2,10 @@
  * Created by rayfalling on 2020/10/20.
  * */
 
+#pragma once
 #pragma warning(disable:4068)
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "CannotResolve"
-#pragma once
 
 #ifndef VISREAL_T_IS_TRIVIALLY_COPY_CONSTRUCTIBLE_H
 #define VISREAL_T_IS_TRIVIALLY_COPY_CONSTRUCTIBLE_H

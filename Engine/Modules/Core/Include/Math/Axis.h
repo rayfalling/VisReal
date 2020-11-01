@@ -4,10 +4,10 @@
  * From Unreal4
  * */
 
+#pragma once
 #pragma warning(disable:4068)
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "hicpp-signed-bitwise"
-#pragma once
 
 #ifndef VISREAL_AXIS_H
 #define VISREAL_AXIS_H

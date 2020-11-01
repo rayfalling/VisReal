@@ -4,12 +4,12 @@
  * Generic implementation for most platforms
  * */
 
+#pragma once
 #pragma warning(disable:4068)
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "hicpp-signed-bitwise"
-#pragma once
 
 #ifndef VISREAL_GENERIC_PLATFORM_MATH_H
 #define VISREAL_GENERIC_PLATFORM_MATH_H
@@ -22,155 +22,155 @@ namespace Engine::Core::Math {
 	struct FGenericPlatformMath {
 		/**
 		 * Converts a float to an integer with truncation towards zero.
-		 * @param F		Floating point value to convert
+		 * @param f		Floating point value to convert
 		 * @return		Truncated integer.
 		 */
-		static CONSTEXPR FORCEINLINE int32 TruncToInt(float F) {
-			return (int32)F;
+		static CONSTEXPR FORCEINLINE int32 TruncToInt(const float f) {
+			return static_cast<int32>(f);
 		}
 
 		/**
 		 * Converts a float to an integer value with truncation towards zero.
-		 * @param F		Floating point value to convert
+		 * @param f		Floating point value to convert
 		 * @return		Truncated integer value.
 		 */
-		static CONSTEXPR FORCEINLINE float TruncToFloat(float F) {
-			return (float)TruncToInt(F);
+		static CONSTEXPR FORCEINLINE float TruncToFloat(const float f) {
+			return static_cast<float>(TruncToInt(f));
 		}
 
 		/**
 		 * Converts a float to a nearest less or equal integer.
-		 * @param F		Floating point value to convert
+		 * @param f		Floating point value to convert
 		 * @return		An integer less or equal to 'F'.
 		 */
-		static FORCEINLINE int32 FloorToInt(float F) {
-			return TruncToInt(floorf(F));
+		static FORCEINLINE int32 FloorToInt(const float f) {
+			return TruncToInt(floorf(f));
 		}
 
 		/**
 		* Converts a float to the nearest less or equal integer.
-		* @param F		Floating point value to convert
+		* @param f		Floating point value to convert
 		* @return		An integer less or equal to 'F'.
 		*/
-		static FORCEINLINE float FloorToFloat(float F) {
-			return floorf(F);
+		static FORCEINLINE float FloorToFloat(const float f) {
+			return floorf(f);
 		}
 
 		/**
 		* Converts a double to a less or equal integer.
-		* @param F		Floating point value to convert
+		* @param f		Floating point value to convert
 		* @return		The nearest integer value to 'F'.
 		*/
-		static FORCEINLINE double FloorToDouble(double F) {
-			return floor(F);
+		static FORCEINLINE double FloorToDouble(const double f) {
+			return floor(f);
 		}
 
 		/**
 		 * Converts a float to the nearest integer. Rounds up when the fraction is .5
-		 * @param F		Floating point value to convert
+		 * @param f		Floating point value to convert
 		 * @return		The nearest integer to 'F'.
 		 */
-		static FORCEINLINE int32 RoundToInt(float F) {
-			return FloorToInt(F + 0.5f);
+		static FORCEINLINE int32 RoundToInt(const float f) {
+			return FloorToInt(f + 0.5f);
 		}
 
 		/**
 		* Converts a float to the nearest integer. Rounds up when the fraction is .5
-		* @param F		Floating point value to convert
+		* @param f		Floating point value to convert
 		* @return		The nearest integer to 'F'.
 		*/
-		static FORCEINLINE float RoundToFloat(float F) {
-			return FloorToFloat(F + 0.5f);
+		static FORCEINLINE float RoundToFloat(const float f) {
+			return FloorToFloat(f + 0.5f);
 		}
 
 		/**
 		* Converts a double to the nearest integer. Rounds up when the fraction is .5
-		* @param F		Floating point value to convert
+		* @param f		Floating point value to convert
 		* @return		The nearest integer to 'F'.
 		*/
-		static FORCEINLINE double RoundToDouble(double F) {
-			return FloorToDouble(F + 0.5);
+		static FORCEINLINE double RoundToDouble(const double f) {
+			return FloorToDouble(f + 0.5);
 		}
 
 		/**
 		* Converts a float to the nearest greater or equal integer.
-		* @param F		Floating point value to convert
+		* @param f		Floating point value to convert
 		* @return		An integer greater or equal to 'F'.
 		*/
-		static FORCEINLINE int32 CeilToInt(float F) {
-			return TruncToInt(ceilf(F));
+		static FORCEINLINE int32 CeilToInt(const float f) {
+			return TruncToInt(ceilf(f));
 		}
 
 		/**
 		* Converts a float to the nearest greater or equal integer.
-		* @param F		Floating point value to convert
+		* @param f		Floating point value to convert
 		* @return		An integer greater or equal to 'F'.
 		*/
-		static FORCEINLINE float CeilToFloat(float F) {
-			return ceilf(F);
+		static FORCEINLINE float CeilToFloat(const float f) {
+			return ceilf(f);
 		}
 
 		/**
 		* Converts a double to the nearest greater or equal integer.
-		* @param F		Floating point value to convert
+		* @param f		Floating point value to convert
 		* @return		An integer greater or equal to 'F'.
 		*/
-		static FORCEINLINE double CeilToDouble(double F) {
-			return ceil(F);
+		static FORCEINLINE double CeilToDouble(const double f) {
+			return ceil(f);
 		}
 
 		/**
 		* Returns signed fractional part of a float.
-		* @param Value	Floating point value to convert
+		* @param value	Floating point value to convert
 		* @return		A float between >=0 and < 1 for nonnegative input. A float between >= -1 and < 0 for negative input.
 		*/
-		static FORCEINLINE float Fractional(float Value) {
-			return Value - TruncToFloat(Value);
+		static FORCEINLINE float Fractional(const float value) {
+			return value - TruncToFloat(value);
 		}
 
 		/**
 		* Returns the fractional part of a float.
-		* @param Value	Floating point value to convert
+		* @param value	Floating point value to convert
 		* @return		A float between >=0 and < 1.
 		*/
-		static FORCEINLINE float Frac(float Value) {
-			return Value - FloorToFloat(Value);
+		static FORCEINLINE float Frac(const float value) {
+			return value - FloorToFloat(value);
 		}
 
 		/**
 		* Breaks the given value into an integral and a fractional part.
-		* @param InValue	Floating point value to convert
-		* @param OutIntPart Floating point value that receives the integral part of the number.
+		* @param invalue	Floating point value to convert
+		* @param outIntPart Floating point value that receives the integral part of the number.
 		* @return			The fractional part of the number.
 		*/
-		static FORCEINLINE float Modf(const float InValue, float* OutIntPart) {
-			return modff(InValue, OutIntPart);
+		static FORCEINLINE float Modf(const float invalue, float* outIntPart) {
+			return modff(invalue, outIntPart);
 		}
 
 		/**
 		* Breaks the given value into an integral and a fractional part.
-		* @param InValue	Floating point value to convert
-		* @param OutIntPart Floating point value that receives the integral part of the number.
+		* @param invalue	Floating point value to convert
+		* @param outIntPart Floating point value that receives the integral part of the number.
 		* @return			The fractional part of the number.
 		*/
-		static FORCEINLINE double Modf(const double InValue, double* OutIntPart) {
-			return modf(InValue, OutIntPart);
+		static FORCEINLINE double Modf(const double invalue, double* outIntPart) {
+			return modf(invalue, outIntPart);
 		}
 
-		// Returns e^Value
-		static FORCEINLINE float Exp(float Value) { return expf(Value); }
+		// Returns e^value
+		static FORCEINLINE float Exp(const float value) { return expf(value); }
 
-		// Returns 2^Value
-		static FORCEINLINE float Exp2(float Value) {
-			return powf(2.f, Value); /*exp2f(Value);*/
+		// Returns 2^value
+		static FORCEINLINE float Exp2(const float value) {
+			return powf(2.f, value); /*exp2f(value);*/
 		}
 
-		static FORCEINLINE float Loge(float Value) { return logf(Value); }
+		static FORCEINLINE float Loge(const float value) { return logf(value); }
 
-		static FORCEINLINE float LogX(float Base, float Value) { return Loge(Value) / Loge(Base); }
+		static FORCEINLINE float LogX(const float base, const float value) { return Loge(value) / Loge(base); }
 
 		// 1.0 / Loge(2) = 1.4426950f
-		static FORCEINLINE float Log2(float Value) { return Loge(Value) * 1.4426950f; }
+		static FORCEINLINE float Log2(const float value) { return Loge(value) * 1.4426950f; }
 
 		/** 
 		* Returns the floating-point remainder of X / Y
@@ -181,58 +181,58 @@ namespace Engine::Core::Math {
 		* This is forced to *NOT* inline so that divisions by constant Y does not get optimized in to an inverse scalar multiply,
 		* which is not consistent with the intent nor with the vectorized version.
 		*/
-		static FORCENOINLINE float Fmod(float X, float Y);
+		static FORCENOINLINE float Fmod(float x, float y);
 
-		static FORCEINLINE float Sin(float Value) { return sinf(Value); }
+		static FORCEINLINE float Sin(const float value) { return sinf(value); }
 
-		static FORCEINLINE float Asin(float Value) {
-			return asinf((Value < -1.f) ? -1.f : ((Value < 1.f) ? Value : 1.f));
+		static FORCEINLINE float Asin(const float value) {
+			return asinf((value < -1.f) ? -1.f : ((value < 1.f) ? value : 1.f));
 		}
 
-		static FORCEINLINE float Sinh(float Value) { return sinhf(Value); }
+		static FORCEINLINE float Sinh(const float value) { return sinhf(value); }
 
-		static FORCEINLINE float Cos(float Value) { return cosf(Value); }
+		static FORCEINLINE float Cos(const float value) { return cosf(value); }
 
-		static FORCEINLINE float Acos(float Value) {
-			return acosf((Value < -1.f) ? -1.f : ((Value < 1.f) ? Value : 1.f));
+		static FORCEINLINE float Acos(const float value) {
+			return acosf((value < -1.f) ? -1.f : ((value < 1.f) ? value : 1.f));
 		}
 
-		static FORCEINLINE float Tan(float Value) { return tanf(Value); }
+		static FORCEINLINE float Tan(const float value) { return tanf(value); }
 
-		static FORCEINLINE float Atan(float Value) { return atanf(Value); }
+		static FORCEINLINE float Atan(const float value) { return atanf(value); }
 
-		static float Atan2(float Y, float X);
+		static float Atan2(float y, float x);
 
-		static FORCEINLINE float Sqrt(float Value) { return sqrtf(Value); }
+		static FORCEINLINE float Sqrt(const float value) { return sqrtf(value); }
 
-		static FORCEINLINE float Pow(float A, float B) { return powf(A, B); }
+		static FORCEINLINE float Pow(const float a, const float b) { return powf(a, b); }
 
 		/** Computes a fully accurate inverse square root */
-		static FORCEINLINE float InvSqrt(float F) {
-			return 1.0f / sqrtf(F);
+		static FORCEINLINE float InvSqrt(const float f) {
+			return 1.0f / sqrtf(f);
 		}
 
 		/** Computes a faster but less accurate inverse square root */
-		static FORCEINLINE float InvSqrtEst(float F) {
-			return InvSqrt(F);
+		static FORCEINLINE float InvSqrtEst(const float f) {
+			return InvSqrt(f);
 		}
 
 		/** Return true if value is NaN (not a number). */
-		static FORCEINLINE bool IsNaN(float A) {
-			return ((*(uint32*)&A) & 0x7FFFFFFF) > 0x7F800000;
+		static FORCEINLINE bool IsNaN(float a) {
+			return ((*(uint32*)&a) & 0x7FFFFFFF) > 0x7F800000;
 		}
 
 		/** Return true if value is finite (not NaN and not Infinity). */
-		static FORCEINLINE bool IsFinite(float A) {
-			return ((*(uint32*)&A) & 0x7F800000) != 0x7F800000;
+		static FORCEINLINE bool IsFinite(float a) {
+			return ((*(uint32*)&a) & 0x7F800000) != 0x7F800000;
 		}
 
-		static FORCEINLINE bool IsNegativeFloat(const float& A) {
-			return ((*(uint32*)&A) >= (uint32)0x80000000); // Detects sign bit.
+		static FORCEINLINE bool IsNegativeFloat(const float& a) {
+			return ((*(uint32*)&a) >= static_cast<uint32>(0x80000000)); // Detects sign bit.
 		}
 
-		static FORCEINLINE bool IsNegativeDouble(const double& A) {
-			return ((*(uint64*)&A) >= (uint64)0x8000000000000000); // Detects sign bit.
+		static FORCEINLINE bool IsNegativeDouble(const double& a) {
+			return ((*(uint64*)&a) >= static_cast<uint64>(0x8000000000000000)); // Detects sign bit.
 		}
 
 		#pragma clang diagnostic push
@@ -242,13 +242,13 @@ namespace Engine::Core::Math {
 		#pragma clang diagnostic pop
 
 		/** Seeds global random number functions Rand() and FRand() */
-		static FORCEINLINE void RandInit(int32 Seed) { srand(static_cast<unsigned int>(Seed)); }
+		static FORCEINLINE void RandInit(const int32 seed) { srand(static_cast<unsigned int>(seed)); }
 
 		/** Returns a random float between 0 and 1, inclusive. */
-		static FORCEINLINE float FRand() { return Rand() / (float)RAND_MAX; }
+		static FORCEINLINE float FRand() { return Rand() / static_cast<float>(RAND_MAX); }
 
 		/** Seeds future calls to SRand() */
-		static void SRandInit(int32 Seed);
+		static void SRandInit(int32 seed);
 
 		/** Returns the current seed for SRand(). */
 		static int32 GetRandSeed();
@@ -260,157 +260,102 @@ namespace Engine::Core::Math {
 		 * Computes the base 2 logarithm for an integer value that is greater than 0.
 		 * The result is rounded down to the nearest integer.
 		 *
-		 * @param Value		The value to compute the log of
-		 * @return			Log2 of Value. 0 if Value is 0.
+		 * @param value		The value to compute the log of
+		 * @return			Log2 of value. 0 if value is 0.
 		 */
-		static FORCEINLINE uint32 FloorLog2(uint32 Value) {
-			/*		// reference implementation 
-					// 1500ms on test data
-					uint32 Bit = 32;
-					for (; Bit > 0;)
-					{
-						Bit--;
-						if (Value & (1<<Bit))
-						{
-							break;
-						}
-					}
-					return Bit;
-			*/
-			// same output as reference
-
-			// see http://codinggorilla.domemtech.com/?p=81 or http://en.wikipedia.org/wiki/Binary_logarithm but modified to return 0 for a input value of 0
-			// 686ms on test data
+		static FORCEINLINE uint32 FloorLog2(uint32 value) {
 			uint32 pos = 0;
-			if (Value >= 1 << 16) {
-				Value >>= 16;
+			if (value >= 1 << 16) {
+				value >>= 16;
 				pos += 16;
 			}
-			if (Value >= 1 << 8) {
-				Value >>= 8;
+			if (value >= 1 << 8) {
+				value >>= 8;
 				pos += 8;
 			}
-			if (Value >= 1 << 4) {
-				Value >>= 4;
+			if (value >= 1 << 4) {
+				value >>= 4;
 				pos += 4;
 			}
-			if (Value >= 1 << 2) {
-				Value >>= 2;
+			if (value >= 1 << 2) {
+				value >>= 2;
 				pos += 2;
 			}
-			if (Value >= 1 << 1) { pos += 1; }
-			return (Value == 0) ? 0 : pos;
-
-			// even faster would be method3 but it can introduce more cache misses and it would need to store the table somewhere
-			// 304ms in test data
-			/*int LogTable256[256];
-	
-			void prep()
-			{
-			    LogTable256[0] = LogTable256[1] = 0;
-			    for (int i = 2; i < 256; i++)
-			    {
-			        LogTable256[i] = 1 + LogTable256[i / 2];
-			    }
-			    LogTable256[0] = -1; // if you want log(0) to return -1
-			}
-	
-			int _forceinline method3(uint32 v)
-			{
-			    int r;     // r will be lg(v)
-			    uint32 tt; // temporaries
-	
-			    if ((tt = v >> 24) != 0)
-			    {
-			        r = (24 + LogTable256[tt]);
-			    }
-			    else if ((tt = v >> 16) != 0)
-			    {
-			        r = (16 + LogTable256[tt]);
-			    }
-			    else if ((tt = v >> 8 ) != 0)
-			    {
-			        r = (8 + LogTable256[tt]);
-			    }
-			    else
-			    {
-			        r = LogTable256[v];
-			    }
-			    return r;
-			}*/
+			if (value >= 1 << 1) { pos += 1; }
+			return (value == 0) ? 0 : pos;
 		}
 
 		/**
 		 * Computes the base 2 logarithm for a 64-bit value that is greater than 0.
 		 * The result is rounded down to the nearest integer.
 		 *
-		 * @param Value		The value to compute the log of
-		 * @return			Log2 of Value. 0 if Value is 0.
+		 * @param value		The value to compute the log of
+		 * @return			Log2 of value. 0 if value is 0.
 		 */
-		static FORCEINLINE uint64 FloorLog2_64(uint64 Value) {
+		static FORCEINLINE uint64 FloorLog2_64(uint64 value) {
 			uint64 pos = 0;
-			if (Value >= 1ull << 32) {
-				Value >>= 32;
+			if (value >= 1ull << 32) {
+				value >>= 32;
 				pos += 32;
 			}
-			if (Value >= 1ull << 16) {
-				Value >>= 16;
+			if (value >= 1ull << 16) {
+				value >>= 16;
 				pos += 16;
 			}
-			if (Value >= 1ull << 8) {
-				Value >>= 8;
+			if (value >= 1ull << 8) {
+				value >>= 8;
 				pos += 8;
 			}
-			if (Value >= 1ull << 4) {
-				Value >>= 4;
+			if (value >= 1ull << 4) {
+				value >>= 4;
 				pos += 4;
 			}
-			if (Value >= 1ull << 2) {
-				Value >>= 2;
+			if (value >= 1ull << 2) {
+				value >>= 2;
 				pos += 2;
 			}
-			if (Value >= 1ull << 1) { pos += 1; }
-			return (Value == 0) ? 0 : pos;
+			if (value >= 1ull << 1) { pos += 1; }
+			return (value == 0) ? 0 : pos;
 		}
 
 		/**
 		 * Counts the number of leading zeros in the bit representation of the value
 		 *
-		 * @param Value the value to determine the number of leading zeros for
+		 * @param value the value to determine the number of leading zeros for
 		 *
 		 * @return the number of zeros before the first "on" bit
 		 */
-		static FORCEINLINE uint32 CountLeadingZeros(uint32 Value) {
-			if (Value == 0) return 32;
-			return 31 - FloorLog2(Value);
+		static FORCEINLINE uint32 CountLeadingZeros(const uint32 value) {
+			if (value == 0) return 32;
+			return 31 - FloorLog2(value);
 		}
 
 		/**
 		 * Counts the number of leading zeros in the bit representation of the 64-bit value
 		 *
-		 * @param Value the value to determine the number of leading zeros for
+		 * @param value the value to determine the number of leading zeros for
 		 *
 		 * @return the number of zeros before the first "on" bit
 		 */
-		static FORCEINLINE uint64 CountLeadingZeros64(uint64 Value) {
-			if (Value == 0) return 64;
-			return 63 - FloorLog2_64(Value);
+		static FORCEINLINE uint64 CountLeadingZeros64(const uint64 value) {
+			if (value == 0) return 64;
+			return 63 - FloorLog2_64(value);
 		}
 
 		/**
 		 * Counts the number of trailing zeros in the bit representation of the value
 		 *
-		 * @param Value the value to determine the number of trailing zeros for
+		 * @param value the value to determine the number of trailing zeros for
 		 *
 		 * @return the number of zeros after the last "on" bit
 		 */
-		static FORCEINLINE uint32 CountTrailingZeros(uint32 Value) {
-			if (Value == 0) {
+		static FORCEINLINE uint32 CountTrailingZeros(uint32 value) {
+			if (value == 0) {
 				return 32;
 			}
 			uint32 Result = 0;
-			while ((Value & 1) == 0) {
-				Value >>= 1;
+			while ((value & 1) == 0) {
+				value >>= 1;
 				++Result;
 			}
 			return Result;
@@ -419,17 +364,17 @@ namespace Engine::Core::Math {
 		/**
 		 * Counts the number of trailing zeros in the bit representation of the value
 		 *
-		 * @param Value the value to determine the number of trailing zeros for
+		 * @param value the value to determine the number of trailing zeros for
 		 *
 		 * @return the number of zeros after the last "on" bit
 		 */
-		static FORCEINLINE uint64 CountTrailingZeros64(uint64 Value) {
-			if (Value == 0) {
+		static FORCEINLINE uint64 CountTrailingZeros64(uint64 value) {
+			if (value == 0) {
 				return 64;
 			}
 			uint64 Result = 0;
-			while ((Value & 1) == 0) {
-				Value >>= 1;
+			while ((value & 1) == 0) {
+				value >>= 1;
 				++Result;
 			}
 			return Result;
@@ -439,23 +384,23 @@ namespace Engine::Core::Math {
 		 * Returns smallest N such that (1<<N)>=Arg.
 		 * Note: CeilLogTwo(0)=0 because (1<<0)=1 >= 0.
 		 */
-		static FORCEINLINE uint32 CeilLogTwo(uint32 Arg) {
-			int32 Bitmask = ((int32)(CountLeadingZeros(Arg) << 26)) >> 31;
-			return (32 - CountLeadingZeros(Arg - 1)) & (~Bitmask);
+		static FORCEINLINE uint32 CeilLogTwo(const uint32 arg) {
+			const int32 bitmask = static_cast<int32>(CountLeadingZeros(arg) << 26) >> 31;
+			return (32 - CountLeadingZeros(arg - 1)) & (~bitmask);
 		}
 
-		static FORCEINLINE uint64 CeilLogTwo64(uint64 Arg) {
-			int64 Bitmask = ((int64)(CountLeadingZeros64(Arg) << 57)) >> 63;
-			return (64 - CountLeadingZeros64(Arg - 1)) & (~Bitmask);
+		static FORCEINLINE uint64 CeilLogTwo64(const uint64 arg) {
+			const int64 bitmask = static_cast<int64>(CountLeadingZeros64(arg) << 57) >> 63;
+			return (64 - CountLeadingZeros64(arg - 1)) & (~bitmask);
 		}
 
 		/** @return Rounds the given number up to the next highest power of two. */
-		static FORCEINLINE uint32 RoundUpToPowerOfTwo(uint32 Arg) {
-			return 1u << CeilLogTwo(Arg);
+		static FORCEINLINE uint32 RoundUpToPowerOfTwo(const uint32 arg) {
+			return 1u << CeilLogTwo(arg);
 		}
 
-		static FORCEINLINE uint64 RoundUpToPowerOfTwo64(uint64 V) {
-			return uint64(1) << CeilLogTwo64(V);
+		static FORCEINLINE uint64 RoundUpToPowerOfTwo64(const uint64 v) {
+			return static_cast<uint64>(1) << CeilLogTwo64(v);
 		}
 
 		/** Spreads bits to every other. */
@@ -506,15 +451,13 @@ namespace Engine::Core::Math {
 		 * Please note that we don't define what happens in the case of NaNs as there might
 		 * be platform specific differences.
 		 *
-		 * @param	Comparand		Comparand the results are based on
-		 * @param	ValueGEZero		Return value if Comparand >= 0
-		 * @param	ValueLTZero		Return value if Comparand < 0
+		 * @param	comparand		Comparand the results are based on
+		 * @param	valueGeZero		Return value if Comparand >= 0
+		 * @param	valueLtZero		Return value if Comparand < 0
 		 *
-		 * @return	ValueGEZero if Comparand >= 0, ValueLTZero otherwise
+		 * @return	valueGEZero if Comparand >= 0, valueLTZero otherwise
 		 */
-		static CONSTEXPR FORCEINLINE float FloatSelect(float Comparand, float ValueGEZero, float ValueLTZero) {
-			return Comparand >= 0.f ? ValueGEZero : ValueLTZero;
-		}
+		static CONSTEXPR FORCEINLINE float FloatSelect(float comparand, float valueGeZero, float valueLtZero);
 
 		/**
 		 * Returns value based on comparand. The main purpose of this function is to avoid
@@ -524,63 +467,63 @@ namespace Engine::Core::Math {
 		 * Please note that we don't define what happens in the case of NaNs as there might
 		 * be platform specific differences.
 		 *
-		 * @param	Comparand		Comparand the results are based on
-		 * @param	ValueGEZero		Return value if Comparand >= 0
-		 * @param	ValueLTZero		Return value if Comparand < 0
+		 * @param	comparand		Comparand the results are based on
+		 * @param	valueGeZero		Return value if Comparand >= 0
+		 * @param	valueLtZero		Return value if Comparand < 0
 		 *
-		 * @return	ValueGEZero if Comparand >= 0, ValueLTZero otherwise
+		 * @return	valueGEZero if Comparand >= 0, valueLTZero otherwise
 		 */
-		static CONSTEXPR FORCEINLINE double FloatSelect(double Comparand, double ValueGEZero, double ValueLTZero) {
-			return Comparand >= 0.f ? ValueGEZero : ValueLTZero;
+		static CONSTEXPR FORCEINLINE double FloatSelect(const double comparand, double valueGeZero, double valueLtZero) {
+			return comparand >= 0.0 ? valueGeZero : valueLtZero;
 		}
 
 		/** Computes absolute value in a generic way */
 		template <class T>
-		static CONSTEXPR FORCEINLINE T Abs(const T A) {
-			return (A >= (T)0) ? A : -A;
+		static CONSTEXPR FORCEINLINE T Abs(const T a) {
+			return (a >= static_cast<T>(0)) ? a : -a;
 		}
 
 		/** Returns 1, 0, or -1 depending on relation of T to 0 */
 		template <class T>
-		static CONSTEXPR FORCEINLINE T Sign(const T A) {
-			return (A > (T)0) ? (T)1 : ((A < (T)0) ? (T)-1 : (T)0);
+		static CONSTEXPR FORCEINLINE T Sign(const T a) {
+			return (a > static_cast<T>(0))
+				       ? static_cast<T>(1)
+				       : ((a < static_cast<T>(0)) ? static_cast<T>(-1) : static_cast<T>(0));
 		}
 
 		/** Returns higher value in a generic way */
 		template <class T>
-		static CONSTEXPR FORCEINLINE T Max(const T A, const T B) {
-			return (A >= B) ? A : B;
+		static CONSTEXPR FORCEINLINE T Max(const T a, const T b) {
+			return (a >= b) ? a : b;
 		}
 
 		/** Returns lower value in a generic way */
 		template <class T>
-		static CONSTEXPR FORCEINLINE T Min(const T A, const T B) {
-			return (A <= B) ? A : B;
+		static CONSTEXPR FORCEINLINE T Min(const T a, const T b) {
+			return (a <= b) ? a : b;
 		}
 
-		static FORCEINLINE int32 CountBits(uint64 Bits) {
+		static FORCEINLINE int32 CountBits(uint64 bits) {
 			// https://en.wikipedia.org/wiki/Hamming_weight
-			Bits -= (Bits >> 1) & 0x5555555555555555ull;
-			Bits = (Bits & 0x3333333333333333ull) + ((Bits >> 2) & 0x3333333333333333ull);
-			Bits = (Bits + (Bits >> 4)) & 0x0f0f0f0f0f0f0f0full;
-			return static_cast<int32>((Bits * 0x0101010101010101) >> 56);
+			bits -= (bits >> 1) & 0x5555555555555555ull;
+			bits = (bits & 0x3333333333333333ull) + ((bits >> 2) & 0x3333333333333333ull);
+			bits = (bits + (bits >> 4)) & 0x0f0f0f0f0f0f0f0full;
+			return static_cast<int32>((bits * 0x0101010101010101) >> 56);
 		}
-
-		#if WITH_DEV_AUTOMATION_TESTS
-        /** Test some of the tricky functions above **/
-    static void AutoTest();
-		#endif
 
 		private:
-
 			/** Error reporting for Fmod. Not inlined to avoid compilation issues and avoid all the checks and error reporting at all callsites. */
-			static void FmodReportError(float X, float Y);
+			static void FmodReportError(float x, float y);
 	};
+
+	constexpr float FGenericPlatformMath::FloatSelect(const float comparand, float valueGeZero, float valueLtZero) {
+		return comparand >= 0.f ? valueGeZero : valueLtZero;
+	}
 
 	/** Float specialization */
 	template <>
-	FORCEINLINE float FGenericPlatformMath::Abs(const float A) {
-		return fabsf(A);
+	FORCEINLINE float FGenericPlatformMath::Abs(const float a) {
+		return fabsf(a);
 	}
 }
 

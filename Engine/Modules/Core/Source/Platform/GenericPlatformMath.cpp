@@ -2,6 +2,7 @@
  * Created by rayfalling on 2020/10/30.
  * */
 
+#pragma once
 #pragma warning(disable:4068)
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"

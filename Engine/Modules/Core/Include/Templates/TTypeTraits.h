@@ -2,8 +2,8 @@
  * Created by rayfalling on 2020/10/20.
  * */
 
-#pragma warning(disable:4068)
 #pragma once
+#pragma warning(disable:4068)
 
 #ifndef VISREAL_T_TYPE_TRAITS_H
 #define VISREAL_T_TYPE_TRAITS_H

@@ -26,5 +26,4 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER Engine/Test)
 # expose include headers
 target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_INCLUDE_DIR})
 
-link_directories(${ENGINE_CORE_INCLUDE_DIR} ${ENGINE_RENDER_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} "Engine")

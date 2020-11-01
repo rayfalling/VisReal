@@ -6,7 +6,6 @@ if (MSVC)
     # set character set unicode to make TCHAR is alias of wchar_t
     add_definitions(-DUNICODE -D_UNICODE)
     add_compile_definitions(MSVC)
-    add_compile_options(/MP /wd4819 /wd5045)
     if (CMAKE_CL_64)
         set(DXC_BUILD_ARCH "x64")
     else (CMAKE_CL_64)
@@ -17,11 +16,14 @@ if (MSVC)
         set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
     endif (BUILD_SHARED_LIBS)
 
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /DEBUG")             # 调试包不优化
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /NDEBUG")    # release包优化
+    add_compile_options(/MP /wd4819 /wd5045)
+    set(CMAKE_C_FLAGS_DEBUG "/ZI /Ob0 /Od /RTC1 /DEBUG")
+    set(CMAKE_CXX_FLAGS_DEBUG "/ZI /Ob0 /Od /RTC1 /DEBUG")
+    set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /NDEBUG")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /NDEBUG")
 elseif (MSVC)
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g")             # 调试包不优化
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -DNDEBUG")    # release包优化
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -DNDEBUG")
 endif (MSVC)
 
 # judge platform

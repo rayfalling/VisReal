@@ -356,3 +356,10 @@ MigrationBackup/
 [Cc]make-build-debug/
 [Cc]make-build-release/
 [Cc]make/
+[Bb]uild
+
+# vs cmake dir
+[Oo]ut/
+
+# Cmake generate header for dymaic libs
+*.generate.h

@@ -4,3 +4,12 @@
 [submodule "libs/glad"]
 	path = libs/glad
 	url = https://github.com/Dav1dde/glad.git
+[submodule "libs/DirectXShaderCompiler"]
+	path = libs/DirectXShaderCompiler
+	url = https://github.com/microsoft/DirectXShaderCompiler.git
+[submodule "libs/spdlog"]
+	path = libs/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "libs/xxhash"]
+	path = libs/xxhash
+	url = https://github.com/Cyan4973/xxHash.git

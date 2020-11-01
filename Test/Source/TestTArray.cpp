@@ -18,7 +18,7 @@ void TestTArray() {
 	logger.LogDebug(FString("initialize array: {1, 2, 3, 4, 5, 6, 7, 8}"));
 	TArray<int> array = {1, 2, 3, 4, 5, 6, 7, 8};
 
-	logger.LogDebug(FString("Test TArray operator[](): array[3]" + array[3]));
+	logger.LogDebug(FString("Test TArray operator[](): array[3] " + array[3]));
 	logger.LogDebug(FString("Test TArray Add(): array.Add(9)"));
 	array.Add(9);
 
@@ -38,5 +38,5 @@ void TestTArray() {
 	logger.LogDebug(FString("initialize array: {1, 2, 3, 4, 5, 6, 7, 8}"));
 	const auto end = std::chrono::system_clock::now();
 	const auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-	logger.LogDebug(FString("TArray testing using: " + std::to_string(duration.count()) + " microseconds"));
+	logger.LogDebug(FString("TArray test finished in: " + std::to_string(duration.count()) + " microseconds"));
 }

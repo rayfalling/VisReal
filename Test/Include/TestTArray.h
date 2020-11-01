@@ -4,9 +4,9 @@
 
 #pragma once
 
-#ifndef VISREAL_TESTTARRAY_H
-#define VISREAL_TESTTARRAY_H
+#ifndef VISREAL_TEST_TARRAY_H
+#define VISREAL_TEST_TARRAY_H
 
 void TestTArray();
 
-#endif //VISREAL_TESTTARRAY_H
+#endif //VISREAL_TEST_TARRAY_H

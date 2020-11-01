@@ -10,17 +10,45 @@
 #include <xxhash.h>
 #include "Platform/PlatformTypes.h"
 
-#ifdef PLATFORM_64BITS
-#define XXHASH(a, b, c)     XXH64(a, b, c)
-#define uint64				XXH64_hash_t
-#else
-#define XXHASH(a, b, c)     XXH32(a, b, c)
-#define uint32				XXH32_hash_t
-#endif
-
 namespace Engine::Core {
+	#ifdef PLATFORM_64BITS
+	typedef uint64 hash_t;
+
+	inline hash_t DoHash(void* input, const size_t length, const hash_t seed = 0) {
+		return XXH64(input, length, seed);
+	}
+	#else
+	typedef uint64 hash_t;
+	
+	inline hash_t DoHash(void* input, const size_t length, const hash_t seed = 0) {
+		return XXH32(input, length, seed);
+	}
+	#endif
+
 	struct FHash {
+		static hash_t Seed;
+
+		template <typename T>
+		static uint64 Hash(T value) {
+			return DoHash(&value, sizeof(T), Seed);
+		}
+
+		/* Hash built-in types */
+		static uint64 Hash(int8 value);
+		static uint64 Hash(int16 value);
 		static uint64 Hash(int32 value);
+		static uint64 Hash(int64 value);
+
+		static uint64 Hash(uint8 value);
+		static uint64 Hash(uint16 value);
+		static uint64 Hash(uint32 value);
+		static uint64 Hash(uint64 value);
+
+		static uint64 Hash(float value);
+		static uint64 Hash(double value);
+
+		static uint64 Hash(CHAR value);
+		static uint64 Hash(WCHAR value);
 	};
 }
 

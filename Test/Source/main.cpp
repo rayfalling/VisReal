@@ -1,13 +1,16 @@
 //#include <glad/glad.h>
 //#include <GLFW/glfw3.h>
 #include "Entry.h"
+#include "TestHash.h"
 #include "TestTMap.h"
 #include "TestTArray.h"
 
 int main() {
 	Engine::InitEngine();
 	TestTArray();
+	TestHash();
 	TestTMap();
+	
 
 	//    glfwInit();
 	//    // commit this to use max support opengl version

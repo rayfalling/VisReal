@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 set(XXHASH_BUILD_XXHSUM OFF)
+set(XXHASH_BUNDLED_MODE OFF)
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/xxhash/cmake_unofficial)
 
 set(XXHASH_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/libs/xxhash)

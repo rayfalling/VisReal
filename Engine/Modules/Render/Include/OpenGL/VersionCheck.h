@@ -7,7 +7,7 @@
 
 #include "Marco/Marcos.h"
 
-namespace Engine::Render::OPENGL {
+namespace Engine::Render::OpenGL {
 	struct GLVersion {
 		int major;
 		int minor;

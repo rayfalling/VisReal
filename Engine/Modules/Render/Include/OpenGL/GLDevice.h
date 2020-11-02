@@ -11,7 +11,7 @@
 
 using namespace Engine::Render;
 
-namespace Engine::Render::OPENGL {
+namespace Engine::Render::OpenGL {
 	class GLDevice : public Interface::IRenderDevice {
 
 	};

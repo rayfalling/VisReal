@@ -4,7 +4,7 @@
 
 #include "OpenGL/GLWindowManager.h"
 
-namespace Engine::Render::OPENGL {
+namespace Engine::Render::OpenGL {
 
 	GLWindowManager::GLWindowManager() {
 		//        glfwInit();

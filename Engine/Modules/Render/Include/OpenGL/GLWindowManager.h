@@ -13,12 +13,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "Object/ISingletonObject.h"
-#include "CoreTypes.h"
 #include "VersionCheck.h"
 
 using namespace Engine::Core;
 
-namespace Engine::Render::OPENGL {
+namespace Engine::Render::OpenGL {
 	class GLWindowManager : public ISingletonObject<GLWindowManager> {
 		public:
 			void SetWindowSize(int width, int height);

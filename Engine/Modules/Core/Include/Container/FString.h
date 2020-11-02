@@ -156,9 +156,9 @@ namespace Engine::Core::Types {
 
 			/* use fmt to format and generate */
 			template <typename... Args>
-			FString Format(std::string& string, Args&& ...args);
+			static FString Format(std::string& string, Args&& ...args);
 			template <typename... Args>
-			FString Format(const std::string& string, Args&& ...args);
+			static FString Format(const std::string& string, Args&& ...args);
 	};
 
 	template <typename ... Args>
@@ -166,7 +166,7 @@ namespace Engine::Core::Types {
 		FString value;
 		auto formatted = String2Wstring(fmt::format(string, std::forward<Args>(args)...));
 		value._string = std::shared_ptr<TCHAR[]>(new TCHAR[formatted.length() + 1], std::default_delete<TCHAR[]>());
-		Core::CopyAssignItems(this->_string.get(), formatted.c_str(), formatted.length() + 1);
+		Core::CopyAssignItems(value._string.get(), formatted.c_str(), formatted.length() + 1);
 		value._length = formatted.length();
 		value._capacity = formatted.length();
 		return value;
@@ -177,7 +177,7 @@ namespace Engine::Core::Types {
 		FString value;
 		auto formatted = String2Wstring(fmt::format(string, std::forward<Args>(args)...));
 		value._string = std::shared_ptr<TCHAR[]>(new TCHAR[formatted.length() + 1], std::default_delete<TCHAR[]>());
-		Core::CopyAssignItems(this->_string.get(), formatted.c_str(), formatted.length() + 1);
+		Core::CopyAssignItems(value._string.get(), formatted.c_str(), formatted.length() + 1);
 		value._length = formatted.length();
 		value._capacity = formatted.length();
 		return value;

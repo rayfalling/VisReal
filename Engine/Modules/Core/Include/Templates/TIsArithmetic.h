@@ -7,6 +7,8 @@
 #ifndef VISREAL_T_IS_ARITHMETIC_H
 #define VISREAL_T_IS_ARITHMETIC_H
 
+#include "Platform/PlatformTypes.h"
+
 namespace Engine::Core {
 	/**
 	 * Traits class which tests if a type is arithmetic.

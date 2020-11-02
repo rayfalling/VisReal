@@ -8,15 +8,15 @@
 #ifndef VISREAL_T_TYPE_TRAITS_H
 #define VISREAL_T_TYPE_TRAITS_H
 
-#include "CoreTypes.h"
-#include "TIsPODType.h"
+#include "TAndOrNot.h"
+#include "TAreTypesEqual.h"
 #include "TIsArithmetic.h"
 #include "TIsEnum.h"
+#include "TIsPODType.h"
 #include "TIsPointer.h"
-#include "TRemoveCV.h"
 #include "TIsTriviallyCopyConstructible.h"
-#include "TAreTypesEqual.h"
-#include "TAndOrNot.h"
+#include "TRemoveCV.h"
+#include "Platform/PlatformTypes.h"
 
 namespace Engine::Core {
 	/*-----------------------------------------------------------------------------

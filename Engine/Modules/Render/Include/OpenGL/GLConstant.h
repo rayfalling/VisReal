@@ -10,7 +10,7 @@
 #include <string>
 #include "Platform/PlatformTypes.h"
 
-namespace Engine::Render::OPENGL {
+namespace Engine::Render::OpenGL {
 	const GLVersion CMinGLVersion = OPENGL_VERSION_3_3;
 }
 

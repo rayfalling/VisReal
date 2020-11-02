@@ -19,7 +19,7 @@ void TestTArray() {
 	auto start = system_clock::now();
 	TArray<int> array = {1, 2, 3, 4, 5, 6, 7, 8};
 
-	logger.LogDebug(FString("Test TArray operator[](): array[3] " + array[3]));
+	logger.LogDebug(FString::Format("Test TArray operator[]() array[3]: {0}", array[3]));
 	logger.LogDebug(FString("Test TArray Add(): array.Add(9)"));
 	array.Add(9);
 
@@ -32,7 +32,7 @@ void TestTArray() {
 	logger.LogDebug(FString("Test TArray AddRange(): array.AddRange(vec)"));
 	array.AddRange(vec);
 
-	logger.LogDebug(FString("Test TArray IndexOf(): array.IndexOf(9) " + array.IndexOf(9)));
+	logger.LogDebug(FString::Format("Test TArray IndexOf() array.IndexOf(9): {0}", array.IndexOf(9)));
 	logger.LogDebug(FString("Test TArray RemoveRange(): RemoveRange(0, 7)"));
 	array.RemoveRange(0, 7);
 
@@ -41,18 +41,32 @@ void TestTArray() {
 	auto end = system_clock::now();
 
 	auto duration = duration_cast<microseconds>(end - start);
-	logger.LogDebug(FString("TArray test finished in: " + std::to_string(duration.count()) + " microseconds"));
+	logger.LogDebug(FString::Format("TArray test finished in: {0} microseconds", duration.count()));
 
-	logger.LogDebug(FString("TArray multi thread by using OpenMP count 100000"));
+	array.Clear();
+	
+	logger.LogDebug(FString("TArray single thread writing count 10000"));
 	start = system_clock::now();
 
-	#pragma omp parallel for num_threads(4)
-	for (auto i = 0; i < 100000; i++) {
+	for (auto i = 0; i < 10000; i++) {
 		array.Add(i);
 	}
 
-	end      = system_clock::now();
+	end = system_clock::now();
 	duration = duration_cast<microseconds>(end - start);
-	logger.LogDebug(
-			FString("TArray multi thread test finished in: " + std::to_string(duration.count()) + " microseconds"));
+	logger.LogDebug(FString::Format("TArray single thread writing test finished in: {0} microseconds", duration.count()));
+
+	array.Clear();
+	
+	logger.LogDebug(FString("TArray multi thread (num 4) writing by using OpenMP count 10000"));
+	start = system_clock::now();
+
+	#pragma omp parallel for num_threads(4)
+	for (auto i = 0; i < 10000; i++) {
+		array.Add(i);
+	}
+
+	end = system_clock::now();
+	duration = duration_cast<microseconds>(end - start);
+	logger.LogDebug(FString::Format("TArray multi thread writing test finished in: {0} microseconds", duration.count()));
 }

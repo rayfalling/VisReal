@@ -282,6 +282,9 @@ namespace Engine::Core::Types {
 			void Clear() {
 				std::unique_lock<std::mutex> lock(_mutex);
 				_data.reset();
+				_size = 0;
+				_capacity = defaultArraySize;
+				_data.swap(std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>()));
 			}
 
 			/**

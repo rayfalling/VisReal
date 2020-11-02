@@ -13,6 +13,8 @@
 #include "Platform/PlatformTypes.h"
 #include <codecvt>
 
+#include "TArray.h"
+
 namespace Engine::Core::Types {
 	/**
 	 * A String Class for both wstring or string
@@ -44,19 +46,19 @@ namespace Engine::Core::Types {
 			FString(FString&& string) noexcept;
 
 			/* construct from std::string */
-			explicit FString(std::string& str) noexcept;
-			explicit FString(const std::string& str) noexcept;
+			explicit FString(std::string& string);
+			explicit FString(const std::string& string);
 
 			/* construct from std::wstring */
-			explicit FString(std::wstring& str) noexcept;
-			explicit FString(const std::wstring& str) noexcept;
+			explicit FString(std::wstring& str);
+			explicit FString(const std::wstring& str);
 
 			/* construct from char* */
-			explicit FString(char* string) noexcept;
-			explicit FString(const char* string) noexcept;
+			explicit FString(char* string);
+			explicit FString(const char* string);
 
 			/* construct from char[] */
-			FString(char string[], int length) noexcept;
+			FString(char string[], int length);
 
 			~FString();
 
@@ -67,43 +69,53 @@ namespace Engine::Core::Types {
 			 * make it can use like origin string
 			 * */
 		public:
-			FString& operator=(const FString& Another);
-			FString& operator=(const std::string& Another);
+			FString& operator=(const FString& another);
+			FString& operator=(FString&& another) noexcept;
+			FString& operator=(const std::string& another);
+			FString& operator=(std::string&& another);
 
 			/* overload operator==() */
-			bool operator==(const FString& string);
+			bool operator==(const FString& string) const;
 
 			[[nodiscard]] std::string ToString();
 			[[nodiscard]] std::string ToString() const;
 
-			TCHAR* GetData();
+			[[nodiscard]] TCHAR* GetData() const;
 
 			/**
 			 * Append another string to current
 			 * */
-			void Append(FString string);
+			void Append(FString& string);
+
 			/**
 			 * Append another string to current
 			 * */
-			void Append(FString& string);
+			void Append(const FString& string);
+
 			/**
 			 * Append another string to current
 			 * */
 			void Append(FString&& string);
-			/**
-			 * Append another string to current
-			 * */
-			void Append(std::string string);
+
 			/**
 			 * Append another string to current
 			 * */
 			void Append(std::string& string);
+
+			/**
+			 * Append another string to current
+			 * */
+			void Append(const std::string& string);
+
 			/**
 			 * Append another string to current
 			 * */
 			void Append(std::string&& string);
 
-			void Split(CHAR separator);
+			/**
+			 * Split the string to multi string by separator
+			 * */
+			TArray<FString> Split(CHAR separator);
 
 		protected:
 			std::shared_ptr<TCHAR[]>& GetSharedPtr() {

@@ -43,14 +43,33 @@ namespace Engine::Core {
 			static std::vector<spdlog::sink_ptr> _sinks;
 
 		public:
-			void LogInfo(FString message);
-			void LogInfo(FString& message);
-			void LogDebug(FString message);
+			/**
+			 * Log debug info
+			 * */
 			void LogDebug(FString& message);
-			void LogWarning(FString message);
+			void LogDebug(FString&& message);
+			void LogDebug(const FString& message);
+
+			/**
+			 * Log default info
+			 * */
+			void LogInfo(FString& message);
+			void LogInfo(FString&& message);
+			void LogInfo(const FString& message);
+
+			/**
+			 * Log warning info
+			 * */
 			void LogWarning(FString& message);
-			void LogError(FString message);
+			void LogWarning(FString&& message);
+			void LogWarning(const FString& message);
+
+			/**
+			 * Log error info
+			 * */
 			void LogError(FString& message);
+			void LogError(FString&& message);
+			void LogError(const FString& message);
 
 			void RegisterLoggerModule(FString& name);
 			void SetLogLevel(LogLevel logLevel);

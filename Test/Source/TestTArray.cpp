@@ -8,14 +8,15 @@
 #include "Container/TArray.h"
 
 using namespace Engine::Core;
+using namespace std::chrono;
 
 void TestTArray() {
-	/* test TArray methods */
 	auto& logger = CoreLog::GetInstance();
 	logger.SetLogLevel(LogLevel::Debug);
 
-	auto start = std::chrono::system_clock::now();
+	logger.LogDebug(FString("Test TArray function......"));
 	logger.LogDebug(FString("initialize array: {1, 2, 3, 4, 5, 6, 7, 8}"));
+	auto start = system_clock::now();
 	TArray<int> array = {1, 2, 3, 4, 5, 6, 7, 8};
 
 	logger.LogDebug(FString("Test TArray operator[](): array[3] " + array[3]));
@@ -37,20 +38,21 @@ void TestTArray() {
 
 	logger.LogDebug(FString("initialize array: {1, 2, 3, 4, 5, 6, 7, 8}"));
 
-	auto end      = std::chrono::system_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+	auto end = system_clock::now();
+
+	auto duration = duration_cast<microseconds>(end - start);
 	logger.LogDebug(FString("TArray test finished in: " + std::to_string(duration.count()) + " microseconds"));
 
-	logger.LogDebug(FString("TArray multi thread by using OpenMP count 100000000"));
-	start = std::chrono::system_clock::now();
+	logger.LogDebug(FString("TArray multi thread by using OpenMP count 100000"));
+	start = system_clock::now();
 
 	#pragma omp parallel for num_threads(4)
-	for (auto i = 0; i < 100000000; i++) {
+	for (auto i = 0; i < 100000; i++) {
 		array.Add(i);
 	}
 
-	end      = std::chrono::system_clock::now();
-	duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+	end      = system_clock::now();
+	duration = duration_cast<microseconds>(end - start);
 	logger.LogDebug(
 			FString("TArray multi thread test finished in: " + std::to_string(duration.count()) + " microseconds"));
 }

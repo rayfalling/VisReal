@@ -485,6 +485,7 @@ namespace Engine::Core::Types {
 			/* resize the array */
 			void Resize(const SIZE_T size, const bool allowShrink = true) {
 				std::unique_lock<std::mutex> lock(_mutex);
+
 				if (size < _capacity) {
 					ResizeShrink(size, allowShrink);
 				}
@@ -506,7 +507,7 @@ namespace Engine::Core::Types {
 			 * @param size
 			 * @param allowShrink true will match to given size, false will resize to current size
 			 * */
-			void ResizeShrink(SIZE_T size, bool allowShrink = false) {
+			void ResizeShrink(const SIZE_T size, const bool allowShrink = false) {
 				if (allowShrink) {
 					_capacity                     = size;
 					std::shared_ptr<T[]> newSpace = std::shared_ptr<T[]>(
@@ -527,7 +528,7 @@ namespace Engine::Core::Types {
 			}
 
 			/* grow array capacity to given size */
-			void ResizeGrow(SIZE_T size) {
+			void ResizeGrow(const SIZE_T size) {
 				_capacity                     = size;
 				std::shared_ptr<T[]> newSpace = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
 				Core::CopyAssignItems<T, SIZE_T>(newSpace.get(), _data.get(), _size);
@@ -537,13 +538,13 @@ namespace Engine::Core::Types {
 
 			/* auto grow array capacity policy */
 			void GrowArrayCapacity() {
-				SIZE_T new_capacity = _capacity + _capacity / 2;
-				if (new_capacity < _size) new_capacity = _size;
-				ResizeGrow(new_capacity);
+				auto newCapacity = _capacity + _capacity / 2;
+				if (newCapacity < _size) newCapacity = _size;
+				ResizeGrow(newCapacity);
 			}
 
 			/* remove implementation */
-			void RemoveAtImpl(SIZE_T index, SIZE_T count, bool allowShrink = true) {
+			void RemoveAtImpl(SIZE_T index, const SIZE_T count, const bool allowShrink = true) {
 				if (count > 0) {
 					/* Do destruct for removed element to avoid ptr in element */
 					Core::DestructItems<T, SIZE_T>(_data.get() + index, count);

@@ -41,18 +41,18 @@ Engine::Core::CoreLog::CoreLog() noexcept {
 	_logger->set_level(spdlog::level::info);
 }
 
-void Engine::Core::CoreLog::LogInfo(FString message) {
-	_logger->info(message.ToString());
-	_logger->flush();
-}
-
 void Engine::Core::CoreLog::LogInfo(FString& message) {
 	_logger->info(message.ToString());
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogWarning(FString message) {
-	_logger->warn(message.ToString());
+void Engine::Core::CoreLog::LogInfo(FString&& message) {
+	_logger->info(message.ToString());
+	_logger->flush();
+}
+
+void Engine::Core::CoreLog::LogInfo(const FString& message) {
+	_logger->info(message.ToString());
 	_logger->flush();
 }
 
@@ -61,8 +61,13 @@ void Engine::Core::CoreLog::LogWarning(FString& message) {
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogError(FString message) {
-	_logger->error(message.ToString());
+void Engine::Core::CoreLog::LogWarning(FString&& message) {
+	_logger->warn(message.ToString());
+	_logger->flush();
+}
+
+void Engine::Core::CoreLog::LogWarning(const FString& message) {
+	_logger->warn(message.ToString());
 	_logger->flush();
 }
 
@@ -71,12 +76,27 @@ void Engine::Core::CoreLog::LogError(FString& message) {
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogDebug(FString message) {
-	_logger->debug(message.ToString());
+void Engine::Core::CoreLog::LogError(FString&& message) {
+	_logger->error(message.ToString());
+	_logger->flush();
+}
+
+void Engine::Core::CoreLog::LogError(const FString& message) {
+	_logger->error(message.ToString());
 	_logger->flush();
 }
 
 void Engine::Core::CoreLog::LogDebug(FString& message) {
+	_logger->debug(message.ToString());
+	_logger->flush();
+}
+
+void Engine::Core::CoreLog::LogDebug(FString&& message) {
+	_logger->debug(message.ToString());
+	_logger->flush();
+}
+
+void Engine::Core::CoreLog::LogDebug(const FString& message) {
 	_logger->debug(message.ToString());
 	_logger->flush();
 }

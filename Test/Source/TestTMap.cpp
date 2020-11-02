@@ -7,11 +7,17 @@
 
 #include <iostream>
 
+#include "Container/FString.h"
+#include "Logger/CoreLog.h"
+
 using namespace Engine::Core;
 
 void TestTMap() {
-	/* test area */
-	std::cout << "initialize TMap" << std::endl;
+	auto& logger = CoreLog::GetInstance();
+	logger.SetLogLevel(LogLevel::Debug);
+
+	logger.LogDebug(FString("Test TMap function......"));
+	logger.LogDebug(FString("initialize TMap"));
 	int a = 9;
 	//    TMap<int,double> map(static_cast<SIZE_T>(a));
 }

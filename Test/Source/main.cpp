@@ -1,12 +1,14 @@
 //#include <glad/glad.h>
 //#include <GLFW/glfw3.h>
 #include "Entry.h"
+#include "TestFString.h"
 #include "TestHash.h"
 #include "TestTMap.h"
 #include "TestTArray.h"
 
 int main() {
 	Engine::InitEngine();
+	TestFString();
 	TestTArray();
 	TestHash();
 	TestTMap();

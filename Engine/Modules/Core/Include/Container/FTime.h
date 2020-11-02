@@ -9,12 +9,10 @@
 
 #include "FString.h"
 
-using namespace Engine::Core::Types;
-
 namespace Engine::Core::Types {
 	class FTime {
 		public:
-			static FString getCurrentTime();
+			static FString CurrentTime();
 	};
 }
 

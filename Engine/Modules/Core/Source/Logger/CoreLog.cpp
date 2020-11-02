@@ -26,7 +26,7 @@ Engine::Core::CoreLog::CoreLog() noexcept {
 	auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
 	consoleSink->set_level(spdlog::level::debug);
 
-	auto time = FTime::getCurrentTime();
+	auto time = FTime::CurrentTime();
 	auto outFilePath = fmt::format("Logs/log-{}.txt", time.ToString());
 	auto fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(outFilePath, true);
 	fileSink->set_level(spdlog::level::debug);

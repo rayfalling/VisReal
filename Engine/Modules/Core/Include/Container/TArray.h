@@ -10,7 +10,6 @@
 #define VISREAL_T_ARRAY_H
 
 #include <initializer_list>
-#include <cstring>
 #include <memory>
 #include <mutex>
 

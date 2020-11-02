@@ -18,10 +18,10 @@ void TestFString() {
 	FString string("Test string. ");
 	logger.LogDebug(string);
 
-	string.Append(FString("AppendString"));
+	string.Append(FString("AppendString {0}", 1));
 	logger.LogDebug(string);
-	
+
 	const auto end = std::chrono::system_clock::now();
 	const auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-	logger.LogDebug(FString("Hash test finished in: " + std::to_string(duration.count()) + " microseconds"));
+	logger.LogDebug(FString("FString test finished in: " + std::to_string(duration.count()) + " microseconds"));
 }

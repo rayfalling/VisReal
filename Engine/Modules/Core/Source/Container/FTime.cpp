@@ -5,7 +5,7 @@
 #include <ctime>
 #include "Container/FTime.h"
 
-FString FTime::getCurrentTime() {
+FString FTime::CurrentTime() {
 	//TODO Runtime error here
 	std::time_t t       = std::time(nullptr);
 	char        tmp[32] = {NULL};

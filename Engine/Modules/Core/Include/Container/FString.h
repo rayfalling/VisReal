@@ -10,12 +10,17 @@
 #ifndef VISREAL_F_STRING_H
 #define VISREAL_F_STRING_H
 
-#include "Platform/PlatformTypes.h"
 #include <codecvt>
+#include <spdlog/fmt/fmt.h>
 
-#include "TArray.h"
+#include "Memory/MemoryUtils.h"
+#include "Platform/PlatformTypes.h"
 
 namespace Engine::Core::Types {
+
+	template <typename T>
+	class TArray;
+
 	/**
 	 * A String Class for both wstring or string
 	 * Using FString to avoid include string.h in std
@@ -37,8 +42,6 @@ namespace Engine::Core::Types {
 			SIZE_T _length = 0;
 			/* String max Length */
 			SIZE_T _capacity = 0;
-			/* is constructed from const value */
-			bool _const = false;
 
 		public:
 			FString() noexcept;
@@ -150,7 +153,35 @@ namespace Engine::Core::Types {
 			 * convert from WCHAR* to string
 			 * */
 			static std::string Wstring2String(const WCHAR* src, int length);
+
+			/* use fmt to format and generate */
+			template <typename... Args>
+			FString Format(std::string& string, Args&& ...args);
+			template <typename... Args>
+			FString Format(const std::string& string, Args&& ...args);
 	};
+
+	template <typename ... Args>
+	FString FString::Format(std::string& string, Args&&... args) {
+		FString value;
+		auto formatted = String2Wstring(fmt::format(string, std::forward<Args>(args)...));
+		value._string = std::shared_ptr<TCHAR[]>(new TCHAR[formatted.length() + 1], std::default_delete<TCHAR[]>());
+		Core::CopyAssignItems(this->_string.get(), formatted.c_str(), formatted.length() + 1);
+		value._length = formatted.length();
+		value._capacity = formatted.length();
+		return value;
+	}
+
+	template <typename ... Args>
+	FString FString::Format(const std::string& string, Args&&... args) {
+		FString value;
+		auto formatted = String2Wstring(fmt::format(string, std::forward<Args>(args)...));
+		value._string = std::shared_ptr<TCHAR[]>(new TCHAR[formatted.length() + 1], std::default_delete<TCHAR[]>());
+		Core::CopyAssignItems(this->_string.get(), formatted.c_str(), formatted.length() + 1);
+		value._length = formatted.length();
+		value._capacity = formatted.length();
+		return value;
+	}
 } // namespace Engine::Core::Types
 
 #endif // VISREAL_F_STRING_H

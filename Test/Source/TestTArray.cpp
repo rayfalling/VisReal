@@ -14,7 +14,7 @@ void TestTArray() {
 	auto& logger = CoreLog::GetInstance();
 	logger.SetLogLevel(LogLevel::Debug);
 
-	const auto start = std::chrono::system_clock::now();
+	auto start = std::chrono::system_clock::now();
 	logger.LogDebug(FString("initialize array: {1, 2, 3, 4, 5, 6, 7, 8}"));
 	TArray<int> array = {1, 2, 3, 4, 5, 6, 7, 8};
 
@@ -36,7 +36,21 @@ void TestTArray() {
 	array.RemoveRange(0, 7);
 
 	logger.LogDebug(FString("initialize array: {1, 2, 3, 4, 5, 6, 7, 8}"));
-	const auto end = std::chrono::system_clock::now();
-	const auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+
+	auto end      = std::chrono::system_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 	logger.LogDebug(FString("TArray test finished in: " + std::to_string(duration.count()) + " microseconds"));
+
+	logger.LogDebug(FString("TArray multi thread by using OpenMP count 100000000"));
+	start = std::chrono::system_clock::now();
+
+	#pragma omp parallel for num_threads(4)
+	for (auto i = 0; i < 100000000; i++) {
+		array.Add(i);
+	}
+
+	end      = std::chrono::system_clock::now();
+	duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+	logger.LogDebug(
+			FString("TArray multi thread test finished in: " + std::to_string(duration.count()) + " microseconds"));
 }

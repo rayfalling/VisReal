@@ -19,7 +19,7 @@ void TestHash() {
 	logger.LogDebug(FString("Test Hash function"));
 	TArray<hash_t> array(10000);
 	
-	for (auto i = 0; i < 10000; ++i) {
+	for (auto i = 0; i < 1000000; ++i) {
 		array.Add(FHash::Hash(Math::FPlatformMath::Rand()));
 	}
 

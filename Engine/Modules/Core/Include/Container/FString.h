@@ -73,8 +73,37 @@ namespace Engine::Core::Types {
 			/* overload operator==() */
 			bool operator==(const FString& string);
 
-			[[nodiscard]] std::string toString();
-			[[nodiscard]] std::string toString() const;
+			[[nodiscard]] std::string ToString();
+			[[nodiscard]] std::string ToString() const;
+
+			TCHAR* GetData();
+
+			/**
+			 * Append another string to current
+			 * */
+			void Append(FString string);
+			/**
+			 * Append another string to current
+			 * */
+			void Append(FString& string);
+			/**
+			 * Append another string to current
+			 * */
+			void Append(FString&& string);
+			/**
+			 * Append another string to current
+			 * */
+			void Append(std::string string);
+			/**
+			 * Append another string to current
+			 * */
+			void Append(std::string& string);
+			/**
+			 * Append another string to current
+			 * */
+			void Append(std::string&& string);
+
+			void Split(CHAR separator);
 
 		protected:
 			std::shared_ptr<TCHAR[]>& GetSharedPtr() {
@@ -93,22 +122,22 @@ namespace Engine::Core::Types {
 			/**
 			 * convert from string to wstring
 			 * */
-			static std::wstring string2wstring(const std::string& src);
+			static std::wstring String2Wstring(const std::string& src);
 
 			/**
 			 * convert from char* to wstring
 			 * */
-			static std::wstring string2wstring(const char* src, int length);
+			static std::wstring String2Wstring(const char* src, int length);
 
 			/**
 			 * convert from wstring to string
 			 * */
-			static std::string wstring2string(const std::wstring& src);
+			static std::string Wstring2String(const std::wstring& src);
 
 			/**
 			 * convert from WCHAR* to string
 			 * */
-			static std::string wstring2string(const WCHAR* src, int length);
+			static std::string Wstring2String(const WCHAR* src, int length);
 	};
 } // namespace Engine::Core::Types
 

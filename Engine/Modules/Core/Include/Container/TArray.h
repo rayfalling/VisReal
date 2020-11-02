@@ -27,21 +27,21 @@ namespace Engine::Core::Types {
 
 		public:
 			TArray() {
-				_size = 0;
+				_size     = 0;
 				_capacity = defaultArraySize;
-				_data = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
+				_data     = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
 			}
 
 			explicit TArray(const SIZE_T capacity) {
-				_size = 0;
+				_size     = 0;
 				_capacity = capacity;
-				_data = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
+				_data     = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
 			}
 
 			TArray(std::initializer_list<T> initList) {
-				_size = initList.size();
+				_size     = initList.size();
 				_capacity = initList.size();
-				_data = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
+				_data     = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
 				Core::CopyAssignItems<T, SIZE_T>(_data.get(), initList.begin(), initList.size());
 			}
 
@@ -49,9 +49,9 @@ namespace Engine::Core::Types {
 			TArray<T>& operator=(const TArray<T>& array) {
 				if (this != &array) {
 					_data.reset();
-					_size = array._size;
+					_size     = array._size;
 					_capacity = array._capacity;
-					_data = array._data;
+					_data     = array._data;
 				}
 				return *this;
 			}
@@ -60,7 +60,7 @@ namespace Engine::Core::Types {
 			TArray<T>& operator=(TArray<T>&& array) noexcept {
 				if (this != &array) {
 					_data.reset();
-					_size = array._size;
+					_size     = array._size;
 					_capacity = array._capacity;
 					_data.swap(array._data);
 				}
@@ -69,16 +69,16 @@ namespace Engine::Core::Types {
 
 			/* Copy Construct, copy deep data to new Instance */
 			TArray(const TArray<T>& array) {
-				_size = array._size;
+				_size     = array._size;
 				_capacity = array._capacity;
-				_data = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
+				_data     = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
 				Core::CopyAssignItems<T, SIZE_T>(_data.get(), array.GetData(), array._capacity);
 			}
 
 			/* Move Construct, copy deep data to new Instance */
-			TArray(const TArray<T>&& array) noexcept {
+			TArray(TArray<T>&& array) noexcept {
 				_data.reset();
-				_size = array._size;
+				_size     = array._size;
 				_capacity = array._capacity;
 				_data.swap(array._data);
 			}
@@ -138,165 +138,151 @@ namespace Engine::Core::Types {
 
 		public:
 			/* Add new Element */
-			T& Add(T& data) {
-				_mutex.lock();
+			SIZE_T Add(T& data) {
+				std::unique_lock<std::mutex> lock(_mutex);
 				_size++;
 				if (_size >= _capacity)
 					GrowArrayCapacity();
 				_data.get()[_size - 1] = data;
-				_mutex.unlock();
-				return _data.get()[_size - 1];
+				return _size;
 			}
 
 			/* Add new Element */
-			T& Add(T&& data) {
-				_mutex.lock();
+			SIZE_T Add(T&& data) {
+				std::unique_lock<std::mutex> lock(_mutex);
 				_size++;
 				if (_size >= _capacity)
 					GrowArrayCapacity();
 				_data.get()[_size - 1] = data;
-				_mutex.unlock();
-				return _data.get()[_size - 1];
+				return _size;
 			}
 
 			/* Add new Elements */
 			void AddRange(std::initializer_list<T>& initList) {
-				_mutex.lock();
-				auto oldSize = _size;
+				std::unique_lock<std::mutex> lock(_mutex);
+				auto                         oldSize = _size;
 				_size += initList.size();
 				if (_size > _capacity)
 					GrowArrayCapacity();
 				Core::CopyAssignItems<T, SIZE_T>(_data.get() + oldSize, initList.begin(), initList.size());
-				_mutex.unlock();
+
 			}
 
 			/* Add new Elements */
 			void AddRange(std::initializer_list<T>&& initList) {
-				_mutex.lock();
-				auto oldSize = _size;
+				std::unique_lock<std::mutex> lock(_mutex);
+				auto                         oldSize = _size;
 				_size += initList.size();
 				if (_size > _capacity)
 					GrowArrayCapacity();
 				Core::CopyAssignItems<T, SIZE_T>(_data.get() + oldSize, initList.begin(), initList.size());
-				_mutex.unlock();
 			}
-		
+
 
 			/* Add new Elements */
 			void AddRange(TArray<T>& array) {
-				_mutex.lock();
-				auto oldSize = _size;
+				std::unique_lock<std::mutex> lock(_mutex);
+				auto                         oldSize = _size;
 				_size += array.GetSize();
 				if (_size > _capacity)
 					GrowArrayCapacity();
 				Core::CopyAssignItems<T, SIZE_T>(_data.get() + oldSize, array.GetData(), array.GetSize());
-				_mutex.unlock();
 			}
 
 			/* Add new Elements */
 			void AddRange(TArray<T>&& array) {
-				_mutex.lock();
-				auto oldSize = _size;
+				std::unique_lock<std::mutex> lock(_mutex);
+				auto                         oldSize = _size;
 				_size += array.GetSize();
 				if (_size > _capacity)
 					GrowArrayCapacity();
 				Core::CopyAssignItems<T, SIZE_T>(_data.get() + oldSize, array.GetData(), array.GetSize());
-				_mutex.unlock();
 			}
 
 			/* Add new Elements */
 			void AddRange(std::vector<T>& vector) {
-				_mutex.lock();
-				auto oldSize = _size;
+				std::unique_lock<std::mutex> lock(_mutex);
+				auto                         oldSize = _size;
 				_size += vector.size();
 				if (_size > _capacity)
 					GrowArrayCapacity();
 				Core::CopyAssignItems<T, SIZE_T>(_data.get() + oldSize, vector.data(), vector.size());
-				_mutex.unlock();
 			}
 
 			/* Add new Elements */
 			void AddRange(std::vector<T>&& vector) {
-				_mutex.lock();
-				auto oldSize = _size;
+				std::unique_lock<std::mutex> lock(_mutex);
+				auto                         oldSize = _size;
 				_size += vector.size();
 				if (_size > _capacity)
 					GrowArrayCapacity();
 				Core::CopyAssignItems<T, SIZE_T>(_data.get() + oldSize, vector.data(), vector.size());
-				_mutex.unlock();
 			}
 
 			/* Set new Elements */
 			void Assign(std::initializer_list<T>& initList) {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				_size = initList.size();
 				_data.reset();
 				if (_size > _capacity)
 					GrowArrayCapacity();
 				Core::CopyAssignItems<T, SIZE_T>(_data.get(), initList.begin(), initList.size());
-				_mutex.unlock();
 			}
 
 			/* Set new Elements */
 			void Assign(std::initializer_list<T>&& initList) {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				_size = initList.size();
 				_data.reset();
 				if (_size > _capacity)
 					GrowArrayCapacity();
 				Core::CopyAssignItems<T, SIZE_T>(_data.get(), initList.begin(), initList.size());
-				_mutex.unlock();
 			}
 
 			/* Set new Elements */
 			void Assign(TArray<T>& array) {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				_size = array.GetSize();
 				_data.reset();
 				if (_size > _capacity)
 					GrowArrayCapacity();
 				Core::CopyAssignItems<T, SIZE_T>(_data.get(), array.GetData(), array.GetSize());
-				_mutex.unlock();
 			}
 
 			/* Set new Elements */
 			void Assign(TArray<T>&& array) {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				_size = array.GetSize();
 				_data.reset();
 				if (_size > _capacity)
 					GrowArrayCapacity();
 				Core::CopyAssignItems<T, SIZE_T>(_data.get(), array.GetData(), array.GetSize());
-				_mutex.unlock();
 			}
 
 			/* Set new Elements */
 			void Assign(std::vector<T>& vector) {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				_size = vector.size();
 				_data.reset();
 				if (_size > _capacity)
 					GrowArrayCapacity();
 				Core::CopyAssignItems<T, SIZE_T>(_data.get(), vector.data(), vector.size());
-				_mutex.unlock();
 			}
 
 			/* Set new Elements */
 			void Assign(std::vector<T>&& vector) {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				_size = vector.size();
 				_data.reset();
 				if (_size > _capacity)
 					GrowArrayCapacity();
 				Core::CopyAssignItems<T, SIZE_T>(_data.get(), vector.data(), vector.size());
-				_mutex.unlock();
 			}
 
 			/* Clear all Element in Array */
 			void Clear() {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				_data.reset();
-				_mutex.unlock();
 			}
 
 			/**
@@ -457,68 +443,60 @@ namespace Engine::Core::Types {
 
 			/* Remove array element at index */
 			void RemoveAt(const SIZE_T index) {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				if (index > _size - 1)
 					CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
 				else
 					RemoveAtImpl(index, 1);
-				_mutex.unlock();
 			}
 
 			/* Remove first array element */
 			void RemoveFirst() {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				RemoveAtImpl(0, 1);
-				_mutex.unlock();
 			}
 
 			/* Remove last array element */
 			void RemoveLast() {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				RemoveAtImpl(_size - 1, 1);
-				_mutex.unlock();
 			}
 
 			/* Remove array elements at index with count */
 			void RemoveAtRange(const SIZE_T index, const SIZE_T count) {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				if (count > 0 && index >= 0)
 					if (index + count > _size - 1)
 						CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
 					else
 						RemoveAtImpl(index, count);
-				_mutex.unlock();
 			}
 
 			/* Remove array elements from start to end */
 			void RemoveRange(const SIZE_T startIndex, const SIZE_T endIndex) {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				if (endIndex > 0 && startIndex >= 0)
 					if (endIndex > _size - 1)
 						CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
 					else
 						RemoveAtImpl(startIndex, endIndex - startIndex + 1);
-				_mutex.unlock();
 			}
 
 			/* resize the array */
 			void Resize(const SIZE_T size, const bool allowShrink = true) {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				if (size < _capacity) {
 					ResizeShrink(size, allowShrink);
-				} else if (size == _capacity) {
-					return;
-				} else {
+				}
+				else if (size > _capacity) {
 					ResizeGrow(size);
 				}
-				_mutex.unlock();
 			}
 
 			/* Swap two array data */
 			void Swap(TArray<T>& array) {
-				_mutex.lock();
+				std::unique_lock<std::mutex> lock(_mutex);
 				_data.swap(array._data);
-				_mutex.unlock();
 			}
 
 		protected:
@@ -530,15 +508,16 @@ namespace Engine::Core::Types {
 			 * */
 			void ResizeShrink(SIZE_T size, bool allowShrink = false) {
 				if (allowShrink) {
-					_capacity = size;
+					_capacity                     = size;
 					std::shared_ptr<T[]> newSpace = std::shared_ptr<T[]>(
 							new T[_capacity](), std::default_delete<T[]>());
 					Core::CopyAssignItems<T, SIZE_T>(newSpace.get(), _data.get(), size);
 					_size = size;
 					_data.reset();
 					_data.swap(newSpace);
-				} else {
-					_capacity = _size;
+				}
+				else {
+					_capacity                     = _size;
 					std::shared_ptr<T[]> newSpace = std::shared_ptr<T[]>(
 							new T[_capacity](), std::default_delete<T[]>());
 					Core::CopyAssignItems<T, SIZE_T>(newSpace.get(), _data.get(), _size);
@@ -549,7 +528,7 @@ namespace Engine::Core::Types {
 
 			/* grow array capacity to given size */
 			void ResizeGrow(SIZE_T size) {
-				_capacity = size;
+				_capacity                     = size;
 				std::shared_ptr<T[]> newSpace = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
 				Core::CopyAssignItems<T, SIZE_T>(newSpace.get(), _data.get(), _size);
 				_data.reset();

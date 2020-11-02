@@ -27,7 +27,7 @@ Engine::Core::CoreLog::CoreLog() noexcept {
 	consoleSink->set_level(spdlog::level::debug);
 
 	auto time = FTime::getCurrentTime();
-	auto outFilePath = fmt::format("Logs/log-{}.txt", time.toString());
+	auto outFilePath = fmt::format("Logs/log-{}.txt", time.ToString());
 	auto fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(outFilePath, true);
 	fileSink->set_level(spdlog::level::debug);
 
@@ -35,49 +35,49 @@ Engine::Core::CoreLog::CoreLog() noexcept {
 	_sinks.emplace_back(fileSink);
 
 	/* register core logger */
-	_logger = std::make_shared<spdlog::logger>(CORE_LOG_NAME.toString(), begin(_sinks), end(_sinks));
+	_logger = std::make_shared<spdlog::logger>(CORE_LOG_NAME.ToString(), begin(_sinks), end(_sinks));
 	/* TODO using custom map container*/
 	//_registerLoggers.insert(std::make_pair(coreLog,logger));
 	_logger->set_level(spdlog::level::info);
 }
 
 void Engine::Core::CoreLog::LogInfo(FString message) {
-	_logger->info(message.toString());
+	_logger->info(message.ToString());
 	_logger->flush();
 }
 
 void Engine::Core::CoreLog::LogInfo(FString& message) {
-	_logger->info(message.toString());
+	_logger->info(message.ToString());
 	_logger->flush();
 }
 
 void Engine::Core::CoreLog::LogWarning(FString message) {
-	_logger->warn(message.toString());
+	_logger->warn(message.ToString());
 	_logger->flush();
 }
 
 void Engine::Core::CoreLog::LogWarning(FString& message) {
-	_logger->warn(message.toString());
+	_logger->warn(message.ToString());
 	_logger->flush();
 }
 
 void Engine::Core::CoreLog::LogError(FString message) {
-	_logger->error(message.toString());
+	_logger->error(message.ToString());
 	_logger->flush();
 }
 
 void Engine::Core::CoreLog::LogError(FString& message) {
-	_logger->error(message.toString());
+	_logger->error(message.ToString());
 	_logger->flush();
 }
 
 void Engine::Core::CoreLog::LogDebug(FString message) {
-	_logger->debug(message.toString());
+	_logger->debug(message.ToString());
 	_logger->flush();
 }
 
 void Engine::Core::CoreLog::LogDebug(FString& message) {
-	_logger->debug(message.toString());
+	_logger->debug(message.ToString());
 	_logger->flush();
 }
 

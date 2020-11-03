@@ -44,9 +44,13 @@ namespace Engine::Core::Types {
 			SIZE_T _capacity = 0;
 
 		public:
+			/* construct for an empty string with default capacity 16 */
 			FString() noexcept;
 			FString(const FString& string) noexcept;
 			FString(FString&& string) noexcept;
+
+			/* construct for an empty string with specific capacity */
+			explicit FString(SIZE_T capacity) noexcept;
 
 			/* construct from std::string */
 			explicit FString(std::string& string);

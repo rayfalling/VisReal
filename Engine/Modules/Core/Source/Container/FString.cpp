@@ -30,6 +30,12 @@ FString::FString(FString&& string) noexcept {
 	this->_capacity = string._capacity;
 }
 
+FString::FString(const SIZE_T capacity) noexcept {
+	this->_string = std::shared_ptr<TCHAR[]>(new TCHAR[capacity + 1], std::default_delete<TCHAR[]>());;
+	this->_length = 0;
+	this->_capacity = capacity;
+}
+
 FString::FString(std::string& string) {
 	const auto wStr = String2Wstring(string);
 	this->_string = std::shared_ptr<TCHAR[]>(new TCHAR[wStr.length() + 1], std::default_delete<TCHAR[]>());
@@ -55,11 +61,11 @@ FString::FString(char* string) {
 }
 
 FString::FString(const char* string) {
-	const auto w_str = String2Wstring(string);
-	this->_string = std::shared_ptr<TCHAR[]>(new TCHAR[w_str.length() + 1], std::default_delete<TCHAR[]>());
-	CopyAssignItems(this->_string.get(), w_str.c_str(), w_str.length() + 1);
-	this->_length = w_str.length();
-	this->_capacity = w_str.length();
+	const auto wStr = String2Wstring(string);
+	this->_string = std::shared_ptr<TCHAR[]>(new TCHAR[wStr.length() + 1], std::default_delete<TCHAR[]>());
+	CopyAssignItems(this->_string.get(), wStr.c_str(), wStr.length() + 1);
+	this->_length = wStr.length();
+	this->_capacity = wStr.length();
 }
 
 FString::FString(std::wstring& str) {
@@ -139,60 +145,90 @@ TCHAR* FString::GetData() const {
 }
 
 void FString::Append(FString& string) {
-	_capacity = string.Length() + _length;
-	auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
-	MoveAssignItems(newData.get(), _string.get(), _length + 1);
-	CopyAssignItems(newData.get() + _length, string.GetData(), string.Length() + 1);
-	_string.swap(newData);
-	_length = _capacity;
+	if (_capacity < string.Length() + _length) {
+		_capacity = string.Length() + _length;
+		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
+		MoveAssignItems(newData.get(), _string.get(), _length + 1);
+		CopyAssignItems(newData.get() + _length, string.GetData(), string.Length() + 1);
+		_string.swap(newData);
+		_length = _capacity;
+	} else {
+		CopyAssignItems(_string.get() + _length, string.GetData(), string.Length() + 1);
+		_length += string.Length();
+	}
 }
 
 void FString::Append(const FString& string) {
-	_capacity = string.Length() + _length;
-	auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
-	MoveAssignItems(newData.get(), _string.get(), _length + 1);
-	CopyAssignItems(newData.get() + _length, string.GetData(), string.Length() + 1);
-	_string.swap(newData);
-	_length = _capacity;
+	if (_capacity < string.Length() + _length) {
+		_capacity = string.Length() + _length;
+		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
+		MoveAssignItems(newData.get(), _string.get(), _length + 1);
+		CopyAssignItems(newData.get() + _length, string.GetData(), string.Length() + 1);
+		_string.swap(newData);
+		_length = _capacity;
+	} else {
+		CopyAssignItems(_string.get() + _length, string.GetData(), string.Length() + 1);
+		_length += string.Length();
+	}
 }
 
 void FString::Append(FString&& string) {
-	_capacity = string.Length() + _length;
-	auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
-	MoveAssignItems(newData.get(), _string.get(), _length + 1);
-	MoveAssignItems(newData.get() + _length, string.GetData(), string.Length() + 1);
-	_string.swap(newData);
-	_length = _capacity;
+	if (_capacity < string.Length() + _length) {
+		_capacity = string.Length() + _length;
+		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
+		MoveAssignItems(newData.get(), _string.get(), _length + 1);
+		MoveAssignItems(newData.get() + _length, string.GetData(), string.Length() + 1);
+		_string.swap(newData);
+		_length = _capacity;
+	} else {
+		CopyAssignItems(_string.get() + _length, string.GetData(), string.Length() + 1);
+		_length += string.Length();
+	}
 }
 
 void FString::Append(std::string& string) {
 	const auto wStr = String2Wstring(string);
-	_capacity = wStr.length() + _length;
-	auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
-	MoveAssignItems(newData.get(), _string.get(), _length + 1);
-	CopyAssignItems(newData.get() + _length, wStr.c_str(), wStr.length() + 1);
-	_string.swap(newData);
-	_length = _capacity;
+	if (_capacity < string.length() + _length) {
+		_capacity = wStr.length() + _length;
+		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
+		MoveAssignItems(newData.get(), _string.get(), _length + 1);
+		CopyAssignItems(newData.get() + _length, wStr.c_str(), wStr.length() + 1);
+		_string.swap(newData);
+		_length = _capacity;
+	} else {
+		CopyAssignItems(_string.get() + _length, wStr.c_str(), wStr.length() + 1);
+		_length += wStr.length();
+	}
 }
 
 void FString::Append(const std::string& string) {
 	const auto wStr = String2Wstring(string);
-	_capacity = wStr.length() + _length;
-	auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
-	MoveAssignItems(newData.get(), _string.get(), _length + 1);
-	CopyAssignItems(newData.get() + _length, wStr.c_str(), wStr.length() + 1);
-	_string.swap(newData);
-	_length = _capacity;
+	if (_capacity < string.length() + _length) {
+		_capacity = wStr.length() + _length;
+		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
+		MoveAssignItems(newData.get(), _string.get(), _length + 1);
+		CopyAssignItems(newData.get() + _length, wStr.c_str(), wStr.length() + 1);
+		_string.swap(newData);
+		_length = _capacity;
+	} else {
+		CopyAssignItems(_string.get() + _length, wStr.c_str(), wStr.length() + 1);
+		_length += wStr.length();
+	}
 }
 
 void FString::Append(std::string&& string) {
 	const auto wStr = String2Wstring(string);
-	_capacity = wStr.length() + _length;
-	auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
-	MoveAssignItems(newData.get(), _string.get(), _length + 1);
-	MoveAssignItems(newData.get() + _length, wStr.c_str(), wStr.length() + 1);
-	_string.swap(newData);
-	_length = _capacity;
+	if (_capacity < string.length() + _length) {
+		_capacity = wStr.length() + _length;
+		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
+		MoveAssignItems(newData.get(), _string.get(), _length + 1);
+		CopyAssignItems(newData.get() + _length, wStr.c_str(), wStr.length() + 1);
+		_string.swap(newData);
+		_length = _capacity;
+	} else {
+		MoveAssignItems(_string.get() + _length, wStr.c_str(), wStr.length() + 1);
+		_length += wStr.length();
+	}
 }
 
 std::wstring FString::String2Wstring(const std::string& src) {

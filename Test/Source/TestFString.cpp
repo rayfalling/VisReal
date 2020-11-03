@@ -14,8 +14,8 @@ void TestFString() {
 
 	logger.LogDebug(FString("Test FString function"));
 	const auto start = std::chrono::system_clock::now();
-
-	FString string("Test string. ");
+	FString string(80);
+	string.Append("Test string. ");
 	logger.LogDebug(string);
 
 	string.Append(FString("AppendString."));

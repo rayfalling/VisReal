@@ -14,7 +14,7 @@ namespace Engine::Core {
 	namespace IsTriviallyDestructiblePrivate {
 		// We have this specialization for enums to avoid the need to have a full definition of
 		// the type.
-		template <typename T, bool bIsTriviallyTriviallyDestructible = __is_enum(T)>
+		template <typename T, bool IsTriviallyTriviallyDestructible = __is_enum(T)>
 		struct TImpl {
 			enum { Value = true };
 		};

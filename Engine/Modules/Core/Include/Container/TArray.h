@@ -13,8 +13,9 @@
 #include <memory>
 #include <mutex>
 
-#include "Marco/Constant.h"
 #include "Logger/CoreLog.h"
+#include "Marco/Constant.h"
+#include "Math/VisRealMath.h"
 #include "Memory/MemoryUtils.h"
 #include "Platform/PlatformTypes.h"
 
@@ -26,21 +27,21 @@ namespace Engine::Core::Types {
 
 		public:
 			TArray() {
-				_size     = 0;
+				_size = 0;
 				_capacity = defaultArraySize;
-				_data     = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
+				_data = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
 			}
 
 			explicit TArray(const SIZE_T capacity) {
-				_size     = 0;
+				_size = 0;
 				_capacity = capacity;
-				_data     = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
+				_data = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
 			}
 
 			TArray(std::initializer_list<T> initList) {
-				_size     = initList.size();
+				_size = initList.size();
 				_capacity = initList.size();
-				_data     = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
+				_data = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
 				Core::CopyAssignItems<T, SIZE_T>(_data.get(), initList.begin(), initList.size());
 			}
 
@@ -48,9 +49,9 @@ namespace Engine::Core::Types {
 			TArray<T>& operator=(const TArray<T>& array) {
 				if (this != &array) {
 					_data.reset();
-					_size     = array._size;
+					_size = array._size;
 					_capacity = array._capacity;
-					_data     = array._data;
+					_data = array._data;
 				}
 				return *this;
 			}
@@ -59,7 +60,7 @@ namespace Engine::Core::Types {
 			TArray<T>& operator=(TArray<T>&& array) noexcept {
 				if (this != &array) {
 					_data.reset();
-					_size     = array._size;
+					_size = array._size;
 					_capacity = array._capacity;
 					_data.swap(array._data);
 				}
@@ -68,16 +69,16 @@ namespace Engine::Core::Types {
 
 			/* Copy Construct, copy deep data to new Instance */
 			TArray(const TArray<T>& array) {
-				_size     = array._size;
+				_size = array._size;
 				_capacity = array._capacity;
-				_data     = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
+				_data = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
 				Core::CopyAssignItems<T, SIZE_T>(_data.get(), array.GetData(), array._capacity);
 			}
 
 			/* Move Construct, copy deep data to new Instance */
 			TArray(TArray<T>&& array) noexcept {
 				_data.reset();
-				_size     = array._size;
+				_size = array._size;
 				_capacity = array._capacity;
 				_data.swap(array._data);
 			}
@@ -100,7 +101,7 @@ namespace Engine::Core::Types {
 			/* operator[] if index out of bound will return T()*/
 			T& operator[](int index) {
 				if (index > _size - 1 || _size == 0) {
-					CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
+					CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
 					return *new T();
 				}
 				return _data.get()[index];
@@ -109,7 +110,7 @@ namespace Engine::Core::Types {
 			/* operator[] if index out of bound will return T()*/
 			T& operator[](int& index) {
 				if (index > _size - 1 || _size == 0) {
-					CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
+					CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
 					return *new T();
 				}
 				return _data.get()[index];
@@ -131,7 +132,7 @@ namespace Engine::Core::Types {
 			}
 
 		protected:
-			T* GetData() const {
+			[[nodiscard]] T* GetData() const {
 				return _data.get();
 			}
 
@@ -159,7 +160,7 @@ namespace Engine::Core::Types {
 			/* Add new Elements */
 			void AddRange(std::initializer_list<T>& initList) {
 				std::unique_lock<std::mutex> lock(_mutex);
-				auto                         oldSize = _size;
+				auto oldSize = _size;
 				_size += initList.size();
 				if (_size > _capacity)
 					GrowArrayCapacity();
@@ -170,7 +171,7 @@ namespace Engine::Core::Types {
 			/* Add new Elements */
 			void AddRange(std::initializer_list<T>&& initList) {
 				std::unique_lock<std::mutex> lock(_mutex);
-				auto                         oldSize = _size;
+				auto oldSize = _size;
 				_size += initList.size();
 				if (_size > _capacity)
 					GrowArrayCapacity();
@@ -181,7 +182,7 @@ namespace Engine::Core::Types {
 			/* Add new Elements */
 			void AddRange(TArray<T>& array) {
 				std::unique_lock<std::mutex> lock(_mutex);
-				auto                         oldSize = _size;
+				auto oldSize = _size;
 				_size += array.GetSize();
 				if (_size > _capacity)
 					GrowArrayCapacity();
@@ -191,7 +192,7 @@ namespace Engine::Core::Types {
 			/* Add new Elements */
 			void AddRange(TArray<T>&& array) {
 				std::unique_lock<std::mutex> lock(_mutex);
-				auto                         oldSize = _size;
+				auto oldSize = _size;
 				_size += array.GetSize();
 				if (_size > _capacity)
 					GrowArrayCapacity();
@@ -201,7 +202,7 @@ namespace Engine::Core::Types {
 			/* Add new Elements */
 			void AddRange(std::vector<T>& vector) {
 				std::unique_lock<std::mutex> lock(_mutex);
-				auto                         oldSize = _size;
+				auto oldSize = _size;
 				_size += vector.size();
 				if (_size > _capacity)
 					GrowArrayCapacity();
@@ -211,7 +212,7 @@ namespace Engine::Core::Types {
 			/* Add new Elements */
 			void AddRange(std::vector<T>&& vector) {
 				std::unique_lock<std::mutex> lock(_mutex);
-				auto                         oldSize = _size;
+				auto oldSize = _size;
 				_size += vector.size();
 				if (_size > _capacity)
 					GrowArrayCapacity();
@@ -447,9 +448,25 @@ namespace Engine::Core::Types {
 			void RemoveAt(const SIZE_T index) {
 				std::unique_lock<std::mutex> lock(_mutex);
 				if (index > _size - 1)
-					CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
+					CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
 				else
 					RemoveAtImpl(index, 1);
+			}
+
+			/**
+			 * Removes an element (or elements) at given location optionally shrinking
+			 * the array.
+			 *
+			 * This version is much more efficient than RemoveAt, but does not preserve the order.
+			 * If you don't care the array order, you can use it.
+			 * */
+			void RemoveAtSwap(const SIZE_T index) {
+				CoreLog::GetInstance().LogWarning(TARRAY_REMOVE_AT_SWAP_WARNING);
+				std::unique_lock<std::mutex> lock(_mutex);
+				if (index > _size - 1)
+					CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
+				else
+					RemoveAtSwapImpl(index, 1);
 			}
 
 			/* Remove first array element */
@@ -469,7 +486,7 @@ namespace Engine::Core::Types {
 				std::unique_lock<std::mutex> lock(_mutex);
 				if (count > 0 && index >= 0)
 					if (index + count > _size - 1)
-						CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
+						CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
 					else
 						RemoveAtImpl(index, count);
 			}
@@ -479,19 +496,27 @@ namespace Engine::Core::Types {
 				std::unique_lock<std::mutex> lock(_mutex);
 				if (endIndex > 0 && startIndex >= 0)
 					if (endIndex > _size - 1)
-						CoreLog::GetInstance().LogError(OUT_OF_ARRAY_INDEX);
+						CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
 					else
 						RemoveAtImpl(startIndex, endIndex - startIndex + 1);
+			}
+
+			/* Reserve array elements */
+			void Reserve() {
+				int start = 0, end = _size - 1;
+				while (start < end) {
+					std::swap(*(_data.get() + start), *(_data.get() + end));
+					start++;
+					end--;
+				}
 			}
 
 			/* resize the array */
 			void Resize(const SIZE_T size, const bool allowShrink = true) {
 				std::unique_lock<std::mutex> lock(_mutex);
-
 				if (size < _capacity) {
 					ResizeShrink(size, allowShrink);
-				}
-				else if (size > _capacity) {
+				} else if (size > _capacity) {
 					ResizeGrow(size);
 				}
 			}
@@ -507,20 +532,19 @@ namespace Engine::Core::Types {
 			 * shrink array capacity to match it size
 			 *
 			 * @param size
-			 * @param allowShrink true will match to given size, false will resize to current size
+			 * @param allowShrinking true will match to given size, false will resize to current size
 			 * */
-			void ResizeShrink(const SIZE_T size, const bool allowShrink = false) {
-				if (allowShrink) {
-					_capacity                     = size;
+			void ResizeShrink(const SIZE_T size, const bool allowShrinking = false) {
+				if (allowShrinking) {
+					_capacity = size;
 					std::shared_ptr<T[]> newSpace = std::shared_ptr<T[]>(
 							new T[_capacity](), std::default_delete<T[]>());
 					Core::CopyAssignItems<T, SIZE_T>(newSpace.get(), _data.get(), size);
 					_size = size;
 					_data.reset();
 					_data.swap(newSpace);
-				}
-				else {
-					_capacity                     = _size;
+				} else {
+					_capacity = _size;
 					std::shared_ptr<T[]> newSpace = std::shared_ptr<T[]>(
 							new T[_capacity](), std::default_delete<T[]>());
 					Core::CopyAssignItems<T, SIZE_T>(newSpace.get(), _data.get(), _size);
@@ -531,7 +555,7 @@ namespace Engine::Core::Types {
 
 			/* grow array capacity to given size */
 			void ResizeGrow(const SIZE_T size) {
-				_capacity                     = size;
+				_capacity = size;
 				std::shared_ptr<T[]> newSpace = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
 				Core::CopyAssignItems<T, SIZE_T>(newSpace.get(), _data.get(), _size);
 				_data.reset();
@@ -546,14 +570,42 @@ namespace Engine::Core::Types {
 			}
 
 			/* remove implementation */
-			void RemoveAtImpl(SIZE_T index, const SIZE_T count, const bool allowShrink = true) {
-				if (count > 0) {
+			void RemoveAtImpl(SIZE_T index, const SIZE_T count, const bool allowShrinking = true) {
+				if (count) {
 					/* Do destruct for removed element to avoid ptr in element */
 					Core::DestructItems<T, SIZE_T>(_data.get() + index, count);
 					/* move elements */
 					Core::MoveAssignItems<T, SIZE_T>(_data.get() + index, _data.get() + (index + count), count);
 					/* shrink array size */
-					ResizeShrink(_size - count, allowShrink);
+					_size -= count;
+
+					if (allowShrinking) {
+						ResizeShrink(_size, allowShrinking);
+					}
+				}
+			}
+
+			/* remove element by swap from array memory bottom implementation */
+			void RemoveAtSwapImpl(SIZE_T index, SIZE_T count = 1, const bool allowShrinking = true) {
+				if (count) {
+					Core::DestructItems(GetData() + index, count);
+
+					// Replace the elements in the hole created by the removal with elements from the end of the array, so the range of indices used by the array is contiguous.
+					const auto numElementsInHole = count;
+					const auto numElementsAfterHole = _size - (index + count);
+					const auto numElementsToMoveIntoHole = Math::FMath::Min(numElementsInHole, numElementsAfterHole);
+					if (numElementsToMoveIntoHole) {
+						Core::CopyAssignItems(
+								_data.get() + index,
+								_data.get() + _size - numElementsToMoveIntoHole,
+								numElementsToMoveIntoHole
+								);
+					}
+					_size -= count;
+
+					if (allowShrinking) {
+						ResizeShrink(_size, allowShrinking);
+					}
 				}
 			}
 	};

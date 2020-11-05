@@ -14,21 +14,6 @@
 #include "Platform/GenericPlatformTypes.h"
 
 namespace Engine::Core::Types {
-	/**
-	* Windows specific types
-	**/
-	struct FWindowsPlatformTypes : public GenericPlatformTypes {
-		#ifdef Platform_x64
-		typedef unsigned __int64 SIZE_T;
-		typedef __int64          SSIZE_T;
-		#else
-        typedef unsigned long SIZE_T;
-        typedef long		  SSIZE_T;
-		#endif
-	};
-
-	typedef FWindowsPlatformTypes FPlatformTypes;
-
 	// Base defines, must define these for the platform, there are no defaults
 	#define PLATFORM_DESKTOP                    1
 	#if defined( _WIN64 )
@@ -108,8 +93,8 @@ namespace Engine::Core::Types {
 	#define PRAGMA_DISABLE_OPTIMIZATION_ACTUAL __pragma(optimize("",off))
 	#define PRAGMA_ENABLE_OPTIMIZATION_ACTUAL  __pragma(optimize("",on))
 	#elif defined(_MSC_VER)        // Clang only supports __pragma with -fms-extensions
-#define PRAGMA_DISABLE_OPTIMIZATION_ACTUAL __pragma(clang optimize off)
-#define PRAGMA_ENABLE_OPTIMIZATION_ACTUAL  __pragma(clang optimize on)
+	#define PRAGMA_DISABLE_OPTIMIZATION_ACTUAL __pragma(clang optimize off)
+	#define PRAGMA_ENABLE_OPTIMIZATION_ACTUAL  __pragma(clang optimize on)
 	#endif
 
 	// Tells the compiler to put the decorated function in a certain section (aka. segment) of the executable.
@@ -125,7 +110,7 @@ namespace Engine::Core::Types {
 	#if defined(__clang__) || _MSC_VER >= 1900
 	#define CONSTEXPR constexpr
 	#else
-#define CONSTEXPR
+	#define CONSTEXPR
 	#endif
 	#define ABSTRACT abstract
 
@@ -135,10 +120,10 @@ namespace Engine::Core::Types {
 
 	// Alignment.
 	#if defined(__clang__)
-#define GCC_PACK(n) __attribute__((packed,aligned(n)))
-#define GCC_ALIGN(n) __attribute__((aligned(n)))
+	#define GCC_PACK(n) __attribute__((packed,aligned(n)))
+	#define GCC_ALIGN(n) __attribute__((aligned(n)))
 	#if defined(_MSC_VER)
-#define MS_ALIGN(n) __declspec(align(n)) // With -fms-extensions, Clang will accept either alignment attribute
+	#define MS_ALIGN(n) __declspec(align(n)) // With -fms-extensions, Clang will accept either alignment attribute
 	#endif
 	#else
 	#define MS_ALIGN(n) __declspec(align(n))
@@ -159,8 +144,8 @@ namespace Engine::Core::Types {
 	// Disable this warning as VC2015 Update 1 produces this warning erroneously when placed on variadic templates:
 	//
     // warning C28216: The checkReturn annotation only applies to postconditions for function 'Func' _Param_(N).
-#define FUNCTION_CHECK_RETURN_START __pragma(warning(push)) __pragma(warning(disable: 28216)) __declspec("SAL_checkReturn")
-#define FUNCTION_CHECK_RETURN_END __pragma(warning(pop))
+	#define FUNCTION_CHECK_RETURN_START __pragma(warning(push)) __pragma(warning(disable: 28216)) __declspec("SAL_checkReturn")
+	#define FUNCTION_CHECK_RETURN_END __pragma(warning(pop))
 	#else
 	#define FUNCTION_CHECK_RETURN_START __declspec("SAL_checkReturn")    /* Warn that callers should not ignore the return value. */
 	#endif
@@ -169,5 +154,20 @@ namespace Engine::Core::Types {
 	#ifndef ENABLE_WIN_ALLOC_TRACKING
 	#define ENABLE_WIN_ALLOC_TRACKING 0
 	#endif
+
+	/**
+	* Windows specific types
+	**/
+	struct FWindowsPlatformTypes : public GenericPlatformTypes {
+		#ifdef PLATFORM_64BITS
+		typedef unsigned long long SIZE_T;
+		typedef long long SSIZE_T;
+		#else
+		typedef unsigned long SIZE_T;
+		typedef long SSIZE_T;
+		#endif
+	};
+
+	typedef FWindowsPlatformTypes FPlatformTypes;
 }
 #endif //VISREAL_WINDOWS_PLATFORM_H

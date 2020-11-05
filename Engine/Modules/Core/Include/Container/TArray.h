@@ -86,20 +86,27 @@ namespace Engine::Core::Types {
 			~TArray() = default;
 
 		private:
-			/* use count */
+			/* element count */
 			SIZE_T _size;
-			/* max item size */
+			/* max element size */
 			SIZE_T _capacity = 0;
-			/* item array */
+			/* element array */
 			std::shared_ptr<T[]> _data;
 			/* thread mutex */
 			std::mutex _mutex;
 			/* default capacity */
 			const static uint32 defaultArraySize;
+			#ifdef PLATFORM_64BITS
+			/* max array element size */
+			const static uint64 maxArraySize = INT64_MAX;
+			#else
+			/* max array element size */
+			const static uint64 maxArraySize = INT32_MAX;
+			#endif
 
 		public:
 			/* operator[] if index out of bound will return T()*/
-			T& operator[](int index) {
+			T& operator[](SIZE_T& index) {
 				if (index > _size - 1 || _size == 0) {
 					CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
 					return *new T();
@@ -108,7 +115,34 @@ namespace Engine::Core::Types {
 			}
 
 			/* operator[] if index out of bound will return T()*/
-			T& operator[](int& index) {
+			const T& operator[](SIZE_T& index) const {
+				if (index > _size - 1 || _size == 0) {
+					CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
+					return *new T();
+				}
+				return _data.get()[index];
+			}
+		
+			/* operator[] if index out of bound will return T()*/
+			T& operator[](const SIZE_T& index) {
+				if (index > _size - 1 || _size == 0) {
+					CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
+					return *new T();
+				}
+				return _data.get()[index];
+			}
+
+			/* operator[] if index out of bound will return T()*/
+			const T& operator[](const SIZE_T& index) const {
+				if (index > _size - 1 || _size == 0) {
+					CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
+					return *new T();
+				}
+				return _data.get()[index];
+			}
+
+			/* operator[] if index out of bound will return T()*/
+			T& operator[](SIZE_T&& index) {
 				if (index > _size - 1 || _size == 0) {
 					CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
 					return *new T();
@@ -482,9 +516,9 @@ namespace Engine::Core::Types {
 			}
 
 			/* Remove array elements at index with count */
-			void RemoveAtRange(const SIZE_T index, const SIZE_T count) {
+			void RemoveAtRange(const SIZE_T index, const SIZE_T count = 1) {
 				std::unique_lock<std::mutex> lock(_mutex);
-				if (count > 0 && index >= 0)
+				if (count > 0)
 					if (index + count > _size - 1)
 						CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
 					else
@@ -494,16 +528,15 @@ namespace Engine::Core::Types {
 			/* Remove array elements from start to end */
 			void RemoveRange(const SIZE_T startIndex, const SIZE_T endIndex) {
 				std::unique_lock<std::mutex> lock(_mutex);
-				if (endIndex > 0 && startIndex >= 0)
-					if (endIndex > _size - 1)
-						CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
-					else
-						RemoveAtImpl(startIndex, endIndex - startIndex + 1);
+				if (endIndex < startIndex || endIndex > _size - 1)
+					CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
+				else
+					RemoveAtImpl(startIndex, endIndex - startIndex + 1);
 			}
 
 			/* Reserve array elements */
 			void Reserve() {
-				int start = 0, end = _size - 1;
+				SIZE_T start = 0, end = _size - 1;
 				while (start < end) {
 					std::swap(*(_data.get() + start), *(_data.get() + end));
 					start++;
@@ -531,8 +564,8 @@ namespace Engine::Core::Types {
 			/**
 			 * shrink array capacity to match it size
 			 *
-			 * @param size
-			 * @param allowShrinking true will match to given size, false will resize to current size
+			 * @param size				the size after shrink
+			 * @param allowShrinking	true will match to given size, false will resize to current size
 			 * */
 			void ResizeShrink(const SIZE_T size, const bool allowShrinking = false) {
 				if (allowShrinking) {
@@ -556,6 +589,10 @@ namespace Engine::Core::Types {
 			/* grow array capacity to given size */
 			void ResizeGrow(const SIZE_T size) {
 				_capacity = size;
+				if (_capacity > maxArraySize) {
+					CoreLog::GetInstance().LogError(TARRAY_MAX_SIZE);
+					_capacity = maxArraySize;
+				}
 				std::shared_ptr<T[]> newSpace = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
 				Core::CopyAssignItems<T, SIZE_T>(newSpace.get(), _data.get(), _size);
 				_data.reset();

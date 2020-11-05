@@ -35,13 +35,25 @@ namespace Engine::Core::Types {
 	 * -locate.
 	 * */
 	class FString {
+
+		/* define index type */
+		#ifdef PLATFORM_64BITS
+		typedef uint64 IndexType;
+		typedef int64 ReturnIndexType;
+		#else
+		typedef uint32 IndexType;
+		typedef int32 ReturnIndexType;
+		#endif
+
 		private:
 			/* Data ptr */
 			std::shared_ptr<TCHAR[]> _string = nullptr;
 			/* String Length */
-			SIZE_T _length = 0;
+			IndexType _length = 0;
 			/* String max Length */
-			SIZE_T _capacity = 0;
+			IndexType _capacity = 0;
+			/* Length to detect use which method */
+			IndexType _searchLengthLimit = 8;
 
 		public:
 			/* construct for an empty string with default capacity 16 */
@@ -50,7 +62,7 @@ namespace Engine::Core::Types {
 			FString(FString&& string) noexcept;
 
 			/* construct for an empty string with specific capacity */
-			explicit FString(SIZE_T capacity) noexcept;
+			explicit FString(IndexType capacity) noexcept;
 
 			/* construct from std::string */
 			explicit FString(std::string& string);
@@ -65,98 +77,198 @@ namespace Engine::Core::Types {
 			explicit FString(const char* string);
 
 			/* construct from char[] */
-			FString(CHAR string[], SIZE_T length);
-			FString(WCHAR string[], SIZE_T length);
+			FString(CHAR string[], IndexType length);
+			FString(WCHAR string[], IndexType length);
 
 			~FString();
 
-			[[nodiscard]] SIZE_T Length() const;
+			[[nodiscard]] ReturnIndexType Length() const;
 
 			/**
 			 * override operator method
 			 * make it can use like origin string
 			 * */
 		public:
-			FString& operator=(const FString& another);
+			FString& operator=(const FString& another) noexcept;
 			FString& operator=(FString&& another) noexcept;
 			FString& operator=(const std::string& another);
 			FString& operator=(std::string&& another);
 
-			/* overload operator==() */
+			/* return TCHAR at index */
+			TCHAR& operator[](IndexType& index) const;
+
+			/* return TCHAR at index */
+			TCHAR& operator[](const IndexType& index) const;
+
+			/* return TCHAR at index */
+			TCHAR& operator[](IndexType&& index) const;
+
 			bool operator==(const FString& string) const;
+			bool operator==(const std::string& string) const;
+			bool operator==(const std::wstring& string) const;
+		
+			FString operator+(const FString& another) const;
+			FString operator+(const std::string& another) const;
+			FString operator+(const std::wstring& another) const;
+
+			FString operator+(const CHAR& another) const;
+			FString operator+(const WCHAR& another) const;
+
+			FString& operator+=(const FString& another);
+			FString& operator+=(const std::string& another);
+			FString& operator+=(const std::wstring& another);
+		
+			FString& operator+=(const CHAR& another);
+			FString& operator+=(const WCHAR& another);
 
 			[[nodiscard]] std::string ToString();
 			[[nodiscard]] std::string ToString() const;
 
 			[[nodiscard]] TCHAR* GetData() const;
 
+		private:
+			/* brute force search */
+			[[nodiscard]] ReturnIndexType BruteForceSearch(const FString& string) const;
+			/* Boyer Moore Horspool string search method */
+			[[nodiscard]] ReturnIndexType BoyerMooreHorspoolSearch(const FString& string) const;
+
+		public:
 			/**
 			 * Append another string to current string
 			 * */
-			void Append(FString& string);
+			FString& Append(const FString& string);
 
 			/**
 			 * Append another string to current string
 			 * */
-			void Append(const FString& string);
+			FString& Append(FString&& string);
 
 			/**
 			 * Append another string to current string
 			 * */
-			void Append(FString&& string);
+			FString& Append(const std::string& string);
 
 			/**
 			 * Append another string to current string
 			 * */
-			void Append(std::string& string);
+			FString& Append(std::string&& string);
 
 			/**
 			 * Append another string to current string
 			 * */
-			void Append(const std::string& string);
+			FString& Append(const std::wstring& string);
 
 			/**
 			 * Append another string to current string
 			 * */
-			void Append(std::string&& string);
-
-			/**
-			 * Append another string to current string
-			 * */
-			void Append(std::wstring& string);
-
-			/**
-			 * Append another string to current string
-			 * */
-			void Append(const std::wstring& string);
-
-			/**
-			 * Append another string to current string
-			 * */
-			void Append(std::wstring&& string);
+			FString& Append(std::wstring&& string);
 
 			/**
 			 * Append a single char current string
 			 * */
-			void AppendChar(CHAR ch);
+			FString& AppendChar(const CHAR& ch);
 
 			/**
 			 * Append a single char current string
 			 * */
-			void AppendChar(WCHAR ch);
+			FString& AppendChar(CHAR&& ch);
 
+			/**
+			 * Append a single char current string
+			 * */
+			FString& AppendChar(const WCHAR& ch);
+
+			/**
+			 * Append a single char current string
+			 * */
+			FString& AppendChar(WCHAR&& ch);
+
+			/**
+			 * Compare two string by dictionary order
+			 *
+			 * @return 0 is equal, -1 is less than the compared one, 1 is more than the compared one.
+			 * */
+			[[nodiscard]] int32 CompareTo(const FString& string) const;
+
+			/**
+			 * Compare two string by dictionary order
+			 *
+			 * @return 0 is equal, -1 is less than the compared one, 1 is more than the compared one.
+			 * */
+			[[nodiscard]] int32 CompareTo(const std::string& string) const;
+			/**
+			 * Compare two string by dictionary order
+			 *
+			 * @return 0 is equal, -1 is less than the compared one, 1 is more than the compared one.
+			 * */
+			[[nodiscard]] int32 CompareTo(const std::wstring& string) const;
+
+			/* if two strings are equal */
+			[[nodiscard]] bool Equal(const FString& string) const;
+		
+			/* if two strings are equal */
+			[[nodiscard]] bool Equal(const std::string& string) const;
+
+			/* if two strings are equal */
+			[[nodiscard]] bool Equal(const std::wstring& string) const;
+
+			/* find the first position of a sub string */
+			[[nodiscard]] ReturnIndexType IndexOf(const CHAR& ch) const;
+
+			/* find the first position of a sub string */
+			[[nodiscard]] ReturnIndexType IndexOf(const WCHAR& ch) const;
+
+			/* find the first position of a sub string */
+			[[nodiscard]] ReturnIndexType IndexOf(const FString& string) const;
+
+			/* find the first position of a sub string */
+			[[nodiscard]] ReturnIndexType IndexOf(const std::string& string) const;
+
+			/* find the first position of a sub string */
+			[[nodiscard]] ReturnIndexType IndexOf(const std::wstring& string) const;
+
+			/* find the last position of a sub string */
+			[[nodiscard]] ReturnIndexType LastIndexOf(const CHAR& ch) const;
+
+			/* find the last position of a sub string */
+			[[nodiscard]] ReturnIndexType LastIndexOf(const WCHAR& ch) const;
+
+			/* find the last position of a sub string */
+			[[nodiscard]] ReturnIndexType LastIndexOf(const FString& string) const;
+
+			/* find the last position of a sub string */
+			[[nodiscard]] ReturnIndexType LastIndexOf(const std::string& string) const;
+
+			/* find the last position of a sub string */
+			[[nodiscard]] ReturnIndexType LastIndexOf(const std::wstring& string) const;
+		
 			/**
 			 * Split the string to multi string by separator
 			 * */
-			TArray<FString> Split(CHAR separator) const;
+			[[nodiscard]] TArray<FString> Split(const CHAR& separator) const;
 
+			/**
+			 * if the string is start with a given one
+			 * */
+			[[nodiscard]] bool StartWith(const FString& string) const;
+
+			/**
+			 * if the string is start with a given one
+			 * */
+			[[nodiscard]] bool StartWith(const std::string& string) const;
+
+			/**
+			 * if the string is start with a given one
+			 * */
+			[[nodiscard]] bool StartWith(const std::wstring& string) const;
+		
 			/**
 			 * Get a sub string of current form [start, end]
 			 *
 			 * @param start		start index
 			 * @param end		end index
 			 * */
-			[[nodiscard]] FString SubString(SIZE_T start, SIZE_T end) const;
+			[[nodiscard]] FString SubString(IndexType start, IndexType end) const;
 
 			/**
 			 * Get a sub string of current
@@ -164,12 +276,16 @@ namespace Engine::Core::Types {
 			 * @param index		start index
 			 * @param count		substring counts
 			 * */
-			[[nodiscard]] FString SubStringAt(SIZE_T index, SIZE_T count) const;
+			[[nodiscard]] FString SubStringAt(IndexType index, IndexType count) const;
 
 		protected:
 			std::shared_ptr<TCHAR[]>& GetSharedPtr() {
 				return _string;
 			}
+
+		private:
+			/* check if the index is out of array size */
+			void CheckIndex(IndexType index) const;
 
 			/**
 			 * Static method region for FString
@@ -188,7 +304,7 @@ namespace Engine::Core::Types {
 			/**
 			 * convert from char* to wstring
 			 * */
-			static std::wstring String2Wstring(const char* src, SIZE_T length);
+			static std::wstring String2Wstring(const char* src, IndexType length);
 
 			/**
 			 * convert from wstring to string
@@ -198,7 +314,7 @@ namespace Engine::Core::Types {
 			/**
 			 * convert from WCHAR* to string
 			 * */
-			static std::string Wstring2String(const WCHAR* src, SIZE_T length);
+			static std::string Wstring2String(const WCHAR* src, IndexType length);
 
 			/* use fmt to format and generate */
 			template <typename... Args>

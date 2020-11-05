@@ -26,6 +26,7 @@ void TestTArray() {
 	array.Reserve();
 	array.RemoveAt(1);
 	array.RemoveAtSwap(1);
+	logger.LogDebug(FString::Format("Test TArray IndexOf(): {0}", array.IndexOf(5)));
 
 	auto vec = std::vector({11, 12, 13, 14});
 	array.AddRange(vec);

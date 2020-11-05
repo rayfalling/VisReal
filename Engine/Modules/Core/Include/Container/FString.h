@@ -65,7 +65,8 @@ namespace Engine::Core::Types {
 			explicit FString(const char* string);
 
 			/* construct from char[] */
-			FString(char string[], int length);
+			FString(CHAR string[], SIZE_T length);
+			FString(WCHAR string[], SIZE_T length);
 
 			~FString();
 
@@ -90,39 +91,80 @@ namespace Engine::Core::Types {
 			[[nodiscard]] TCHAR* GetData() const;
 
 			/**
-			 * Append another string to current
+			 * Append another string to current string
 			 * */
 			void Append(FString& string);
 
 			/**
-			 * Append another string to current
+			 * Append another string to current string
 			 * */
 			void Append(const FString& string);
 
 			/**
-			 * Append another string to current
+			 * Append another string to current string
 			 * */
 			void Append(FString&& string);
 
 			/**
-			 * Append another string to current
+			 * Append another string to current string
 			 * */
 			void Append(std::string& string);
 
 			/**
-			 * Append another string to current
+			 * Append another string to current string
 			 * */
 			void Append(const std::string& string);
 
 			/**
-			 * Append another string to current
+			 * Append another string to current string
 			 * */
 			void Append(std::string&& string);
 
 			/**
+			 * Append another string to current string
+			 * */
+			void Append(std::wstring& string);
+
+			/**
+			 * Append another string to current string
+			 * */
+			void Append(const std::wstring& string);
+
+			/**
+			 * Append another string to current string
+			 * */
+			void Append(std::wstring&& string);
+
+			/**
+			 * Append a single char current string
+			 * */
+			void AppendChar(CHAR ch);
+
+			/**
+			 * Append a single char current string
+			 * */
+			void AppendChar(WCHAR ch);
+
+			/**
 			 * Split the string to multi string by separator
 			 * */
-			TArray<FString> Split(CHAR separator);
+			TArray<FString> Split(CHAR separator) const;
+
+			/**
+			 * Get a sub string of current form [start, end]
+			 *
+			 * @param start		start index
+			 * @param end		end index
+			 * */
+			[[nodiscard]] FString SubString(SIZE_T start, SIZE_T end) const;
+
+			/**
+			 * Get a sub string of current
+			 *
+			 * @param index		start index
+			 * @param count		substring counts
+			 * */
+			[[nodiscard]] FString SubStringAt(SIZE_T index, SIZE_T count) const;
 
 		protected:
 			std::shared_ptr<TCHAR[]>& GetSharedPtr() {
@@ -146,7 +188,7 @@ namespace Engine::Core::Types {
 			/**
 			 * convert from char* to wstring
 			 * */
-			static std::wstring String2Wstring(const char* src, int length);
+			static std::wstring String2Wstring(const char* src, SIZE_T length);
 
 			/**
 			 * convert from wstring to string
@@ -156,7 +198,7 @@ namespace Engine::Core::Types {
 			/**
 			 * convert from WCHAR* to string
 			 * */
-			static std::string Wstring2String(const WCHAR* src, int length);
+			static std::string Wstring2String(const WCHAR* src, SIZE_T length);
 
 			/* use fmt to format and generate */
 			template <typename... Args>

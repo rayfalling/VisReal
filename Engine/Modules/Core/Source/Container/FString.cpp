@@ -206,11 +206,22 @@ FString::ReturnIndexType FString::BruteForceSearch(const FString& string) const 
 }
 
 FString::ReturnIndexType FString::BoyerMooreHorspoolSearch(const FString& string) const {
-	/*TODO*/
+	auto* const findPtr = std::search(
+			_string.get(),
+			_string.get() + _length,
+			std::boyer_moore_horspool_searcher<wchar_t*>(
+					string._string.get(),
+					string._string.get() + string._length
+					)
+			);
+	if (findPtr != _string.get() + _length)
+		return std::distance(_string.get(), findPtr);
 	return INDEX_NONE;
+
 }
 
 FString& FString::Append(const FString& string) {
+	std::unique_lock<std::mutex> lock(_mutex);
 	if (_capacity < string.Length() + _length) {
 		_capacity = string.Length() + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -226,6 +237,7 @@ FString& FString::Append(const FString& string) {
 }
 
 FString& FString::Append(FString&& string) {
+	std::unique_lock<std::mutex> lock(_mutex);
 	if (_capacity < string.Length() + _length) {
 		_capacity = string.Length() + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -241,6 +253,7 @@ FString& FString::Append(FString&& string) {
 }
 
 FString& FString::Append(const std::string& string) {
+	std::unique_lock<std::mutex> lock(_mutex);
 	const auto wStr = String2Wstring(string);
 	if (_capacity < string.length() + _length) {
 		_capacity = wStr.length() + _length;
@@ -257,6 +270,7 @@ FString& FString::Append(const std::string& string) {
 }
 
 FString& FString::Append(std::string&& string) {
+	std::unique_lock<std::mutex> lock(_mutex);
 	const auto wStr = String2Wstring(string);
 	if (_capacity < string.length() + _length) {
 		_capacity = wStr.length() + _length;
@@ -273,6 +287,7 @@ FString& FString::Append(std::string&& string) {
 }
 
 FString& FString::Append(const std::wstring& string) {
+	std::unique_lock<std::mutex> lock(_mutex);
 	if (_capacity < string.length() + _length) {
 		_capacity = string.length() + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -288,6 +303,7 @@ FString& FString::Append(const std::wstring& string) {
 }
 
 FString& FString::Append(std::wstring&& string) {
+	std::unique_lock<std::mutex> lock(_mutex);
 	if (_capacity < string.length() + _length) {
 		_capacity = string.length() + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -303,50 +319,53 @@ FString& FString::Append(std::wstring&& string) {
 }
 
 FString& FString::AppendChar(const CHAR& ch) {
-	TCHAR wstring[1];
+	std::unique_lock<std::mutex> lock(_mutex);
+	TCHAR wstring;
 	#ifndef _CRT_SECURE_NO_WARNINGS
 	#define _CRT_SECURE_NO_WARNINGS
-	std::mbstowcs(wstring, &ch, 1);
+	std::mbstowcs(&wstring, &ch, 1);
 	#else
-	std::mbstowcs(wstring, &ch, 1);
+	std::mbstowcs(&wstring, &ch, 1);
 	#endif
 	if (_capacity < 1 + _length) {
 		_capacity = 1 + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
 		MoveAssignItems(newData.get(), _string.get(), _length + 1);
-		CopyAssignItems(newData.get() + _length, wstring, 1);
+		CopyAssignItems(newData.get() + _length, &wstring, 1);
 		_string.swap(newData);
 		_length = _capacity;
 	} else {
-		MoveAssignItems(_string.get() + _length, wstring, 1);
+		MoveAssignItems(_string.get() + _length, &wstring, 1);
 		_length += 1;
 	}
 	return *this;
 }
 
 FString& FString::AppendChar(CHAR&& ch) {
-	TCHAR wstring[1];
+	std::unique_lock<std::mutex> lock(_mutex);
+	TCHAR wstring;
 	#ifndef _CRT_SECURE_NO_WARNINGS
 	#define _CRT_SECURE_NO_WARNINGS
-	std::mbstowcs(wstring, &ch, 1);
+	std::mbstowcs(&wstring, &ch, 1);
 	#else
-	std::mbstowcs(wstring, &ch, 1);
+	std::mbstowcs(&wstring, &ch, 1);
 	#endif
 	if (_capacity < 1 + _length) {
 		_capacity = 1 + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
 		MoveAssignItems(newData.get(), _string.get(), _length + 1);
-		MoveAssignItems(newData.get() + _length, wstring, 1);
+		MoveAssignItems(newData.get() + _length, &wstring, 1);
 		_string.swap(newData);
 		_length = _capacity;
 	} else {
-		MoveAssignItems(_string.get() + _length, wstring, 1);
+		MoveAssignItems(_string.get() + _length, &wstring, 1);
 		_length += 1;
 	}
 	return *this;
 }
 
 FString& FString::AppendChar(const WCHAR& ch) {
+	std::unique_lock<std::mutex> lock(_mutex);
 	if (_capacity < 1 + _length) {
 		_capacity = 1 + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -362,6 +381,7 @@ FString& FString::AppendChar(const WCHAR& ch) {
 }
 
 FString& FString::AppendChar(WCHAR&& ch) {
+	std::unique_lock<std::mutex> lock(_mutex);
 	if (_capacity < 1 + _length) {
 		_capacity = 1 + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -406,6 +426,24 @@ bool FString::Equal(const std::wstring& string) const {
 	return Equal(FString(string));
 }
 
+bool FString::EndWith(const FString& string) const {
+	if (string._length > _length) return false;
+	for (auto index = 1u; index <= string._length; index++) {
+		if (_string[_length - index] == string._string[string._length - index])
+			continue;
+		return false;
+	}
+	return true;
+}
+
+bool FString::EndWith(const std::string& string) const {
+	return EndWith(FString(string));
+}
+
+bool FString::EndWith(const std::wstring& string) const {
+	return EndWith(FString(string));
+}
+
 TArray<FString> FString::Split(const CHAR& separator) const {
 	TArray<FString> array;
 	IndexType it = 0, start = it;
@@ -437,25 +475,11 @@ bool FString::StartWith(const FString& string) const {
 }
 
 bool FString::StartWith(const std::string& string) const {
-	const FString searchString(string);
-	if (searchString._length > _length) return false;
-	for (auto index = 0u; index < searchString._length; index++) {
-		if (_string[index] == searchString._string[index])
-			continue;
-		return false;
-	}
-	return true;
+	return StartWith(FString(string));
 }
 
 bool FString::StartWith(const std::wstring& string) const {
-	const FString searchString(string);
-	if (searchString._length > _length) return false;
-	for (auto index = 0u; index < searchString._length; index++) {
-		if (_string[index] == searchString._string[index])
-			continue;
-		return false;
-	}
-	return true;
+	return StartWith(FString(string));
 }
 
 FString::ReturnIndexType FString::IndexOf(const CHAR& ch) const {
@@ -510,8 +534,19 @@ FString::ReturnIndexType FString::LastIndexOf(const WCHAR& ch) const {
 }
 
 FString::ReturnIndexType FString::LastIndexOf(const FString& string) const {
-	/*TODO*/
-	return INDEX_NONE;
+	auto* findPtr = std::find_end(_string.get(), _string.get() + _length, string._string.get(), string._string.get() + string._length);
+	if (findPtr == string._string.get() + string._length) {
+		return INDEX_NONE;
+	}
+	return std::distance(_string.get(), findPtr);
+}
+
+FString::ReturnIndexType FString::LastIndexOf(const std::string& string) const {
+	return LastIndexOf(FString(string));
+}
+
+FString::ReturnIndexType FString::LastIndexOf(const std::wstring& string) const {
+	return LastIndexOf(FString(string));
 }
 
 FString FString::SubString(const IndexType start, const IndexType end) const {
@@ -532,6 +567,63 @@ FString FString::SubStringAt(const IndexType index, const IndexType count) const
 	string._length = count;
 	CopyAssignItems(string._string.get(), _string.get() + index, count);
 	return string;
+}
+
+FString& FString::Trim() {
+	TrimStart();
+	TrimEnd();
+	return *this;
+}
+
+FString& FString::TrimStart() {
+	IndexType count = 0;
+	for (auto index = 0u; index < _length; index++) {
+		if (_string[index] == _space)
+			count++;
+		else break;
+	}
+	return RemoveRange(0, count);
+}
+
+FString& FString::TrimEnd() {
+	IndexType count = 0;
+	for (ReturnIndexType index = _length - 1; index >= 0; --index) {
+		if (_string[index] == _space)
+			count++;
+		else break;
+	}
+	return RemoveRange(_length - 1 - count, count);
+}
+
+FString& FString::Replace(FString& pattern, FString& replace) {
+	std::unique_lock<std::mutex> lock(_mutex);
+	/* TODO */
+	return *this;
+}
+
+FString& FString::Remove(const IndexType index) {
+	std::unique_lock<std::mutex> lock(_mutex);
+	CheckIndex(index);
+	MoveAssignItems(_string.get() + index, _string.get() + index + 1, _length - index - 1);
+	_length = _length - 1;
+	return *this;
+}
+
+FString& FString::RemoveRange(const IndexType index, const IndexType count) {
+	std::unique_lock<std::mutex> lock(_mutex);
+	CheckIndex(index);
+	CheckIndex(index + count);
+	MoveAssignItems(_string.get() + index, _string.get() + index + count, _length - index - count);
+	_length = _length - count;
+	return *this;
+}
+
+FString& FString::ResizeShrink() {
+	std::unique_lock<std::mutex> lock(_mutex);
+	const auto newPtr = std::shared_ptr<TCHAR[]>(new TCHAR[_length + 1], std::default_delete<TCHAR[]>());
+	MoveAssignItems(newPtr.get(), _string.get(), _length + 1);
+	this->_capacity = _length;
+	return *this;
 }
 
 void FString::CheckIndex(const IndexType index) const {
@@ -598,4 +690,12 @@ FString& FString::operator+=(const CHAR& another) {
 
 FString& FString::operator+=(const WCHAR& another) {
 	return AppendChar(another);
+}
+
+const TCHAR* FString::Begin() const {
+	return _string.get();
+}
+
+const TCHAR* FString::End() const {
+	return _string.get() + _length;
 }

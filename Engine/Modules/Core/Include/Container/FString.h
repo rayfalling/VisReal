@@ -11,6 +11,7 @@
 #define VISREAL_F_STRING_H
 
 #include <codecvt>
+#include <mutex>
 #include <spdlog/fmt/fmt.h>
 
 #include "Memory/MemoryUtils.h"
@@ -54,6 +55,8 @@ namespace Engine::Core::Types {
 			IndexType _capacity = 0;
 			/* Length to detect use which method */
 			IndexType _searchLengthLimit = 8;
+			/* thread mutex */
+			std::mutex _mutex;
 
 		public:
 			/* construct for an empty string with default capacity 16 */
@@ -106,7 +109,7 @@ namespace Engine::Core::Types {
 			bool operator==(const FString& string) const;
 			bool operator==(const std::string& string) const;
 			bool operator==(const std::wstring& string) const;
-		
+
 			FString operator+(const FString& another) const;
 			FString operator+(const std::string& another) const;
 			FString operator+(const std::wstring& another) const;
@@ -117,9 +120,12 @@ namespace Engine::Core::Types {
 			FString& operator+=(const FString& another);
 			FString& operator+=(const std::string& another);
 			FString& operator+=(const std::wstring& another);
-		
+
 			FString& operator+=(const CHAR& another);
 			FString& operator+=(const WCHAR& another);
+
+			[[nodiscard]] const TCHAR* Begin() const;
+			[[nodiscard]] const TCHAR* End() const;
 
 			[[nodiscard]] std::string ToString();
 			[[nodiscard]] std::string ToString() const;
@@ -205,12 +211,21 @@ namespace Engine::Core::Types {
 
 			/* if two strings are equal */
 			[[nodiscard]] bool Equal(const FString& string) const;
-		
+
 			/* if two strings are equal */
 			[[nodiscard]] bool Equal(const std::string& string) const;
 
 			/* if two strings are equal */
 			[[nodiscard]] bool Equal(const std::wstring& string) const;
+
+			/* if two strings are equal */
+			[[nodiscard]] bool EndWith(const FString& string) const;
+
+			/* if two strings are equal */
+			[[nodiscard]] bool EndWith(const std::string& string) const;
+
+			/* if two strings are equal */
+			[[nodiscard]] bool EndWith(const std::wstring& string) const;
 
 			/* find the first position of a sub string */
 			[[nodiscard]] ReturnIndexType IndexOf(const CHAR& ch) const;
@@ -241,7 +256,7 @@ namespace Engine::Core::Types {
 
 			/* find the last position of a sub string */
 			[[nodiscard]] ReturnIndexType LastIndexOf(const std::wstring& string) const;
-		
+
 			/**
 			 * Split the string to multi string by separator
 			 * */
@@ -261,7 +276,7 @@ namespace Engine::Core::Types {
 			 * if the string is start with a given one
 			 * */
 			[[nodiscard]] bool StartWith(const std::wstring& string) const;
-		
+
 			/**
 			 * Get a sub string of current form [start, end]
 			 *
@@ -278,6 +293,27 @@ namespace Engine::Core::Types {
 			 * */
 			[[nodiscard]] FString SubStringAt(IndexType index, IndexType count) const;
 
+			/* Remove space at front and end */
+			FString& Trim();
+
+			/* Remove space at front*/
+			FString& TrimStart();
+
+			/* Remove space at end*/
+			FString& TrimEnd();
+
+			/* replace string to an other */
+			FString& Replace(FString& pattern, FString& replace);
+		
+			/* Remove char at index */
+			FString& Remove(IndexType index);
+
+			/* Remove chars at index with count */
+			FString& RemoveRange(IndexType index, IndexType count = 1);
+
+			/* resize to match it _length, you should call it manually */
+			FString& ResizeShrink();
+
 		protected:
 			std::shared_ptr<TCHAR[]>& GetSharedPtr() {
 				return _string;
@@ -286,6 +322,8 @@ namespace Engine::Core::Types {
 		private:
 			/* check if the index is out of array size */
 			void CheckIndex(IndexType index) const;
+
+			inline static TCHAR _space = static_cast<TCHAR>(' ');
 
 			/**
 			 * Static method region for FString

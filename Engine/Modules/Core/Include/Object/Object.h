@@ -8,6 +8,7 @@
 
 #include "Container/FString.h"
 #include "EngineCoreExport.generate.h"
+#include "Hash/Hash.h"
 
 namespace Engine::Core {
 	using namespace Types;
@@ -16,7 +17,7 @@ namespace Engine::Core {
 	class ENGINE_CORE_EXPORTS Object {
 		protected:
 			FString _name;
-			uint64  _id;
+			uint64 _id;
 
 		private:
 			inline static std::atomic<uint64> _currentId{0};
@@ -32,8 +33,7 @@ namespace Engine::Core {
 			virtual ~Object() = default;
 
 			virtual uint64 GetHashCode() {
-				//TODO here
-				return 0u;
+				return FHash::Hash(this);
 			}
 
 			virtual FString ToString() {

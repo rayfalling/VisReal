@@ -26,7 +26,7 @@ namespace Engine::Core {
 	#endif
 
 	struct FHash {
-		static hash_t Seed;
+		inline static hash_t Seed = 236541925u;
 
 		template <typename T>
 		static uint64 Hash(T value) {

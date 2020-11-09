@@ -17,9 +17,9 @@ void TestHash() {
 
 	logger.LogDebug(FString("Test Hash function......"));
 	const auto start = std::chrono::system_clock::now();
-	TArray<hash_t> array(10000);
+	TArray<hash_t> array(10000000);
 	
-	for (auto i = 0; i < 10000; ++i) {
+	for (auto i = 0; i < 10000000; ++i) {
 		array.Add(FHash::Hash(Math::FPlatformMath::Rand()));
 	}
 

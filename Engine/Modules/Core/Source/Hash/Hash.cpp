@@ -8,9 +8,6 @@
 
 using namespace Engine::Core;
 
-/* Use random seed, consider use fixed seed instead */
-hash_t FHash::Seed = Math::FPlatformMath::Rand();
-
 uint64 FHash::Hash(int8 value) {
 	return DoHash(&value, sizeof(int8), Seed);
 }

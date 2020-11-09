@@ -31,7 +31,7 @@ void TestTArray() {
 	auto vec = std::vector({11, 12, 13, 14});
 	array.AddRange(vec);
 
-	logger.LogDebug(FString::Format("Test TArray IndexOf() array.IndexOf(9): {0}", array.IndexOf(9)));
+	logger.LogDebug(FString::Format("Test TArray IndexOf() array.IndexOf(9): {0}", array.IndexOf(7)));
 	array.RemoveRange(0, 7);
 
 	auto end = system_clock::now();
@@ -40,10 +40,10 @@ void TestTArray() {
 
 	array.Clear();
 
-	logger.LogDebug(FString("TArray single thread writing count 10000"));
+	logger.LogDebug(FString("TArray single thread writing count 1000000"));
 	start = system_clock::now();
 
-	for (auto i = 0; i < 10000; i++) {
+	for (auto i = 0; i < 1000000; i++) {
 		array.Add(i);
 	}
 
@@ -53,11 +53,11 @@ void TestTArray() {
 
 	array.Clear();
 
-	logger.LogDebug(FString("TArray multi thread (num 4) writing by using OpenMP count 10000"));
+	logger.LogDebug(FString("TArray multi thread (num 4) writing by using OpenMP count 1000000"));
 	start = system_clock::now();
 
 	#pragma omp parallel for num_threads(4)
-	for (auto i = 0; i < 10000; i++) {
+	for (auto i = 0; i < 1000000; i++) {
 		array.Add(i);
 	}
 

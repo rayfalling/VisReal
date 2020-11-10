@@ -11,7 +11,7 @@
 #ifndef VISREAL_WINDOWS_PLATFORM_H
 #define VISREAL_WINDOWS_PLATFORM_H
 
-#include "Platform/GenericPlatformTypes.h"
+#include "Platform/GenericPlatform.h"
 
 namespace Engine::Core::Types {
 	// Base defines, must define these for the platform, there are no defaults
@@ -158,7 +158,7 @@ namespace Engine::Core::Types {
 	/**
 	* Windows specific types
 	**/
-	struct FWindowsPlatformTypes : public GenericPlatformTypes {
+	struct FWindowsPlatformTypes : public GenericPlatform {
 		#ifdef PLATFORM_64BITS
 		typedef unsigned long long SIZE_T;
 		typedef long long SSIZE_T;

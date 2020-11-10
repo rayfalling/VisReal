@@ -16,6 +16,8 @@ if (MSVC)
         set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
     endif (BUILD_SHARED_LIBS)
 
+    add_compile_definitions(OVERRIDE_PLATFORM_HEADER_NAME=Windows)
+
     add_compile_options(/MP /wd4819 /wd5045 /wd4711)
     set(CMAKE_C_FLAGS_DEBUG "/ZI /Ob0 /Od /RTC1 /DEBUG")
     set(CMAKE_CXX_FLAGS_DEBUG "/ZI /Ob0 /Od /RTC1 /DEBUG")

@@ -31,7 +31,7 @@ namespace Engine::Core::Types {
 		typedef T32BITS TIntPointer; // select the 32 bit type
 	};
 
-	struct GenericPlatformTypes {
+	struct GenericPlatform {
 		// Unsigned base types.
 		typedef unsigned char      uint8;  // 8-bit  unsigned.
 		typedef unsigned short int uint16; // 16-bit unsigned.

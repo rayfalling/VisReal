@@ -19,6 +19,7 @@ aux_source_directory(Source/Marco ENGINE_CORE_SOURCE)
 aux_source_directory(Source/Math ENGINE_CORE_SOURCE)
 aux_source_directory(Source/Object ENGINE_CORE_SOURCE)
 aux_source_directory(Source/Platform ENGINE_CORE_SOURCE)
+aux_source_directory(Source/Renderer ENGINE_CORE_SOURCE)
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${ENGINE_CORE_INCLUDE} ${ENGINE_CORE_SOURCE})
 

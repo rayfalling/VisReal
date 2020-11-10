@@ -281,28 +281,7 @@ namespace Engine::Core::Types {
 			void RemoveAtImpl(IndexType index, IndexType count, bool allowShrinking = true);
 
 			/* remove element by swap from array memory bottom implementation */
-			void RemoveAtSwapImpl(IndexType index, IndexType count = 1, const bool allowShrinking = true) {
-				if (count) {
-					Core::DestructItems(GetData() + index, count);
-
-					// Replace the elements in the hole created by the removal with elements from the end of the array, so the range of indices used by the array is contiguous.
-					const auto numElementsInHole = count;
-					const auto numElementsAfterHole = _size - (index + count);
-					const auto numElementsToMoveIntoHole = Math::FMath::Min(numElementsInHole, numElementsAfterHole);
-					if (numElementsToMoveIntoHole) {
-						Core::CopyAssignItems(
-								_data.get() + index,
-								_data.get() + _size - numElementsToMoveIntoHole,
-								numElementsToMoveIntoHole
-								);
-					}
-					_size -= count;
-
-					if (allowShrinking) {
-						ResizeShrink(_size, allowShrinking);
-					}
-				}
-			}
+			void RemoveAtSwapImpl(IndexType index, IndexType count = 1, bool allowShrinking = true);
 
 			/* check if the index is out of array size */
 			void CheckIndex(IndexType index) const;
@@ -801,9 +780,34 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
+	void TArray<T>::RemoveAtSwapImpl(IndexType index, IndexType count, const bool allowShrinking) {
+		if (count) {
+			Core::DestructItems(GetData() + index, count);
+
+			// Replace the elements in the hole created by the removal with elements from the end of the array, so the range of indices used by the array is contiguous.
+			const auto numElementsInHole = count;
+			const auto numElementsAfterHole = _size - (index + count);
+			const auto numElementsToMoveIntoHole = Math::FMath::Min(numElementsInHole, numElementsAfterHole);
+			if (numElementsToMoveIntoHole) {
+				Core::CopyAssignItems(
+						_data.get() + index,
+						_data.get() + _size - numElementsToMoveIntoHole,
+						numElementsToMoveIntoHole
+						);
+			}
+			_size -= count;
+
+			if (allowShrinking) {
+				ResizeShrink(_size, allowShrinking);
+			}
+		}
+	}
+
+	template <typename T>
 	void TArray<T>::CheckIndex(const IndexType index) const {
 		if (index > _size - 1 || _size == 0) {
 			CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
+			PLATFORM_BREAK();
 		}
 	}
 

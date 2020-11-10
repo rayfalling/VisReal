@@ -12,6 +12,14 @@
 #include "Platform/Windows/WindowsPlatformMath.h"
 #endif
 
+#ifndef ENABLE_NAN_DIAGNOSTIC
+#if NDEBUG
+#define ENABLE_NAN_DIAGNOSTIC 1
+#else
+#define ENABLE_NAN_DIAGNOSTIC 0
+#endif
+#endif
+
 namespace Engine::Core::Math {
 
 	#undef  PI
@@ -70,7 +78,6 @@ namespace Engine::Core::Math {
 
 	struct FMath : public FPlatformMath {
 	};
-
 }
 
 #endif //VISREAL_VISREAL_MATH_UTILITY_H

@@ -13,6 +13,7 @@ include_directories(${ENGINE_CORE_INCLUDE_DIR}/)
 file(GLOB_RECURSE ENGINE_CORE_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/Include/*)
 aux_source_directory(Source ENGINE_CORE_SOURCE)
 aux_source_directory(Source/Container ENGINE_CORE_SOURCE)
+aux_source_directory(Source/fmt ENGINE_CORE_SOURCE)
 aux_source_directory(Source/Hash ENGINE_CORE_SOURCE)
 aux_source_directory(Source/Logger ENGINE_CORE_SOURCE)
 aux_source_directory(Source/Marco ENGINE_CORE_SOURCE)
@@ -40,4 +41,4 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER VisReal/Engine/Modules)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_CORE_INCLUDE_DIR})
 
-target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog PUBLIC xxhash PRIVATE Threads::Threads)
+target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog PUBLIC xxhash PRIVATE fmt::fmt Threads::Threads)

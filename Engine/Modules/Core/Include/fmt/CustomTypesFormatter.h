@@ -1,0 +1,10 @@
+/**
+ * Created by rayfalling on 2020/11/12.
+ * */
+
+#pragma once
+
+#ifndef VISREAL_CUSTOMTYPESFORMATTER_H
+#define VISREAL_CUSTOMTYPESFORMATTER_H
+
+#endif //VISREAL_CUSTOMTYPESFORMATTER_H

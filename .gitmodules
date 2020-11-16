@@ -13,3 +13,6 @@
 [submodule "libs/xxhash"]
 	path = libs/xxhash
 	url = https://github.com/Cyan4973/xxHash.git
+[submodule "libs/fmt"]
+	path = libs/fmt
+	url = https://github.com/fmtlib/fmt.git

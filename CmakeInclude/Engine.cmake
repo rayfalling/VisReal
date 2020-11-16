@@ -14,6 +14,7 @@ endif (BUILD_SHARED_LIBS)
 
 include(GenerateExportHeader)
 include(${CMAKE_SOURCE_DIR}/CmakeInclude/DetectPlatform.cmake)
+include(${CMAKE_SOURCE_DIR}/CmakeInclude/fmt.cmake)
 include(${CMAKE_SOURCE_DIR}/CmakeInclude/glad.cmake)
 include(${CMAKE_SOURCE_DIR}/CmakeInclude/glfw.cmake)
 include(${CMAKE_SOURCE_DIR}/CmakeInclude/spdlog.cmake)

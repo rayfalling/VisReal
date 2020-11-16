@@ -13,13 +13,13 @@ namespace Engine::Core::Types {
 	template <typename T>
 	class TArray;
 
-	template <typename KeyType, typename ValueType, typename KeyFuncs>
+	template <typename KeyType, typename ValueType, typename HashFunction>
 	class TMap;
 
 	template <typename>
 	struct TTypeTraits;
 
-	template <typename InElementType, typename KeyFuncs>
+	template <typename InElementType, typename HashFunction>
 	class TSet;
 }
 

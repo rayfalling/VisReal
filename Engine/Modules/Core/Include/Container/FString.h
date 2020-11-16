@@ -12,7 +12,8 @@
 
 #include <codecvt>
 #include <mutex>
-#include <spdlog/fmt/fmt.h>
+#include <fmt/core.h>
+#include <fmt/format.h>
 
 #include "Memory/MemoryUtils.h"
 #include "Platform/PlatformTypes.h"
@@ -129,6 +130,9 @@ namespace Engine::Core::Types {
 
 			[[nodiscard]] std::string ToString();
 			[[nodiscard]] std::string ToString() const;
+
+			[[nodiscard]] std::wstring ToWString();
+			[[nodiscard]] std::wstring ToWString() const;
 
 			[[nodiscard]] TCHAR* GetData() const;
 
@@ -304,7 +308,7 @@ namespace Engine::Core::Types {
 
 			/* replace string to an other */
 			FString& Replace(FString& pattern, FString& replace);
-		
+
 			/* Remove char at index */
 			FString& Remove(IndexType index);
 
@@ -359,6 +363,12 @@ namespace Engine::Core::Types {
 			static FString Format(std::string& string, Args&& ...args);
 			template <typename... Args>
 			static FString Format(const std::string& string, Args&& ...args);
+			
+			/* use fmt to format and generate */
+			template <typename... Args>
+			static FString Format(std::wstring& string, Args&& ...args);
+			template <typename... Args>
+			static FString Format(const std::wstring& string, Args&& ...args);
 	};
 
 	template <typename ... Args>
@@ -366,7 +376,7 @@ namespace Engine::Core::Types {
 		FString value;
 		auto formatted = String2Wstring(fmt::format(string, std::forward<Args>(args)...));
 		value._string = std::shared_ptr<TCHAR[]>(new TCHAR[formatted.length() + 1], std::default_delete<TCHAR[]>());
-		Core::CopyAssignItems(value._string.get(), formatted.c_str(), formatted.length() + 1);
+		CopyAssignItems(value._string.get(), formatted.c_str(), formatted.length() + 1);
 		value._length = formatted.length();
 		value._capacity = formatted.length();
 		return value;
@@ -377,7 +387,29 @@ namespace Engine::Core::Types {
 		FString value;
 		auto formatted = String2Wstring(fmt::format(string, std::forward<Args>(args)...));
 		value._string = std::shared_ptr<TCHAR[]>(new TCHAR[formatted.length() + 1], std::default_delete<TCHAR[]>());
-		Core::CopyAssignItems(value._string.get(), formatted.c_str(), formatted.length() + 1);
+		CopyAssignItems(value._string.get(), formatted.c_str(), formatted.length() + 1);
+		value._length = formatted.length();
+		value._capacity = formatted.length();
+		return value;
+	}
+
+	template <typename ... Args>
+	FString FString::Format(std::wstring& string, Args&&... args) {
+		FString value;
+		auto formatted = String2Wstring(fmt::format(Wstring2String(string), std::forward<Args>(args)...));
+		value._string = std::shared_ptr<TCHAR[]>(new TCHAR[formatted.length() + 1], std::default_delete<TCHAR[]>());
+		MoveAssignItems(value._string.get(), formatted.c_str(), formatted.length() + 1);
+		value._length = formatted.length();
+		value._capacity = formatted.length();
+		return value;
+	}
+	
+	template <typename ... Args>
+	FString FString::Format(const std::wstring& string, Args&&... args) {
+		FString value;
+		auto formatted = String2Wstring(fmt::format(Wstring2String(string), std::forward<Args>(args)...));
+		value._string = std::shared_ptr<TCHAR[]>(new TCHAR[formatted.length() + 1], std::default_delete<TCHAR[]>());
+		MoveAssignItems(value._string.get(), formatted.c_str(), formatted.length() + 1);
 		value._length = formatted.length();
 		value._capacity = formatted.length();
 		return value;

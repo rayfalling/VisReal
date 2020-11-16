@@ -29,8 +29,8 @@ namespace Engine::Core {
 			~CoreLog() noexcept override;
 
 		private:
-			CoreLog(const CoreLog&);
-			CoreLog& operator=(const CoreLog&);
+			CoreLog(const CoreLog&) = delete;
+			CoreLog& operator=(const CoreLog&) = delete;
 
 		private:
 			/* Core logger, static for over dll use */

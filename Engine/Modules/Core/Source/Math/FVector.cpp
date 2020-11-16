@@ -296,5 +296,5 @@ FORCEINLINE bool FVector3::ContainsNaN() const {
 }
 
 FORCEINLINE FString FVector3::ToString() const {
-	return FString::Format("X={:.3f} Y={:.3} Z={:.3}", X, Y, Z);
+	return FString::Format("X={:.3f} Y={:.3f} Z={:.3f}", X, Y, Z);
 }

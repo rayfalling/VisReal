@@ -32,11 +32,11 @@ namespace Engine::Core {
 			Object& operator=(const Object& object) noexcept = default;
 			virtual ~Object() = default;
 
-			virtual uint64 GetHashCode() {
+			virtual uint64 GetHashCode() const {
 				return FHash::Hash(this);
 			}
 
-			virtual FString ToString() {
+			virtual FString GetName() const {
 				return _name;
 			}
 	};

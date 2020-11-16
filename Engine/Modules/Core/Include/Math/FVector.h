@@ -68,12 +68,12 @@ namespace Engine::Core::Math {
 				}
 			}
 
-			// FORCEINLINE void DiagnosticCheckNaN(const TCHAR* message) const {
-			// 	if (ContainsNaN()) {
-			// 		CoreLog::GetInstance().LogError(FString::Format(TEXT("{}: FVector3 contains NaN: {}"), FString(message), *this));
-			// 		*const_cast<FVector3*>(this) = ZeroVector;
-			// 	}
-			// }
+			FORCEINLINE void DiagnosticCheckNaN(const TCHAR* message) const {
+				if (ContainsNaN()) {
+					CoreLog::GetInstance().LogError(FString::Format(TEXT("{}: FVector3 contains NaN: {}"), FString(message), *this));
+					*const_cast<FVector3*>(this) = ZeroVector;
+				}
+			}
 			#else
 			// ReSharper disable once CppMemberFunctionMayBeStatic
 			FORCEINLINE void DiagnosticCheckNaN() const {

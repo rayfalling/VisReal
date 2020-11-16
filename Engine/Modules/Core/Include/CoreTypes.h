@@ -14,6 +14,6 @@
 #include "Container/TArray.h"
 #include "Container/TMap.h"
 
-using namespace Engine::Core::Types;
+using namespace Engine::Core;
 
 #endif //VISREAL_CORE_TYPES_H

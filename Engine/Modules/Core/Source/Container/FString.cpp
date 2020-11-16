@@ -178,6 +178,14 @@ std::string FString::ToString() const {
 	return Wstring2String(_string.get(), _length);
 }
 
+std::wstring FString::ToWString() {
+	return std::wstring(_string.get(), _length);
+}
+
+std::wstring FString::ToWString() const {
+	return std::wstring(_string.get(), _length);
+}
+
 TCHAR* FString::GetData() const {
 	return _string.get();
 }

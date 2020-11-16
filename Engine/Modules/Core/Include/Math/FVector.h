@@ -9,13 +9,16 @@
 
 #include "NumericLimits.h"
 #include "VisRealMathUtility.h"
+#include "fmt/CustomTypesFormatter.h"
 #include "Logger/CoreLog.h"
+#include "Marco/PlatformMarcos.h"
+#include "Object/Object.h"
 #include "Platform/PlatformTypes.h"
 
 namespace Engine::Core::Math {
-	struct FPlane;
+	class FPlane;
 
-	class FVector3 {
+	class FVector3 : public Object {
 		public:
 			float X;
 			float Y;
@@ -60,17 +63,17 @@ namespace Engine::Core::Math {
 			#if ENABLE_NAN_DIAGNOSTIC
 			FORCEINLINE void DiagnosticCheckNaN() const {
 				if (ContainsNaN()) {
-					CoreLog::GetInstance().LogError(FString::Format("FVector3 contains NaN: %s", *this));
+					CoreLog::GetInstance().LogError(FString::Format("FVector3 contains NaN: {}", *this));
 					*const_cast<FVector3*>(this) = ZeroVector;
 				}
 			}
 
-			FORCEINLINE void DiagnosticCheckNaN(const TCHAR* message) const {
-				if (ContainsNaN()) {
-					CoreLog::GetInstance().LogError(FString::Format("%s: FVector3 contains NaN: %s", message, *this));
-					*const_cast<FVector3*>(this) = ZeroVector;
-				}
-			}
+			// FORCEINLINE void DiagnosticCheckNaN(const TCHAR* message) const {
+			// 	if (ContainsNaN()) {
+			// 		CoreLog::GetInstance().LogError(FString::Format(TEXT("{}: FVector3 contains NaN: {}"), FString(message), *this));
+			// 		*const_cast<FVector3*>(this) = ZeroVector;
+			// 	}
+			// }
 			#else
 			// ReSharper disable once CppMemberFunctionMayBeStatic
 			FORCEINLINE void DiagnosticCheckNaN() const {
@@ -93,7 +96,7 @@ namespace Engine::Core::Math {
 			 * @param vec The other vector.
 			 * @return The cross product.
 			 */
-			 FVector3 operator^(const FVector3& vec) const;
+			FVector3 operator^(const FVector3& vec) const;
 
 			/**
 			 * Calculate the cross product of two vectors.
@@ -102,7 +105,7 @@ namespace Engine::Core::Math {
 			 * @param second	The second vector.
 			 * @return			The cross product.
 			 */
-			 static FVector3 CrossProduct(const FVector3& first, const FVector3& second);
+			static FVector3 CrossProduct(const FVector3& first, const FVector3& second);
 
 			/**
 			 * Calculate the dot product between this and another vector.
@@ -110,7 +113,7 @@ namespace Engine::Core::Math {
 			 * @param vec The other vector.
 			 * @return The dot product.
 			 */
-			 float operator|(const FVector3& vec) const;
+			float operator|(const FVector3& vec) const;
 
 			/**
 			 * Calculate the dot product of two vectors.
@@ -119,7 +122,7 @@ namespace Engine::Core::Math {
 			 * @param second The second vector.
 			 * @return The dot product.
 			 */
-			 static float DotProduct(const FVector3& first, const FVector3& second);
+			static float DotProduct(const FVector3& first, const FVector3& second);
 
 			/**
 			 * Gets the result of component-wise addition of this and another vector.
@@ -127,7 +130,7 @@ namespace Engine::Core::Math {
 			 * @param vec The vector to add to this.
 			 * @return The result of vector addition.
 			 */
-			 FVector3 operator+(const FVector3& vec) const;
+			FVector3 operator+(const FVector3& vec) const;
 
 			/**
 			 * Gets the result of component-wise subtraction of this by another vector.
@@ -135,7 +138,7 @@ namespace Engine::Core::Math {
 			 * @param vec The vector to subtract from this.
 			 * @return The result of vector subtraction.
 			 */
-			 FVector3 operator-(const FVector3& vec) const;
+			FVector3 operator-(const FVector3& vec) const;
 
 			/**
 			 * Gets the result of subtracting from each component of the vector.
@@ -143,7 +146,7 @@ namespace Engine::Core::Math {
 			 * @param bias How much to subtract from each component.
 			 * @return The result of subtraction.
 			 */
-			 FVector3 operator-(float bias) const;
+			FVector3 operator-(float bias) const;
 
 			/**
 			 * Gets the result of adding to each component of the vector.
@@ -151,7 +154,7 @@ namespace Engine::Core::Math {
 			 * @param bias How much to add to each component.
 			 * @return The result of addition.
 			 */
-			 FVector3 operator+(float bias) const;
+			FVector3 operator+(float bias) const;
 
 			/**
 			 * Gets the result of scaling the vector (multiplying each component by a value).
@@ -159,7 +162,7 @@ namespace Engine::Core::Math {
 			 * @param scale What to multiply each component by.
 			 * @return The result of multiplication.
 			 */
-			 FVector3 operator*(float scale) const;
+			FVector3 operator*(float scale) const;
 
 			/**
 			 * Gets the result of dividing each component of the vector by a value.
@@ -175,7 +178,7 @@ namespace Engine::Core::Math {
 			 * @param vec The vector to multiply with.
 			 * @return The result of multiplication.
 			 */
-			 FVector3 operator*(const FVector3& vec) const;
+			FVector3 operator*(const FVector3& vec) const;
 
 			/**
 			 * Gets the result of component-wise division of this vector by another.
@@ -183,7 +186,7 @@ namespace Engine::Core::Math {
 			 * @param vec The vector to divide by.
 			 * @return The result of division.
 			 */
-			 FVector3 operator/(const FVector3& vec) const;
+			FVector3 operator/(const FVector3& vec) const;
 
 			// Binary comparison operators.
 
@@ -225,7 +228,7 @@ namespace Engine::Core::Math {
 			 *
 			 * @return A negated copy of the vector.
 			 */
-			 FVector3 operator-() const;
+			FVector3 operator-() const;
 
 			/**
 			 * Adds another vector to this.
@@ -234,7 +237,7 @@ namespace Engine::Core::Math {
 			 * @param vec vector to add to this.
 			 * @return Copy of the vector after addition.
 			 */
-			 FVector3 operator+=(const FVector3& vec);
+			FVector3 operator+=(const FVector3& vec);
 
 			/**
 			 * Subtracts another vector from this.
@@ -243,7 +246,7 @@ namespace Engine::Core::Math {
 			 * @param vec vector to subtract from this.
 			 * @return Copy of the vector after subtraction.
 			 */
-			 FVector3 operator-=(const FVector3& vec);
+			FVector3 operator-=(const FVector3& vec);
 
 			/**
 			 * Scales the vector.
@@ -251,15 +254,15 @@ namespace Engine::Core::Math {
 			 * @param scale Amount to scale this vector by.
 			 * @return Copy of the vector after scaling.
 			 */
-			 FVector3 operator*=(float scale);
+			FVector3 operator*=(float scale);
 
 			/**
 			 * Divides the vector by a number.
 			 *
-			 * @param value What to divide this vector by.
+			 * @param scale What to divide this vector by.
 			 * @return Copy of the vector after division.
 			 */
-			FVector3 operator/=(float value);
+			FVector3 operator/=(float scale);
 
 			/**
 			 * Multiplies the vector with another vector, using component-wise multiplication.
@@ -605,10 +608,6 @@ namespace Engine::Core::Math {
 			 */
 			[[nodiscard]] FString ToString() const;
 	};
-
-
-	
 }
-
 
 #endif //VISREAL_F_VECTOR3_H

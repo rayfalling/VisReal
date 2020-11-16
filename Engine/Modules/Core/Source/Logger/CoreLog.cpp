@@ -2,7 +2,8 @@
  * Created by rayfalling on 2020/10/12.
  * */
 
-#pragma once
+ // ReSharper disable CppMemberFunctionMayBeStatic
+
 #pragma warning(disable:4068)
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "readability-convert-member-functions-to-static"
@@ -27,8 +28,8 @@ Engine::Core::CoreLog::CoreLog() noexcept {
 	consoleSink->set_level(spdlog::level::debug);
 
 	auto time = FTime::CurrentTime();
-	auto outFilePath = fmt::format("Logs/log-{}.txt", time.ToString());
-	auto fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(outFilePath, true);
+	const auto outFilePath = fmt::format("Logs/log-{}.txt", time.ToString());
+	auto fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(FString::String2Wstring(outFilePath), true);
 	fileSink->set_level(spdlog::level::debug);
 
 	_sinks.emplace_back(consoleSink);

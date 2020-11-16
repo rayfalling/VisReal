@@ -11,6 +11,14 @@ namespace Engine::Core {
 	#else
     #define PLATFORM_COMPILER_HAS_IF_CONSTEXPR 0
 	#endif
+
+	#ifndef ENABLE_NAN_DIAGNOSTIC
+	#ifndef NDEBUG
+	#define ENABLE_NAN_DIAGNOSTIC 1
+	#else
+	#define ENABLE_NAN_DIAGNOSTIC 0
+	#endif
+	#endif
 }
 
 #endif //VISREAL_MSVC_PLATFORM_H

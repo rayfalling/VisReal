@@ -12,14 +12,6 @@
 #include "Platform/Windows/WindowsPlatformMath.h"
 #endif
 
-#ifndef ENABLE_NAN_DIAGNOSTIC
-#if NDEBUG
-#define ENABLE_NAN_DIAGNOSTIC 1
-#else
-#define ENABLE_NAN_DIAGNOSTIC 0
-#endif
-#endif
-
 namespace Engine::Core::Math {
 
 	#undef  PI

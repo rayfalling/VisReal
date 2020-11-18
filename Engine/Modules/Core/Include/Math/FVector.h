@@ -461,16 +461,14 @@ namespace Engine::Core::Math {
 			/**
 			 * Util to convert this vector into a unit direction vector and its original length.
 			 *
-			 * @param OutDir Reference passed in to store unit direction vector.
-			 * @param OutLength Reference passed in to store length of the vector.
+			 * @param outDir Reference passed in to store unit direction vector.
+			 * @param outLength Reference passed in to store length of the vector.
 			 */
-			void ToDirectionAndLength(FVector3& OutDir, float& OutLength) const;
+			void ToDirectionAndLength(FVector3& outDir, float& outLength) const;
 
 			/**
 			 * Get a copy of the vector as sign only.
 			 * Each component is set to +1 or -1, with the sign of zero treated as +1.
-			 *
-			 * @param A copy of the vector with each component set to +1 or -1
 			 */
 			FORCEINLINE FVector3 GetSignVector() const;
 
@@ -492,42 +490,42 @@ namespace Engine::Core::Math {
 			/**
 			 * Gets a copy of this vector snapped to a grid.
 			 *
-			 * @param GridSz Grid dimension.
+			 * @param gridSize Grid dimension.
 			 * @return A copy of this vector snapped to a grid.
 			 * @see FMath::GridSnap()
 			 */
-			[[nodiscard]] FVector3 GridSnap(const float& GridSz) const;
+			[[nodiscard]] FVector3 GridSnap(const float& gridSize) const;
 
 			/**
 			 * Get a copy of this vector, clamped inside of a cube.
 			 *
-			 * @param Radius Half size of the cube.
+			 * @param radius Half size of the cube.
 			 * @return A copy of this vector, bound by cube.
 			 */
-			[[nodiscard]] FVector3 BoundToCube(float Radius) const;
+			[[nodiscard]] FVector3 BoundToCube(float radius) const;
 
 			/** Get a copy of this vector, clamped inside of a cube. */
-			[[nodiscard]] FVector3 BoundToBox(const FVector3& Min, const FVector3 Max) const;
+			[[nodiscard]] FVector3 BoundToBox(const FVector3& min, const FVector3 max) const;
 
 			/** Create a copy of this vector, with its magnitude clamped between Min and Max. */
-			[[nodiscard]] FVector3 GetClampedToSize(float Min, float Max) const;
+			[[nodiscard]] FVector3 GetClampedToSize(float min, float max) const;
 
 			/** Create a copy of this vector, with the 2D magnitude clamped between Min and Max. Z is unchanged. */
-			[[nodiscard]] FVector3 GetClampedToSize2D(float Min, float Max) const;
+			[[nodiscard]] FVector3 GetClampedToSize2D(float min, float max) const;
 
 			/** Create a copy of this vector, with its maximum magnitude clamped to MaxSize. */
-			[[nodiscard]] FVector3 GetClampedToMaxSize(float MaxSize) const;
+			[[nodiscard]] FVector3 GetClampedToMaxSize(float maxSize) const;
 
 			/** Create a copy of this vector, with the maximum 2D magnitude clamped to MaxSize. Z is unchanged. */
-			[[nodiscard]] FVector3 GetClampedToMaxSize2D(float MaxSize) const;
+			[[nodiscard]] FVector3 GetClampedToMaxSize2D(float maxSize) const;
 
 			/**
 			 * Add a vector to this and clamp the result in a cube.
 			 *
-			 * @param V Vector to add.
-			 * @param Radius Half size of the cube.
+			 * @param v Vector to add.
+			 * @param radius Half size of the cube.
 			 */
-			void AddBounded(const FVector3& V, float Radius = MAX_INT16);
+			void AddBounded(const FVector3& v, float radius = MAX_INT16);
 
 			/**
 			 * Gets the reciprocal of this vector, avoiding division by zero.
@@ -540,59 +538,60 @@ namespace Engine::Core::Math {
 			/**
 			 * Check whether X, Y and Z are nearly equal.
 			 *
-			 * @param Tolerance Specified Tolerance.
+			 * @param tolerance Specified Tolerance.
 			 * @return true if X == Y == Z within the specified tolerance.
 			 */
-			[[nodiscard]] bool IsUniform(float Tolerance = KINDA_SMALL_NUMBER) const;
+			[[nodiscard]] bool IsUniform(float tolerance = KINDA_SMALL_NUMBER) const;
 
 			/**
 			 * Mirror a vector about a normal vector.
 			 *
-			 * @param MirrorNormal Normal vector to mirror about.
+			 * @param mirrorNormal Normal vector to mirror about.
 			 * @return Mirrored vector.
 			 */
-			[[nodiscard]] FVector3 MirrorByVector(const FVector3& MirrorNormal) const;
+			[[nodiscard]] FVector3 MirrorByVector(const FVector3& mirrorNormal) const;
 
 			/**
 			 * Mirrors a vector about a plane.
 			 *
-			 * @param Plane Plane to mirror about.
+			 * @param plane Plane to mirror about.
 			 * @return Mirrored vector.
 			 */
-			[[nodiscard]] FVector3 MirrorByPlane(const Math::FPlane& Plane) const;
+			[[nodiscard]] FVector3 MirrorByPlane(const Math::FPlane& plane) const;
 
 			/**
 			 * Rotates around Axis (assumes Axis.Size() == 1).
 			 *
-			 * @param Angle Angle to rotate (in degrees).
-			 * @param Axis Axis to rotate around.
+			 * @param angleDeg Angle to rotate (in degrees).
+			 * @param axis Axis to rotate around.
 			 * @return Rotated Vector.
 			 */
-			[[nodiscard]] FVector3 RotateAngleAxis(const float AngleDeg, const FVector3& Axis) const;
+			[[nodiscard]] FVector3 RotateAngleAxis(float angleDeg, const FVector3& axis) const;
 
 			/**
 			 * Returns the cosine of the angle between this vector and another projected onto the XY plane (no Z).
 			 *
-			 * @param B the other vector to find the 2D cosine of the angle with.
+			 * @param b the other vector to find the 2D cosine of the angle with.
 			 * @return The cosine.
 			 */
-			FORCEINLINE float CosineAngle2D(FVector3 B) const;
+			FORCEINLINE float CosineAngle2D(FVector3 b) const;
 
 			/**
 			 * Gets a copy of this vector projected onto the input vector.
 			 *
-			 * @param A	Vector to project onto, does not assume it is normalized.
+			 * @param a	Vector to project onto, does not assume it is normalized.
 			 * @return Projected vector.
 			 */
-			FORCEINLINE FVector3 ProjectOnTo(const FVector3& A) const;
+			FORCEINLINE FVector3 ProjectOnTo(const FVector3& a) const;
 
 			/**
 			 * Gets a copy of this vector projected onto the input vector, which is assumed to be unit length.
 			 *
-			 * @param  Normal Vector to project onto (assumed to be unit length).
+			 * @param  normal Vector to project onto (assumed to be unit length).
 			 * @return Projected vector.
 			 */
-			FORCEINLINE FVector3 ProjectOnToNormal(const FVector3& Normal) const;
+			FORCEINLINE FVector3 ProjectOnToNormal(const FVector3& normal) const;
+		
 		public:
 			/**
 			 * Utility to check if there are any non-finite values (NaN or Inf) in this vector.
@@ -608,6 +607,53 @@ namespace Engine::Core::Math {
 			 */
 			[[nodiscard]] FString ToString() const;
 	};
+
+	/**
+	 * Multiplies a vector by a scaling factor.
+	 *
+	 * @param scale Scaling factor.
+	 * @param v Vector to scale.
+	 * @return Result of multiplication.
+	 */
+	FORCEINLINE FVector3 operator*(const float scale, const FVector3& v) {
+		return v.operator*(scale);
+	}
+
+	/** 
+	 * Util to calculate distance from a point to a bounding box 
+	 *
+	 * @param min 3D Point defining the lower values of the axis of the bound box
+	 * @param max 3D Point defining the lower values of the axis of the bound box
+	 * @param point 3D position of interest
+	 * @return the distance from the Point to the bounding box.
+	 */
+	FORCEINLINE float ComputeSquaredDistanceFromBoxToPoint(const FVector3& min, const FVector3& max, const FVector3& point) {
+		// Accumulates the distance as we iterate axis
+		auto distSquared = 0.f;
+
+		// Check each axis for min/max and add the distance accordingly
+		// NOTE: Loop manually unrolled for > 2x speed up
+		if (point.X < min.X) {
+			distSquared += FMath::Square(point.X - min.X);
+		} else if (point.X > max.X) {
+			distSquared += FMath::Square(point.X - max.X);
+		}
+
+		if (point.Y < min.Y) {
+			distSquared += FMath::Square(point.Y - min.Y);
+		} else if (point.Y > max.Y) {
+			distSquared += FMath::Square(point.Y - max.Y);
+		}
+
+		if (point.Z < min.Z) {
+			distSquared += FMath::Square(point.Z - min.Z);
+		} else if (point.Z > max.Z) {
+			distSquared += FMath::Square(point.Z - max.Z);
+		}
+
+		return distSquared;
+	}
+
 }
 
 #endif //VISREAL_F_VECTOR3_H

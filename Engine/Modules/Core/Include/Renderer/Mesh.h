@@ -4,22 +4,22 @@
 
 #pragma once
 
-#ifndef vISREAL_MESH_H
-#define vISREAL_MESH_H
+#ifndef VISREAL_MESH_H
+#define VISREAL_MESH_H
 
 #include "Container/TArray.h"
 #include "Math/FVector.h"
 #include "Object/Object.h"
 
 namespace Engine::Core::Renderer {
-	class Mesh : public Core::Object {
+	class Mesh : public Object {
 		public:
 			/* vertexes buffer */
-			TArray<FVector3> vertexes;
+			TArray<Math::FVector3> Vertexes;
 
 			/* Normals buffer */
-			TArray<FVector3> Normals;
-			TArray<FVector3> Targent;
+			TArray<Math::FVector3> Normals;
+			TArray<Math::FVector3> Tangents;
 
 		public:
 			Mesh();
@@ -29,4 +29,4 @@ namespace Engine::Core::Renderer {
 	};
 }
 
-#endif // vISREAL_MESH_H
+#endif // VISREAL_MESH_H

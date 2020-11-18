@@ -15,7 +15,7 @@
 
 namespace Engine::Core::Math {
 	class FVector3;
-	struct FPlane;
+	class FPlane;
 	/**
 	 * 4x4 matrix of floating point values.
 	 * Matrix-matrix multiplication happens with a pre-multiple of the transpose --
@@ -23,7 +23,7 @@ namespace Engine::Core::Math {
 	 * opposed to Res = Mat1 * Mat2.
 	 * Matrix elements are accessed with M[RowIndex][ColumnIndex].
 	 */
-	struct FMatrix {
+	class FMatrix {
 		public:
 			union {
 				MS_ALIGN(16) float M[4][4] GCC_ALIGN(16);
@@ -129,10 +129,10 @@ namespace Engine::Core::Math {
 			inline bool operator!=(const FMatrix& Other) const;
 
 			// Homogeneous transform.
-			FORCEINLINE FVector4 TransformFVector34(const FVector4& V) const;
+			// FORCEINLINE FVector4 TransformFVector34(const FVector4& V) const;
 
 			/** Transform a location - will take into account translation part of the FMatrix. */
-			FORCEINLINE FVector4 TransformPosition(const FVector3& V) const;
+			// FORCEINLINE FVector4 TransformPosition(const FVector3& V) const;
 
 			/** Inverts the matrix and then transforms V - correctly handles scaling in this matrix. */
 			FORCEINLINE FVector3 InverseTransformPosition(const FVector3& V) const;
@@ -141,7 +141,7 @@ namespace Engine::Core::Math {
 			 *	Transform a direction vector - will not take into account translation part of the FMatrix.
 			 *	If you want to transform a surface normal (or plane) and correctly account for non-uniform scaling you should use TransformByUsingAdjointT.
 			 */
-			FORCEINLINE FVector4 TransformVector(const FVector3& V) const;
+			// FORCEINLINE FVector4 TransformVector(const FVector3& V) const;
 
 			/**
 			 *	Transform a direction vector by the inverse of this matrix - will not take into account translation part.

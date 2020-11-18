@@ -11,13 +11,15 @@
 #include "Marco/PlatformMarcos.h"
 
 namespace Engine::Core::Math {
+	class FMatrix;
+	
 	/**
 	 * Structure for three dimensional planes.
 	 *
 	 * Stores the coeffecients as Xx+Yy+Zz=W.
 	 * Note that this is different from many other Plane classes that use Xx+Yy+Zz+W=0.
 	 */
-	MS_ALIGN(16) struct FPlane : public FVector3 {
+	MS_ALIGN(16) class FPlane : public FVector3 {
 		public:
 
 			/** The w-component. */
@@ -33,7 +35,7 @@ namespace Engine::Core::Math {
 			 *
 			 * @param V 4D vector to set up plane.
 			 */
-			FORCEINLINE FPlane(const FVector4& V);
+			// FORCEINLINE FPlane(const FVector4& V);
 
 			/**
 			 * Constructor.

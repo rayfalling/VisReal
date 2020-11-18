@@ -38,12 +38,23 @@ void TestTArray() {
 	auto duration = duration_cast<microseconds>(end - start);
 	logger.LogDebug(FString::Format("TArray test finished in: {0} microseconds", duration.count()));
 
-	array.Clear();
-
-	logger.LogDebug(FString("TArray single thread writing count 1000000"));
+	vec.clear();
+	logger.LogDebug(FString("std::vector single thread writing count 10000000"));
 	start = system_clock::now();
 
-	for (auto i = 0; i < 1000000; i++) {
+	for (auto i = 0; i < 10000000; i++) {
+		vec.emplace_back(i);
+	}
+
+	end = system_clock::now();
+	duration = duration_cast<microseconds>(end - start);
+	logger.LogDebug(FString::Format("std::vector single thread writing test finished in: {0} microseconds", duration.count()));
+
+	array.Clear();
+	logger.LogDebug(FString("TArray single thread writing count 10000000"));
+	start = system_clock::now();
+
+	for (auto i = 0; i < 10000000; i++) {
 		array.Add(i);
 	}
 
@@ -53,14 +64,14 @@ void TestTArray() {
 
 	array.Clear();
 
-	logger.LogDebug(FString("TArray multi thread (num 4) writing by using OpenMP count 1000000"));
+	logger.LogDebug(FString("TArray multi thread (num 4) writing by using OpenMP count 10000000"));
 	start = system_clock::now();
-
+	
 	#pragma omp parallel for num_threads(4)
-	for (auto i = 0; i < 1000000; i++) {
+	for (auto i = 0; i < 10000000; i++) {
 		array.Add(i);
 	}
-
+	
 	end = system_clock::now();
 	duration = duration_cast<microseconds>(end - start);
 	logger.LogDebug(FString::Format("TArray multi thread writing test finished in: {0} microseconds", duration.count()));

@@ -20,6 +20,12 @@
 #include "Platform/PlatformTypes.h"
 
 namespace Engine::Core::Types {
+	/**
+	 * Thread safe Array
+	 * Because of mutex, it's took 4 times to add than vector,
+	 * if you want to use non safe array, you cloud use std::vector
+	 * and pass vector to TArray.
+	 * */
 	template <typename T>
 	class TArray {
 		template <typename Other>
@@ -33,7 +39,6 @@ namespace Engine::Core::Types {
 		typedef uint32 IndexType;
 		typedef int32 ReturnIndexType;
 		#endif
-
 
 		public:
 			TArray();
@@ -81,16 +86,16 @@ namespace Engine::Core::Types {
 			T& operator[](IndexType&& index) const;
 
 			/* return size */
-			[[nodiscard]] ReturnIndexType GetSize() const;
+			[[nodiscard]] CONSTEXPR ReturnIndexType GetSize() const;
 
 			/* return size */
-			[[nodiscard]] ReturnIndexType Length() const;
+			[[nodiscard]] CONSTEXPR ReturnIndexType Length() const;
 
 			/* return capacity */
-			[[nodiscard]] ReturnIndexType GetCapacity() const;
+			[[nodiscard]] CONSTEXPR ReturnIndexType GetCapacity() const;
 
 		protected:
-			[[nodiscard]] T* GetData() const;
+			[[nodiscard]] CONSTEXPR T* GetData() const;
 
 		public:
 			/* Add new Element */
@@ -173,21 +178,11 @@ namespace Engine::Core::Types {
 
 			/* Finds an element which matches a predicate functor. */
 			template <typename Predicate>
-			T* FindLast(Predicate predicate) {
-				for (T *start = GetData(), *data = start + _size; data != start;) {
-					--data;
-					if (predicate(*data)) {
-						return data;
-					}
-				}
-				return nullptr;
-			}
+			T* FindLast(Predicate predicate);
 
 			/* Finds an element which matches a predicate functor. */
 			template <typename Predicate>
-			const T* FindLast(Predicate predicate) const {
-				return const_cast<TArray*>(this)->FindLast(predicate);
-			}
+			const T* FindLast(Predicate predicate) const;
 
 			/**
 			 * get the index of given element
@@ -229,6 +224,12 @@ namespace Engine::Core::Types {
 			/* Finds an element which matches a predicate functor. */
 			IndexType IndexLast(T&& element) const;
 
+			/* Insert to index */
+			void Insert(IndexType index, const T& element);
+
+			/* Insert to index */
+			void Insert(IndexType index, T&& element);
+
 			/* Remove array element at index */
 			void RemoveAt(IndexType index);
 
@@ -254,7 +255,7 @@ namespace Engine::Core::Types {
 			void RemoveRange(IndexType startIndex, IndexType endIndex);
 
 			/* Reserve array elements */
-			void Reserve();
+			void Reserve() const;
 
 			/* resize the array */
 			void Resize(IndexType size, bool allowShrink = true);
@@ -284,7 +285,10 @@ namespace Engine::Core::Types {
 			void RemoveAtSwapImpl(IndexType index, IndexType count = 1, bool allowShrinking = true);
 
 			/* check if the index is out of array size */
-			void CheckIndex(IndexType index) const;
+			CONSTEXPR void CheckIndex(IndexType index) const;
+
+			/* check if should grow array capacity */
+			CONSTEXPR void CheckCapacity();
 	};
 
 	template <typename T>
@@ -306,13 +310,12 @@ namespace Engine::Core::Types {
 		_size = initList.size();
 		_capacity = initList.size();
 		_data = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
-		Core::CopyAssignItems<T, IndexType>(_data.get(), initList.begin(), initList.size());
+		Core::CopyAssignItems<T, IndexType>(GetData(), initList.begin(), initList.size());
 	}
 
 	template <typename T>
 	TArray<T>& TArray<T>::operator=(const TArray<T>& array) {
 		if (this != &array) {
-			_data.reset();
 			_size = array._size;
 			_capacity = array._capacity;
 			_data = array._data;
@@ -323,9 +326,9 @@ namespace Engine::Core::Types {
 	template <typename T>
 	TArray<T>& TArray<T>::operator=(TArray<T>&& array) noexcept {
 		if (this != &array) {
-			_data.reset();
 			_size = array._size;
 			_capacity = array._capacity;
+			std::atomic_exchange_explicit(&_data, array._data);
 			_data.swap(array._data);
 		}
 		return *this;
@@ -336,12 +339,11 @@ namespace Engine::Core::Types {
 		_size = array._size;
 		_capacity = array._capacity;
 		_data = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
-		Core::CopyAssignItems<T, IndexType>(_data.get(), array.GetData(), array._capacity);
+		Core::CopyAssignItems<T, IndexType>(GetData(), array.GetData(), array.GetCapacity());
 	}
 
 	template <typename T>
 	TArray<T>::TArray(TArray<T>&& array) noexcept {
-		_data.reset();
 		_size = array._size;
 		_capacity = array._capacity;
 		_data.swap(array._data);
@@ -369,22 +371,22 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	typename TArray<T>::ReturnIndexType TArray<T>::GetSize() const {
+	CONSTEXPR typename TArray<T>::ReturnIndexType TArray<T>::GetSize() const {
 		return _size;
 	}
 
 	template <typename T>
-	typename TArray<T>::ReturnIndexType TArray<T>::Length() const {
+	CONSTEXPR typename TArray<T>::ReturnIndexType TArray<T>::Length() const {
 		return _size;
 	}
 
 	template <typename T>
-	typename TArray<T>::ReturnIndexType TArray<T>::GetCapacity() const {
+	CONSTEXPR typename TArray<T>::ReturnIndexType TArray<T>::GetCapacity() const {
 		return _capacity;
 	}
 
 	template <typename T>
-	T* TArray<T>::GetData() const {
+	CONSTEXPR T* TArray<T>::GetData() const {
 		return _data.get();
 	}
 
@@ -392,9 +394,8 @@ namespace Engine::Core::Types {
 	typename TArray<T>::IndexType TArray<T>::Add(T& data) {
 		std::lock_guard<std::mutex> lock(_mutex);
 		_size++;
-		if (_size >= _capacity)
-			GrowArrayCapacity();
-		_data.get()[_size - 1] = data;
+		CheckCapacity();
+		GetData()[_size - 1] = data;
 		return _size;
 	}
 
@@ -402,9 +403,8 @@ namespace Engine::Core::Types {
 	typename TArray<T>::IndexType TArray<T>::Add(T&& data) {
 		std::lock_guard<std::mutex> lock(_mutex);
 		_size++;
-		if (_size >= _capacity)
-			GrowArrayCapacity();
-		_data.get()[_size - 1] = std::move(data);
+		CheckCapacity();
+		GetData()[_size - 1] = std::move(data);
 		return _size;
 	}
 
@@ -413,9 +413,8 @@ namespace Engine::Core::Types {
 		std::lock_guard<std::mutex> lock(_mutex);
 		auto oldSize = _size;
 		_size += initList.size();
-		if (_size > _capacity)
-			GrowArrayCapacity();
-		Core::CopyAssignItems<T, IndexType>(_data.get() + oldSize, initList.begin(), initList.size());
+		CheckCapacity();
+		Core::CopyAssignItems<T, IndexType>(GetData() + oldSize, initList.begin(), initList.size());
 
 	}
 
@@ -424,9 +423,8 @@ namespace Engine::Core::Types {
 		std::lock_guard<std::mutex> lock(_mutex);
 		auto oldSize = _size;
 		_size += initList.size();
-		if (_size > _capacity)
-			GrowArrayCapacity();
-		Core::MoveAssignItems<T, IndexType>(_data.get() + oldSize, initList.begin(), initList.size());
+		CheckCapacity();
+		Core::MoveAssignItems<T, IndexType>(GetData() + oldSize, initList.begin(), initList.size());
 	}
 
 	template <typename T>
@@ -434,9 +432,8 @@ namespace Engine::Core::Types {
 		std::lock_guard<std::mutex> lock(_mutex);
 		auto oldSize = _size;
 		_size += array.GetSize();
-		if (_size > _capacity)
-			GrowArrayCapacity();
-		Core::CopyAssignItems<T, IndexType>(_data.get() + oldSize, array.GetData(), array.GetSize());
+		CheckCapacity();
+		Core::CopyAssignItems<T, IndexType>(GetData() + oldSize, array.GetData(), array.GetSize());
 	}
 
 	template <typename T>
@@ -444,9 +441,8 @@ namespace Engine::Core::Types {
 		std::lock_guard<std::mutex> lock(_mutex);
 		auto oldSize = _size;
 		_size += array.GetSize();
-		if (_size > _capacity)
-			GrowArrayCapacity();
-		Core::MoveAssignItems<T, IndexType>(_data.get() + oldSize, array.GetData(), array.GetSize());
+		CheckCapacity();
+		Core::MoveAssignItems<T, IndexType>(GetData() + oldSize, array.GetData(), array.GetSize());
 	}
 
 	template <typename T>
@@ -454,9 +450,8 @@ namespace Engine::Core::Types {
 		std::lock_guard<std::mutex> lock(_mutex);
 		auto oldSize = _size;
 		_size += vector.size();
-		if (_size > _capacity)
-			GrowArrayCapacity();
-		Core::CopyAssignItems<T, IndexType>(_data.get() + oldSize, vector.data(), vector.size());
+		CheckCapacity();
+		Core::CopyAssignItems<T, IndexType>(GetData() + oldSize, vector.data(), vector.size());
 	}
 
 	template <typename T>
@@ -464,75 +459,61 @@ namespace Engine::Core::Types {
 		std::lock_guard<std::mutex> lock(_mutex);
 		auto oldSize = _size;
 		_size += vector.size();
-		if (_size > _capacity)
-			GrowArrayCapacity();
-		Core::MoveAssignItems<T, IndexType>(_data.get() + oldSize, vector.data(), vector.size());
+		CheckCapacity();
+		Core::MoveAssignItems<T, IndexType>(GetData() + oldSize, vector.data(), vector.size());
 	}
 
 	template <typename T>
 	void TArray<T>::Assign(std::initializer_list<T>& initList) {
 		std::lock_guard<std::mutex> lock(_mutex);
 		_size = initList.size();
-		_data.reset();
-		if (_size > _capacity)
-			GrowArrayCapacity();
-		Core::CopyAssignItems<T, IndexType>(_data.get(), initList.begin(), initList.size());
+		CheckCapacity();
+		Core::CopyAssignItems<T, IndexType>(GetData(), initList.begin(), initList.size());
 	}
 
 	template <typename T>
 	void TArray<T>::Assign(std::initializer_list<T>&& initList) {
 		std::lock_guard<std::mutex> lock(_mutex);
 		_size = initList.size();
-		_data.reset();
-		if (_size > _capacity)
-			GrowArrayCapacity();
-		Core::MoveAssignItems<T, IndexType>(_data.get(), initList.begin(), initList.size());
+		CheckCapacity();
+		Core::MoveAssignItems<T, IndexType>(GetData(), initList.begin(), initList.size());
 	}
 
 	template <typename T>
 	void TArray<T>::Assign(TArray<T>& array) {
 		std::lock_guard<std::mutex> lock(_mutex);
 		_size = array.GetSize();
-		_data.reset();
-		if (_size > _capacity)
-			GrowArrayCapacity();
-		Core::CopyAssignItems<T, IndexType>(_data.get(), array.GetData(), array.GetSize());
+		CheckCapacity();
+		Core::CopyAssignItems<T, IndexType>(GetData(), array.GetData(), array.GetSize());
 	}
 
 	template <typename T>
 	void TArray<T>::Assign(TArray<T>&& array) {
 		std::lock_guard<std::mutex> lock(_mutex);
 		_size = array.GetSize();
-		_data.reset();
-		if (_size > _capacity)
-			GrowArrayCapacity();
-		Core::MoveAssignItems(_data.get(), array.GetData(), array.GetSize());
+		CheckCapacity();
+		Core::MoveAssignItems(GetData(), array.GetData(), array.GetSize());
 	}
 
 	template <typename T>
 	void TArray<T>::Assign(std::vector<T>& vector) {
 		std::lock_guard<std::mutex> lock(_mutex);
 		_size = vector.size();
-		_data.reset();
-		if (_size > _capacity)
-			GrowArrayCapacity();
-		Core::CopyAssignItems<T, IndexType>(_data.get(), vector.data(), vector.size());
+		CheckCapacity();
+		Core::CopyAssignItems<T, IndexType>(GetData(), vector.data(), vector.size());
 	}
 
 	template <typename T>
 	void TArray<T>::Assign(std::vector<T>&& vector) {
 		std::lock_guard<std::mutex> lock(_mutex);
 		_size = vector.size();
-		_data.reset();
-		if (_size > _capacity)
-			GrowArrayCapacity();
-		Core::MoveAssignItems<T, IndexType>(_data.get(), vector.data(), vector.size());
+		CheckCapacity();
+		Core::MoveAssignItems<T, IndexType>(GetData(), vector.data(), vector.size());
 	}
 
 	template <typename T>
 	void TArray<T>::Clear() {
 		std::lock_guard<std::mutex> lock(_mutex);
-		_data.reset();
 		_size = 0;
 		_capacity = DefaultArraySize;
 		_data.swap(std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>()));
@@ -581,6 +562,24 @@ namespace Engine::Core::Types {
 	template <typename Predicate>
 	const T* TArray<T>::Find(Predicate predicate) const {
 		return const_cast<TArray*>(this)->Find(predicate);
+	}
+
+	template <typename T>
+	template <typename Predicate>
+	T* TArray<T>::FindLast(Predicate predicate) {
+		for (T *start = GetData(), *data = start + _size; data != start;) {
+			--data;
+			if (predicate(*data)) {
+				return data;
+			}
+		}
+		return nullptr;
+	}
+
+	template <typename T>
+	template <typename Predicate>
+	const T* TArray<T>::FindLast(Predicate predicate) const {
+		return const_cast<TArray*>(this)->FindLast(predicate);
 	}
 
 	template <typename T>
@@ -648,22 +647,36 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
+	void TArray<T>::Insert(IndexType index, const T& element) {
+		CheckIndex(_size + 1);
+		_size++;
+		CheckCapacity();
+		MoveAssignItems(GetData() + index + 1, GetData() + index, _size - 1 - index);
+		GetData()[index] = element;
+	}
+
+	template <typename T>
+	void TArray<T>::Insert(IndexType index, T&& element) {
+		CheckIndex(_size + 1);
+		_size++;
+		CheckCapacity();
+		MoveAssignItems(GetData() + index + 1, GetData() + index, _size - 1 - index);
+		GetData()[index] = std::move(element);
+	}
+
+	template <typename T>
 	void TArray<T>::RemoveAt(const IndexType index) {
 		std::lock_guard<std::mutex> lock(_mutex);
-		if (index > _size - 1)
-			CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
-		else
-			RemoveAtImpl(index, 1);
+		CheckIndex(index);
+		RemoveAtImpl(index, 1);
 	}
 
 	template <typename T>
 	void TArray<T>::RemoveAtSwap(const IndexType index) {
 		CoreLog::GetInstance().LogWarning(TARRAY_REMOVE_AT_SWAP_WARNING);
 		std::lock_guard<std::mutex> lock(_mutex);
-		if (index > _size - 1)
-			CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
-		else
-			RemoveAtSwapImpl(index, 1);
+		CheckIndex(index);
+		RemoveAtSwapImpl(index, 1);
 	}
 
 	template <typename T>
@@ -681,27 +694,26 @@ namespace Engine::Core::Types {
 	template <typename T>
 	void TArray<T>::RemoveAtRange(const IndexType index, const IndexType count) {
 		std::lock_guard<std::mutex> lock(_mutex);
-		if (count > 0)
-			if (index + count > _size - 1)
-				CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
-			else
-				RemoveAtImpl(index, count);
+		if (count > 0) {
+			CheckIndex(index);
+			CheckIndex(index + count);
+			RemoveAtImpl(index, count);
+		}
 	}
 
 	template <typename T>
 	void TArray<T>::RemoveRange(const IndexType startIndex, const IndexType endIndex) {
 		std::lock_guard<std::mutex> lock(_mutex);
-		if (endIndex < startIndex || endIndex > _size - 1)
-			CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
-		else
-			RemoveAtImpl(startIndex, endIndex - startIndex + 1);
+		CheckIndex(startIndex);
+		CheckIndex(endIndex);
+		RemoveAtImpl(startIndex, endIndex - startIndex + 1);
 	}
 
 	template <typename T>
-	void TArray<T>::Reserve() {
+	void TArray<T>::Reserve() const {
 		IndexType start = 0, end = _size - 1;
 		while (start < end) {
-			std::swap(*(_data.get() + start), *(_data.get() + end));
+			std::swap(*(GetData() + start), *(GetData() + end));
 			start++;
 			end--;
 		}
@@ -727,19 +739,15 @@ namespace Engine::Core::Types {
 	void TArray<T>::ResizeShrink(const IndexType size, const bool allowShrinking) {
 		if (allowShrinking) {
 			_capacity = size;
-			std::shared_ptr<T[]> newSpace = std::shared_ptr<T[]>(
-					new T[_capacity](), std::default_delete<T[]>());
-			Core::CopyAssignItems<T, IndexType>(newSpace.get(), _data.get(), size);
+			T* newPtr = new T[_capacity];
+			Core::CopyAssignItems<T, IndexType>(newPtr, GetData(), size);
+			_data.reset(newPtr);
 			_size = size;
-			_data.reset();
-			_data.swap(newSpace);
 		} else {
 			_capacity = _size;
-			std::shared_ptr<T[]> newSpace = std::shared_ptr<T[]>(
-					new T[_capacity](), std::default_delete<T[]>());
-			Core::CopyAssignItems<T, IndexType>(newSpace.get(), _data.get(), _size);
-			_data.reset();
-			_data.swap(newSpace);
+			T* newPtr = new T[_capacity];
+			Core::CopyAssignItems<T, IndexType>(newPtr, GetData(), _size);
+			_data.reset(newPtr);
 		}
 	}
 
@@ -750,14 +758,14 @@ namespace Engine::Core::Types {
 			CoreLog::GetInstance().LogWarning(TARRAY_MAX_SIZE);
 			_capacity = MaxArraySize;
 		}
-		std::shared_ptr<T[]> newSpace = std::shared_ptr<T[]>(new T[_capacity](), std::default_delete<T[]>());
-		Core::CopyAssignItems<T, IndexType>(newSpace.get(), _data.get(), _size);
-		_data.reset();
-		_data.swap(newSpace);
+		T* newPtr = new T[_capacity];
+		Core::CopyAssignItems<T, IndexType>(newPtr, GetData(), _size);
+		_data.reset(newPtr);
 	}
 
 	template <typename T>
 	void TArray<T>::GrowArrayCapacity() {
+		if (_size == _capacity)return;
 		auto newCapacity = _capacity + _capacity / 2;
 		if (newCapacity < _size) newCapacity = _size;
 		ResizeGrow(newCapacity);
@@ -767,9 +775,9 @@ namespace Engine::Core::Types {
 	void TArray<T>::RemoveAtImpl(IndexType index, const IndexType count, const bool allowShrinking) {
 		if (count) {
 			/* Do destruct for removed element to avoid ptr in element */
-			Core::DestructItems<T, IndexType>(_data.get() + index, count);
+			Core::DestructItems<T, IndexType>(GetData() + index, count);
 			/* move elements */
-			Core::MoveAssignItems<T, IndexType>(_data.get() + index, _data.get() + (index + count), count);
+			Core::MoveAssignItems<T, IndexType>(GetData() + index, GetData() + (index + count), count);
 			/* shrink array size */
 			_size -= count;
 
@@ -783,15 +791,14 @@ namespace Engine::Core::Types {
 	void TArray<T>::RemoveAtSwapImpl(IndexType index, IndexType count, const bool allowShrinking) {
 		if (count) {
 			Core::DestructItems(GetData() + index, count);
-
 			// Replace the elements in the hole created by the removal with elements from the end of the array, so the range of indices used by the array is contiguous.
 			const auto numElementsInHole = count;
 			const auto numElementsAfterHole = _size - (index + count);
 			const auto numElementsToMoveIntoHole = Math::FMath::Min(numElementsInHole, numElementsAfterHole);
 			if (numElementsToMoveIntoHole) {
 				Core::CopyAssignItems(
-						_data.get() + index,
-						_data.get() + _size - numElementsToMoveIntoHole,
+						GetData() + index,
+						GetData() + _size - numElementsToMoveIntoHole,
 						numElementsToMoveIntoHole
 						);
 			}
@@ -804,11 +811,17 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::CheckIndex(const IndexType index) const {
+	CONSTEXPR void TArray<T>::CheckIndex(const IndexType index) const {
 		if (index > _size - 1 || _size == 0) {
 			CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
 			PLATFORM_BREAK();
 		}
+	}
+
+	template <typename T>
+	CONSTEXPR void TArray<T>::CheckCapacity() {
+		if (_size > _capacity)
+			GrowArrayCapacity();
 	}
 
 	template <typename T>

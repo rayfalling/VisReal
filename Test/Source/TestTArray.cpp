@@ -5,6 +5,7 @@
 #include "TestTArray.h"
 
 #include "Container/TArray.h"
+#include "Container/TSafeArray.h"
 
 using namespace Engine::Core;
 using namespace std::chrono;
@@ -62,17 +63,17 @@ void TestTArray() {
 	duration = duration_cast<microseconds>(end - start);
 	logger.LogDebug(FString::Format("TArray single thread writing test finished in: {0} microseconds", duration.count()));
 
-	array.Clear();
+	TSafeArray<int> safeArray;
 
-	logger.LogDebug(FString("TArray multi thread (num 4) writing by using OpenMP count 10000000"));
+	logger.LogDebug(FString("TSafeArray multi thread (num 4) writing by using OpenMP count 10000000"));
 	start = system_clock::now();
-	
+
 	#pragma omp parallel for num_threads(4)
 	for (auto i = 0; i < 10000000; i++) {
-		array.Add(i);
+		safeArray.Add(i);
 	}
-	
+
 	end = system_clock::now();
 	duration = duration_cast<microseconds>(end - start);
-	logger.LogDebug(FString::Format("TArray multi thread writing test finished in: {0} microseconds", duration.count()));
+	logger.LogDebug(FString::Format("TSafeArray multi thread writing test finished in: {0} microseconds", duration.count()));
 }

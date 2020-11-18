@@ -1,13 +1,13 @@
 /**
- * Created by rayfalling on 2020/10/18.
+ * Created by rayfalling on 2020/11/18.
  *
  * Custom Array class, like std::vector
  * */
 
 #pragma once
 
-#ifndef VISREAL_T_ARRAY_H
-#define VISREAL_T_ARRAY_H
+#ifndef VISREAL_T_SAFE_ARRAY_H
+#define VISREAL_T_SAFE_ARRAY_H
 
 #include <initializer_list>
 #include <memory>
@@ -22,9 +22,9 @@
 
 namespace Engine::Core::Types {
 	template <typename T>
-	class TArray : public TArrayImpl<T, false> {
+	class TSafeArray : public TArrayImpl<T, true> {
 		template <typename Other>
-		friend class TArray;
+		friend class TSafeArray;
 
 		/* define index type */
 		#ifdef PLATFORM_64BITS
@@ -34,27 +34,31 @@ namespace Engine::Core::Types {
 		typedef uint32 IndexType;
 		typedef int32 ReturnIndexType;
 		#endif
-		
+
 		public:
-			TArray();
+			TSafeArray();
 
-			explicit TArray(IndexType capacity);
+			explicit TSafeArray(IndexType capacity);
 
-			TArray(std::initializer_list<T> initList);
+			TSafeArray(std::initializer_list<T> initList);
 
 			/* copy assignment operator */
-			TArray<T>& operator=(const TArray& array);
+			TSafeArray<T>& operator=(const TSafeArray& array);
 
 			/* move assignment operator */
-			TArray<T>& operator=(TArray&& array) noexcept;
+			TSafeArray<T>& operator=(TSafeArray&& array) noexcept;
 
 			/* Copy Construct, copy deep data to new Instance */
-			TArray(const TArray<T>& array);
+			TSafeArray(const TSafeArray<T>& array);
 
 			/* Move Construct, copy deep data to new Instance */
-			TArray(TArray<T>&& array) noexcept;
+			TSafeArray(TSafeArray<T>&& array) noexcept;
 
-			~TArray();
+			~TSafeArray();
+
+		private:
+			/* thread mutex */
+			std::mutex _mutex;
 
 		public:
 			/* return element index */
@@ -92,10 +96,10 @@ namespace Engine::Core::Types {
 			void AddRange(std::initializer_list<T>&& initList);
 
 			/* Add new Elements */
-			void AddRange(TArray<T>& array);
+			void AddRange(TSafeArray<T>& array);
 
 			/* Add new Elements */
-			void AddRange(TArray<T>&& array);
+			void AddRange(TSafeArray<T>&& array);
 
 			/* Add new Elements */
 			void AddRange(std::vector<T>& vector);
@@ -110,10 +114,10 @@ namespace Engine::Core::Types {
 			void Assign(std::initializer_list<T>&& initList);
 
 			/* Set new Elements */
-			void Assign(TArray<T>& array);
+			void Assign(TSafeArray<T>& array);
 
 			/* Set new Elements */
-			void Assign(TArray<T>&& array);
+			void Assign(TSafeArray<T>&& array);
 
 			/* Set new Elements */
 			void Assign(std::vector<T>& vector);
@@ -242,7 +246,7 @@ namespace Engine::Core::Types {
 			void Resize(IndexType size, bool allowShrink = true);
 
 			/* Swap two array data */
-			void Swap(TArray<T>& array);
+			void Swap(TSafeArray<T>& array);
 
 		protected:
 			/**
@@ -263,7 +267,8 @@ namespace Engine::Core::Types {
 			void RemoveAtImpl(IndexType index, IndexType count, bool allowShrinking = true);
 
 			/* remove element by swap from array memory bottom implementation */
-			void RemoveAtSwapImpl(IndexType index, IndexType count = 1, bool allowShrinking = true);
+			void RemoveAtSwapImpl(IndexType index, IndexType count = 1,
+			                      bool allowShrinking = true);
 
 			/* check if the index is out of array size */
 			CONSTEXPR void CheckIndex(IndexType index) const;
@@ -272,22 +277,23 @@ namespace Engine::Core::Types {
 			CONSTEXPR void CheckCapacity();
 	};
 
+
 	template <typename T>
-	TArray<T>::TArray() {
+	TSafeArray<T>::TSafeArray() {
 		this->_size = 0;
 		this->_capacity = this->DefaultArraySize;
 		this->_data = std::shared_ptr<T[]>(new T[this->_capacity](), std::default_delete<T[]>());
 	}
 
 	template <typename T>
-	TArray<T>::TArray(const IndexType capacity) {
+	TSafeArray<T>::TSafeArray(const IndexType capacity) {
 		this->_size = 0;
 		this->_capacity = capacity;
 		this->_data = std::shared_ptr<T[]>(new T[this->_capacity](), std::default_delete<T[]>());
 	}
 
 	template <typename T>
-	TArray<T>::TArray(std::initializer_list<T> initList) {
+	TSafeArray<T>::TSafeArray(std::initializer_list<T> initList) {
 		this->_size = initList.size();
 		this->_capacity = initList.size();
 		this->_data = std::shared_ptr<T[]>(new T[this->_capacity](), std::default_delete<T[]>());
@@ -295,7 +301,7 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	TArray<T>& TArray<T>::operator=(const TArray<T>& array) {
+	TSafeArray<T>& TSafeArray<T>::operator=(const TSafeArray<T>& array) {
 		if (this != &array) {
 			this->_size = array._size;
 			this->_capacity = array._capacity;
@@ -305,10 +311,10 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	TArray<T>& TArray<T>::operator=(TArray<T>&& array)
+	TSafeArray<T>& TSafeArray<T>::operator=(TSafeArray<T>&& array)
 	noexcept {
 		if (this != &array) {
-			this->_size = array._size;
+			this->_size = array->_size;
 			this->_capacity = array._capacity;
 			std::atomic_exchange_explicit(&this->_data, array._data);
 			this->_data.swap(array._data);
@@ -317,7 +323,7 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	TArray<T>::TArray(const TArray<T>& array) {
+	TSafeArray<T>::TSafeArray(const TSafeArray<T>& array) {
 		this->_size = array._size;
 		this->_capacity = array._capacity;
 		this->_data = std::shared_ptr<T[]>(new T[this->_capacity](), std::default_delete<T[]>());
@@ -325,7 +331,7 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	TArray<T>::TArray(TArray<T>&& array)
+	TSafeArray<T>::TSafeArray(TSafeArray<T>&& array)
 	noexcept {
 		this->_size = array._size;
 		this->_capacity = array._capacity;
@@ -333,62 +339,65 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	TArray<T>::~TArray() = default;
+	TSafeArray<T>::~TSafeArray() = default;
 
 	template <typename T>
-	T& TArray<T>::operator[](IndexType& index) const {
+	T& TSafeArray<T>::operator[](IndexType& index) const {
 		CheckIndex(index);
 		return this->_data[index];
 	}
 
 	template <typename T>
-	T& TArray<T>::operator[](const IndexType& index) const {
+	T& TSafeArray<T>::operator[](const IndexType& index) const {
 		CheckIndex(index);
 		return this->_data[index];
 	}
 
 	template <typename T>
-	T& TArray<T>::operator[](IndexType&& index) const {
+	T& TSafeArray<T>::operator[](IndexType&& index) const {
 		CheckIndex(index);
 		return this->_data[index];
 	}
 
 	template <typename T>
-	CONSTEXPR typename TArray<T>::ReturnIndexType TArray<T>::GetSize() const {
+	CONSTEXPR typename TSafeArray<T>::ReturnIndexType TSafeArray<T>::GetSize() const {
 		return this->_size;
 	}
 
 	template <typename T>
-	CONSTEXPR typename TArray<T>::ReturnIndexType TArray<T>::Length() const {
+	CONSTEXPR typename TSafeArray<T>::ReturnIndexType TSafeArray<T>::Length() const {
 		return this->_size;
 	}
 
 	template <typename T>
-	CONSTEXPR typename TArray<T>::ReturnIndexType TArray<T>::GetCapacity() const {
+	CONSTEXPR typename TSafeArray<T>::ReturnIndexType TSafeArray<T>::GetCapacity() const {
 		return this->_capacity;
 	}
 
 	template <typename T>
-	CONSTEXPR T* TArray<T>::GetData() const {
+	CONSTEXPR T* TSafeArray<T>::GetData() const {
 		return this->_data.get();
 	}
 
 	template <typename T>
-	void TArray<T>::Add(T& data) {
+	void TSafeArray<T>::Add(T& data) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		++this->_size;
 		CheckCapacity();
 		GetData()[this->_size - 1] = data;
 	}
 
 	template <typename T>
-	void TArray<T>::Add(T&& data) {
+	void TSafeArray<T>::Add(T&& data) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		++this->_size;
 		CheckCapacity();
 		GetData()[this->_size - 1] = std::move(data);
 	}
 
 	template <typename T>
-	void TArray<T>::AddRange(std::initializer_list<T>& initList) {
+	void TSafeArray<T>::AddRange(std::initializer_list<T>& initList) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		auto oldSize = this->_size;
 		this->_size += initList.size();
 		CheckCapacity();
@@ -397,7 +406,8 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::AddRange(std::initializer_list<T>&& initList) {
+	void TSafeArray<T>::AddRange(std::initializer_list<T>&& initList) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		auto oldSize = this->_size;
 		this->_size += initList.size();
 		CheckCapacity();
@@ -405,7 +415,8 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::AddRange(TArray<T>& array) {
+	void TSafeArray<T>::AddRange(TSafeArray<T>& array) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		auto oldSize = this->_size;
 		this->_size += array.GetSize();
 		CheckCapacity();
@@ -413,7 +424,8 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::AddRange(TArray<T>&& array) {
+	void TSafeArray<T>::AddRange(TSafeArray<T>&& array) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		auto oldSize = this->_size;
 		this->_size += array.GetSize();
 		CheckCapacity();
@@ -421,7 +433,8 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::AddRange(std::vector<T>& vector) {
+	void TSafeArray<T>::AddRange(std::vector<T>& vector) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		auto oldSize = this->_size;
 		this->_size += vector.size();
 		CheckCapacity();
@@ -429,7 +442,8 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::AddRange(std::vector<T>&& vector) {
+	void TSafeArray<T>::AddRange(std::vector<T>&& vector) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		auto oldSize = this->_size;
 		this->_size += vector.size();
 		CheckCapacity();
@@ -437,49 +451,56 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::Assign(std::initializer_list<T>& initList) {
+	void TSafeArray<T>::Assign(std::initializer_list<T>& initList) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		this->_size = initList.size();
 		CheckCapacity();
 		Core::CopyAssignItems<T, IndexType>(GetData(), initList.begin(), initList.size());
 	}
 
 	template <typename T>
-	void TArray<T>::Assign(std::initializer_list<T>&& initList) {
+	void TSafeArray<T>::Assign(std::initializer_list<T>&& initList) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		this->_size = initList.size();
 		CheckCapacity();
 		Core::MoveAssignItems<T, IndexType>(GetData(), initList.begin(), initList.size());
 	}
 
 	template <typename T>
-	void TArray<T>::Assign(TArray<T>& array) {
+	void TSafeArray<T>::Assign(TSafeArray<T>& array) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		this->_size = array.GetSize();
 		CheckCapacity();
 		Core::CopyAssignItems<T, IndexType>(GetData(), array.GetData(), array.GetSize());
 	}
 
 	template <typename T>
-	void TArray<T>::Assign(TArray<T>&& array) {
+	void TSafeArray<T>::Assign(TSafeArray<T>&& array) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		this->_size = array.GetSize();
 		CheckCapacity();
 		Core::MoveAssignItems(GetData(), array.GetData(), array.GetSize());
 	}
 
 	template <typename T>
-	void TArray<T>::Assign(std::vector<T>& vector) {
+	void TSafeArray<T>::Assign(std::vector<T>& vector) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		this->_size = vector.size();
 		CheckCapacity();
 		Core::CopyAssignItems<T, IndexType>(GetData(), vector.data(), vector.size());
 	}
 
 	template <typename T>
-	void TArray<T>::Assign(std::vector<T>&& vector) {
+	void TSafeArray<T>::Assign(std::vector<T>&& vector) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		this->_size = vector.size();
 		CheckCapacity();
 		Core::MoveAssignItems<T, IndexType>(GetData(), vector.data(), vector.size());
 	}
 
 	template <typename T>
-	void TArray<T>::Clear() {
+	void TSafeArray<T>::Clear() {
+		std::lock_guard<std::mutex> lock(_mutex);
 		this->_size = 0;
 		this->_capacity = this->DefaultArraySize;
 		this->_data.swap(std::shared_ptr<T[]>(new T[this->_capacity](), std::default_delete<T[]>()));
@@ -487,7 +508,7 @@ namespace Engine::Core::Types {
 
 	template <typename T>
 	template <typename ComparisonType>
-	bool TArray<T>::Contains(const ComparisonType& item) {
+	bool TSafeArray<T>::Contains(const ComparisonType& item) {
 		for (T *data = GetData(), *dataEnd = data + this->_size; data != dataEnd; ++data) {
 			if (*data == item) {
 				return true;
@@ -498,7 +519,7 @@ namespace Engine::Core::Types {
 
 	template <typename T>
 	template <typename ComparisonType>
-	bool TArray<T>::Contains(const ComparisonType& item) const {
+	bool TSafeArray<T>::Contains(const ComparisonType& item) const {
 		for (T *data = GetData(), *dataEnd = data + this->_size; data != dataEnd; ++data) {
 			if (*data == item) {
 				return true;
@@ -509,13 +530,13 @@ namespace Engine::Core::Types {
 
 	template <typename T>
 	template <typename Predicate>
-	bool TArray<T>::ContainsByPredicate(Predicate predicate) {
+	bool TSafeArray<T>::ContainsByPredicate(Predicate predicate) {
 		return Find(predicate) != nullptr;
 	}
 
 	template <typename T>
 	template <typename Predicate>
-	T* TArray<T>::Find(Predicate predicate) {
+	T* TSafeArray<T>::Find(Predicate predicate) {
 		for (T *data = GetData(), *dataEnd = data + this->_size; data != dataEnd; ++data) {
 			if (predicate(*data)) {
 				return data;
@@ -526,13 +547,13 @@ namespace Engine::Core::Types {
 
 	template <typename T>
 	template <typename Predicate>
-	const T* TArray<T>::Find(Predicate predicate) const {
-		return const_cast<TArray*>(this)->Find(predicate);
+	const T* TSafeArray<T>::Find(Predicate predicate) const {
+		return const_cast<TSafeArray*>(this)->Find(predicate);
 	}
 
 	template <typename T>
 	template <typename Predicate>
-	T* TArray<T>::FindLast(Predicate predicate) {
+	T* TSafeArray<T>::FindLast(Predicate predicate) {
 		for (T *start = GetData(), *data = start + this->_size; data != start;) {
 			--data;
 			if (predicate(*data)) {
@@ -544,12 +565,12 @@ namespace Engine::Core::Types {
 
 	template <typename T>
 	template <typename Predicate>
-	const T* TArray<T>::FindLast(Predicate predicate) const {
-		return const_cast<TArray*>(this)->FindLast(predicate);
+	const T* TSafeArray<T>::FindLast(Predicate predicate) const {
+		return const_cast<TSafeArray*>(this)->FindLast(predicate);
 	}
 
 	template <typename T>
-	typename TArray<T>::IndexType TArray<T>::IndexOf(T& element) {
+	typename TSafeArray<T>::IndexType TSafeArray<T>::IndexOf(T& element) {
 		const T* start = GetData();
 		for (const T *data = start, *dataEnd = start + this->_size; data != dataEnd; ++data) {
 			if (*data == element) {
@@ -560,7 +581,7 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	typename TArray<T>::IndexType TArray<T>::IndexOf(T&& element) {
+	typename TSafeArray<T>::IndexType TSafeArray<T>::IndexOf(T&& element) {
 		const T* start = GetData();
 		for (const T *data = start, *dataEnd = start + this->_size; data != dataEnd; ++data) {
 			if (*data == element) {
@@ -571,17 +592,17 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	typename TArray<T>::IndexType TArray<T>::IndexOf(T& element) const {
-		return const_cast<TArray*>(this)->IndexOf(element);
+	typename TSafeArray<T>::IndexType TSafeArray<T>::IndexOf(T& element) const {
+		return const_cast<TSafeArray*>(this)->IndexOf(element);
 	}
 
 	template <typename T>
-	typename TArray<T>::IndexType TArray<T>::IndexOf(T&& element) const {
-		return const_cast<TArray*>(this)->IndexOf(element);
+	typename TSafeArray<T>::IndexType TSafeArray<T>::IndexOf(T&& element) const {
+		return const_cast<TSafeArray*>(this)->IndexOf(element);
 	}
 
 	template <typename T>
-	int32 TArray<T>::IndexLast(T& element) {
+	int32 TSafeArray<T>::IndexLast(T& element) {
 		for (T *start = GetData(), *data = start + this->_size; data != start;) {
 			--data;
 			if (*data == element) {
@@ -592,7 +613,7 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	typename TArray<T>::IndexType TArray<T>::IndexLast(T&& element) {
+	typename TSafeArray<T>::IndexType TSafeArray<T>::IndexLast(T&& element) {
 		for (T *start = GetData(), *data = start + this->_size; data != start;) {
 			--data;
 			if (*data == element) {
@@ -603,17 +624,18 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	typename TArray<T>::IndexType TArray<T>::IndexLast(T& element) const {
-		return const_cast<TArray*>(this)->IndexLast(element);
+	typename TSafeArray<T>::IndexType TSafeArray<T>::IndexLast(T& element) const {
+		return const_cast<TSafeArray*>(this)->IndexLast(element);
 	}
 
 	template <typename T>
-	typename TArray<T>::IndexType TArray<T>::IndexLast(T&& element) const {
-		return const_cast<TArray*>(this)->IndexLast(element);
+	typename TSafeArray<T>::IndexType TSafeArray<T>::IndexLast(T&& element) const {
+		return const_cast<TSafeArray*>(this)->IndexLast(element);
 	}
 
 	template <typename T>
-	void TArray<T>::Insert(IndexType index, const T& element) {
+	void TSafeArray<T>::Insert(IndexType index, const T& element) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		CheckIndex(this->_size + 1);
 		++this->_size;
 		CheckCapacity();
@@ -622,7 +644,8 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::Insert(IndexType index, T&& element) {
+	void TSafeArray<T>::Insert(IndexType index, T&& element) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		CheckIndex(this->_size + 1);
 		++this->_size;
 		CheckCapacity();
@@ -631,30 +654,35 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::RemoveAt(const IndexType index) {
+	void TSafeArray<T>::RemoveAt(const IndexType index) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		CheckIndex(index);
 		RemoveAtImpl(index, 1);
 	}
 
 	template <typename T>
-	void TArray<T>::RemoveAtSwap(const IndexType index) {
+	void TSafeArray<T>::RemoveAtSwap(const IndexType index) {
 		CoreLog::GetInstance().LogWarning(TARRAY_REMOVE_AT_SWAP_WARNING);
+		std::lock_guard<std::mutex> lock(_mutex);
 		CheckIndex(index);
 		RemoveAtSwapImpl(index, 1);
 	}
 
 	template <typename T>
-	void TArray<T>::RemoveFirst() {
+	void TSafeArray<T>::RemoveFirst() {
+		std::lock_guard<std::mutex> lock(_mutex);
 		RemoveAtImpl(0, 1);
 	}
 
 	template <typename T>
-	void TArray<T>::RemoveLast() {
+	void TSafeArray<T>::RemoveLast() {
+		std::lock_guard<std::mutex> lock(_mutex);
 		RemoveAtImpl(this->_size - 1, 1);
 	}
 
 	template <typename T>
-	void TArray<T>::RemoveAtRange(const IndexType index, const IndexType count) {
+	void TSafeArray<T>::RemoveAtRange(const IndexType index, const IndexType count) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		if (count > 0) {
 			CheckIndex(index);
 			CheckIndex(index + count);
@@ -663,24 +691,26 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::RemoveRange(const IndexType startIndex, const IndexType endIndex) {
+	void TSafeArray<T>::RemoveRange(const IndexType startIndex, const IndexType endIndex) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		CheckIndex(startIndex);
 		CheckIndex(endIndex);
 		RemoveAtImpl(startIndex, endIndex - startIndex + 1);
 	}
 
 	template <typename T>
-	void TArray<T>::Reserve() const {
+	void TSafeArray<T>::Reserve() const {
 		IndexType start = 0, end = this->_size - 1;
 		while (start < end) {
 			std::swap(*(GetData() + start), *(GetData() + end));
-			++start;
+			start++;
 			--end;
 		}
 	}
 
 	template <typename T>
-	void TArray<T>::Resize(const IndexType size, const bool allowShrink) {
+	void TSafeArray<T>::Resize(const IndexType size, const bool allowShrink) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		if (size < this->_capacity) {
 			ResizeShrink(size, allowShrink);
 		} else if (size > this->_capacity) {
@@ -689,12 +719,13 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::Swap(TArray<T>& array) {
+	void TSafeArray<T>::Swap(TSafeArray<T>& array) {
+		std::lock_guard<std::mutex> lock(_mutex);
 		this->_data.swap(array._data);
 	}
 
 	template <typename T>
-	void TArray<T>::ResizeShrink(const IndexType size, const bool allowShrinking) {
+	void TSafeArray<T>::ResizeShrink(const IndexType size, const bool allowShrinking) {
 		if (allowShrinking) {
 			this->_capacity = size;
 			T* newPtr = new T[this->_capacity];
@@ -710,7 +741,7 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::ResizeGrow(const IndexType size) {
+	void TSafeArray<T>::ResizeGrow(const IndexType size) {
 		this->_capacity = size;
 		if (this->_capacity > this->MaxArraySize) {
 			CoreLog::GetInstance().LogWarning(TARRAY_MAX_SIZE);
@@ -722,14 +753,16 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::GrowArrayCapacity() {
+	void TSafeArray<T>::GrowArrayCapacity() {
+		if (this->_size == this->_capacity)return;
 		auto newCapacity = this->_capacity + this->_capacity / 2;
 		if (newCapacity < this->_size) newCapacity = this->_size;
 		ResizeGrow(newCapacity);
 	}
 
 	template <typename T>
-	void TArray<T>::RemoveAtImpl(IndexType index, const IndexType count, const bool allowShrinking) {
+	void TSafeArray<T>::RemoveAtImpl(IndexType index, const IndexType count,
+	                                 const bool allowShrinking) {
 		if (count) {
 			/* Do destruct for removed element to avoid ptr in element */
 			Core::DestructItems<T, IndexType>(GetData() + index, count);
@@ -745,7 +778,8 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	void TArray<T>::RemoveAtSwapImpl(IndexType index, IndexType count, const bool allowShrinking) {
+	void TSafeArray<T>::RemoveAtSwapImpl(IndexType index, IndexType count,
+	                                     const bool allowShrinking) {
 		if (count) {
 			Core::DestructItems(GetData() + index, count);
 			// Replace the elements in the hole created by the removal with elements from the end of the array, so the range of indices used by the array is contiguous.
@@ -768,7 +802,7 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	CONSTEXPR void TArray<T>::CheckIndex(const IndexType index) const {
+	CONSTEXPR void TSafeArray<T>::CheckIndex(const IndexType index) const {
 		if (index > this->_size - 1 || this->_size == 0) {
 			CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
 			PLATFORM_BREAK();
@@ -776,11 +810,10 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename T>
-	CONSTEXPR void TArray<T>::CheckCapacity() {
+	CONSTEXPR void TSafeArray<T>::CheckCapacity() {
 		if (this->_size > this->_capacity)
 			GrowArrayCapacity();
 	}
-
 }
 
-#endif //VISREAL_T_ARRAY_H
+#endif

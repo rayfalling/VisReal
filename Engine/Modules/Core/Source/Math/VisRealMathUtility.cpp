@@ -4,6 +4,8 @@
 
 #include "Math/VisRealMathUtility.h"
 
+#include "Math/FVector.h"
+
 using namespace Engine::Core::Math;
 
 const uint32 FMath::BitFlag[32] = {
@@ -22,7 +24,7 @@ const uint32 FMath::BitFlag[32] = {
 // const FIntVector FIntVector::ZeroValue(0, 0, 0);
 // const FIntVector FIntVector::NoneValue(INDEX_NONE, INDEX_NONE, INDEX_NONE);
 //
-// FRotator FVector33::ToOrientationRotator() const {
+// FRotator FVector3::ToOrientationRotator() const {
 // 	FRotator R;
 //
 // 	// Find yaw.
@@ -118,76 +120,34 @@ const uint32 FMath::BitFlag[32] = {
 // 	RotationQuat.W = CP * CY;
 // 	return RotationQuat;
 // }
-//
-//
-// void FVector3::FindBestAxisVectors(FVector3& Axis1, FVector3& Axis2) const {
-// 	const float NX = FMath::Abs(X);
-// 	const float NY = FMath::Abs(Y);
-// 	const float NZ = FMath::Abs(Z);
-//
-// 	// Find best basis vectors.
-// 	if (NZ > NX && NZ > NY) Axis1 = FVector3(1, 0, 0);
-// 	else Axis1 = FVector3(0, 0, 1);
-//
-// 	Axis1 = (Axis1 - *this * (Axis1 | *this)).GetSafeNormal();
-// 	Axis2 = Axis1 ^ *this;
-// }
-//
-// FVector3 FMath::ClosestPointOnLine(const FVector3& LineStart, const FVector3& LineEnd, const FVector3& Point) {
-// 	// Solve to find alpha along line that is closest point
-// 	// Weisstein, Eric W. "Point-Line Distance--3-Dimensional." From MathWorld--A Switchram Web Resource. http://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html 
-// 	const float A = (LineStart - Point) | (LineEnd - LineStart);
-// 	const float B = (LineEnd - LineStart).SizeSquared();
-// 	// This should be robust to B == 0 (resulting in NaN) because clamp should return 1.
-// 	const float T = FMath::Clamp(-A / B, 0.f, 1.f);
-//
-// 	// Generate closest point
-// 	FVector3 ClosestPoint = LineStart + (T * (LineEnd - LineStart));
-//
-// 	return ClosestPoint;
-// }
-//
-// FVector3 FMath::ClosestPointOnInfiniteLine(const FVector3& LineStart, const FVector3& LineEnd, const FVector3& Point) {
-// 	const float A = (LineStart - Point) | (LineEnd - LineStart);
-// 	const float B = (LineEnd - LineStart).SizeSquared();
-// 	if (B < SMALL_NUMBER) {
-// 		return LineStart;
-// 	}
-// 	const float T = -A / B;
-//
-// 	// Generate closest point
-// 	const FVector3 ClosestPoint = LineStart + (T * (LineEnd - LineStart));
-// 	return ClosestPoint;
-// }
-//
-// void FVector3::CreateOrthonormalBasis(FVector3& XAxis, FVector3& YAxis, FVector3& ZAxis) {
-// 	// Project the X and Y axes onto the plane perpendicular to the Z axis.
-// 	XAxis -= (XAxis | ZAxis) / (ZAxis | ZAxis) * ZAxis;
-// 	YAxis -= (YAxis | ZAxis) / (ZAxis | ZAxis) * ZAxis;
-//
-// 	// If the X axis was parallel to the Z axis, choose a vector which is orthogonal to the Y and Z axes.
-// 	if (XAxis.SizeSquared() < DELTA * DELTA) {
-// 		XAxis = YAxis ^ ZAxis;
-// 	}
-//
-// 	// If the Y axis was parallel to the Z axis, choose a vector which is orthogonal to the X and Z axes.
-// 	if (YAxis.SizeSquared() < DELTA * DELTA) {
-// 		YAxis = XAxis ^ ZAxis;
-// 	}
-//
-// 	// Normalize the basis vectors.
-// 	XAxis.Normalize();
-// 	YAxis.Normalize();
-// 	ZAxis.Normalize();
-// }
-//
-// void FVector3::UnwindEuler() {
-// 	X = FMath::UnwindDegrees(X);
-// 	Y = FMath::UnwindDegrees(Y);
-// 	Z = FMath::UnwindDegrees(Z);
-// }
-//
-//
+
+FVector3 FMath::ClosestPointOnLine(const FVector3& lineStart, const FVector3& lineEnd, const FVector3& point) {
+	// Solve to find alpha along line that is closest point
+	// Weisstein, Eric W. "Point-Line Distance--3-Dimensional." From MathWorld--A Switchram Web Resource. http://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html 
+	auto a = (lineStart - point) | (lineEnd - lineStart);
+	auto b = (lineEnd - lineStart).SizeSquared();
+	// This should be robust to B == 0 (resulting in NaN) because clamp should return 1.
+	const auto t = Clamp(-a / b, 0.f, 1.f);
+
+	// Generate closest point
+	auto closestPoint = lineStart + (t * (lineEnd - lineStart));
+
+	return closestPoint;
+}
+
+FVector3 FMath::ClosestPointOnInfiniteLine(const FVector3& lineStart, const FVector3& lineEnd, const FVector3& point) {
+	const auto a = (lineStart - point) | (lineEnd - lineStart);
+	const auto b = (lineEnd - lineStart).SizeSquared();
+	if (b < SMALL_NUMBER) {
+		return lineStart;
+	}
+	const auto t = -a / b;
+
+	// Generate closest point
+	auto closestPoint = lineStart + (t * (lineEnd - lineStart));
+	return closestPoint;
+}
+
 // FRotator::FRotator(const FQuat& Quat) {
 // 	*this = Quat.Rotator();
 // 	DiagnosticCheckNaN();

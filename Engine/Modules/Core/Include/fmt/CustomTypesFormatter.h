@@ -26,14 +26,14 @@ namespace Engine::Core {
 }
 
 template <>
-struct fmt::formatter<FString> {
+struct fmt::formatter<Engine::Core::Types::FString> {
 	template <typename ParseContext>
 	constexpr auto parse(ParseContext& ctx) {
 		return ctx.begin();
 	}
 
 	template <typename FormatContext>
-	auto format(const FString& string, FormatContext& ctx) {
+	auto format(const Engine::Core::Types::FString& string, FormatContext& ctx) {
 		return fmt::format_to(ctx.out(), "{}", string.ToString());
 	}
 };

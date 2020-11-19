@@ -5,9 +5,7 @@
 #include "TestTMap.h"
 #include "Container/TMap.h"
 
-#include <iostream>
-
-#include "Container/FString.h"
+#include "CoreTypes.h"
 #include "Logger/CoreLog.h"
 
 using namespace Engine::Core;

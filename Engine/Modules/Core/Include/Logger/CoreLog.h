@@ -46,32 +46,32 @@ namespace Engine::Core {
 			/**
 			 * Log debug info
 			 * */
-			void LogDebug(FString& message);
-			void LogDebug(FString&& message);
-			void LogDebug(const FString& message);
+			void LogDebug(Types::FString& message);
+			void LogDebug(Types::FString&& message);
+			void LogDebug(const Types::FString& message);
 
 			/**
 			 * Log default info
 			 * */
-			void LogInfo(FString& message);
-			void LogInfo(FString&& message);
-			void LogInfo(const FString& message);
+			void LogInfo(Types::FString& message);
+			void LogInfo(Types::FString&& message);
+			void LogInfo(const Types::FString& message);
 
 			/**
 			 * Log warning info
 			 * */
-			void LogWarning(FString& message);
-			void LogWarning(FString&& message);
-			void LogWarning(const FString& message);
+			void LogWarning(Types::FString& message);
+			void LogWarning(Types::FString&& message);
+			void LogWarning(const Types::FString& message);
 
 			/**
 			 * Log error info
 			 * */
-			void LogError(FString& message);
-			void LogError(FString&& message);
-			void LogError(const FString& message);
+			void LogError(Types::FString& message);
+			void LogError(Types::FString&& message);
+			void LogError(const Types::FString& message);
 
-			void RegisterLoggerModule(FString& name);
+			void RegisterLoggerModule(Types::FString& name);
 			void SetLogLevel(LogLevel logLevel);
 	};
 }

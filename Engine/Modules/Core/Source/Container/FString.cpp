@@ -559,7 +559,7 @@ FString::ReturnIndexType FString::LastIndexOf(const std::wstring& string) const 
 
 FString FString::SubString(const IndexType start, const IndexType end) const {
 	if (start > end || end > _length) {
-		CoreLog::GetInstance().LogError(FSTRING_OUT_OF_INDEX_ERROR);
+		CoreLog::GetInstance().LogError(F_STRING_OUT_OF_INDEX_ERROR);
 	}
 	FString string(end - start + 1);
 	string._length = end - start + 1;
@@ -569,7 +569,7 @@ FString FString::SubString(const IndexType start, const IndexType end) const {
 
 FString FString::SubStringAt(const IndexType index, const IndexType count) const {
 	if (index + count > _length) {
-		CoreLog::GetInstance().LogError(FSTRING_OUT_OF_INDEX_ERROR);
+		CoreLog::GetInstance().LogError(F_STRING_OUT_OF_INDEX_ERROR);
 	}
 	FString string(count);
 	string._length = count;
@@ -636,7 +636,7 @@ FString& FString::ResizeShrink() {
 
 void FString::CheckIndex(const IndexType index) const {
 	if (index > _length - 1 || _length == 0) {
-		CoreLog::GetInstance().LogError(FSTRING_OUT_OF_INDEX_ERROR);
+		CoreLog::GetInstance().LogError(F_STRING_OUT_OF_INDEX_ERROR);
 	}
 }
 

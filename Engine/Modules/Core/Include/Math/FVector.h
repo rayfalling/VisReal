@@ -2,6 +2,7 @@
  * Created by rayfalling on 2020/10/30.
  * */
 
+// ReSharper disable CppHiddenFunction
 #pragma once
 
 #ifndef VISREAL_F_VECTOR3_H
@@ -10,7 +11,6 @@
 #include "NumericLimits.h"
 #include "VisRealMathUtility.h"
 #include "fmt/CustomTypesFormatter.h"
-#include "Logger/CoreLog.h"
 #include "Marco/PlatformMarcos.h"
 #include "Object/Object.h"
 #include "Platform/PlatformTypes.h"
@@ -31,7 +31,7 @@ namespace Engine::Core::Math {
 			}
 
 			explicit FVector3(float value);
-
+			explicit FVector3(FVector4 value);
 			explicit FVector3(float x, float y, float z);
 
 		public:
@@ -505,7 +505,7 @@ namespace Engine::Core::Math {
 			[[nodiscard]] FVector3 BoundToCube(float radius) const;
 
 			/** Get a copy of this vector, clamped inside of a cube. */
-			[[nodiscard]] FVector3 BoundToBox(const FVector3& min, const FVector3 max) const;
+			[[nodiscard]] FVector3 BoundToBox(const FVector3& min, const FVector3& max) const;
 
 			/** Create a copy of this vector, with its magnitude clamped between Min and Max. */
 			[[nodiscard]] FVector3 GetClampedToSize(float min, float max) const;
@@ -591,7 +591,7 @@ namespace Engine::Core::Math {
 			 * @return Projected vector.
 			 */
 			FORCEINLINE FVector3 ProjectOnToNormal(const FVector3& normal) const;
-		
+
 		public:
 			/**
 			 * Utility to check if there are any non-finite values (NaN or Inf) in this vector.
@@ -601,11 +601,35 @@ namespace Engine::Core::Math {
 			[[nodiscard]] bool ContainsNaN() const;
 
 			/**
+			 * Find good arbitrary axis vectors to represent U and V axes of a plane,
+			 * using this vector as the normal of the plane.
+			 *
+			 * @param axis1 Reference to first axis.
+			 * @param axis2 Reference to second axis.
+			 */
+			void FindBestAxisVectors(FVector3& axis1, FVector3& axis2) const;
+
+			/** When this vector contains Euler angles (degrees), ensure that angles are between +/-180 */
+			void UnwindEuler();
+
+			/**
 			 * Get a textual representation of this vector.
 			 *
 			 * @return A string describing the vector.
 			 */
 			[[nodiscard]] FString ToString() const;
+
+			/**
+			 * Create an orthonormal basis from a basis with at least two orthogonal vectors.
+			 * It may change the directions of the X and Y axes to make the basis orthogonal,
+			 * but it won't change the direction of the Z axis.
+			 * All axes will be normalized.
+			 *
+			 * @param xAxis The input basis' XAxis, and upon return the orthonormal basis' XAxis.
+			 * @param yAxis The input basis' YAxis, and upon return the orthonormal basis' YAxis.
+			 * @param zAxis The input basis' ZAxis, and upon return the orthonormal basis' ZAxis.
+			 */
+			static void CreateOrthonormalBasis(FVector3& xAxis, FVector3& yAxis, FVector3& zAxis);
 	};
 
 	/**
@@ -627,33 +651,9 @@ namespace Engine::Core::Math {
 	 * @param point 3D position of interest
 	 * @return the distance from the Point to the bounding box.
 	 */
-	FORCEINLINE float ComputeSquaredDistanceFromBoxToPoint(const FVector3& min, const FVector3& max, const FVector3& point) {
-		// Accumulates the distance as we iterate axis
-		auto distSquared = 0.f;
-
-		// Check each axis for min/max and add the distance accordingly
-		// NOTE: Loop manually unrolled for > 2x speed up
-		if (point.X < min.X) {
-			distSquared += FMath::Square(point.X - min.X);
-		} else if (point.X > max.X) {
-			distSquared += FMath::Square(point.X - max.X);
-		}
-
-		if (point.Y < min.Y) {
-			distSquared += FMath::Square(point.Y - min.Y);
-		} else if (point.Y > max.Y) {
-			distSquared += FMath::Square(point.Y - max.Y);
-		}
-
-		if (point.Z < min.Z) {
-			distSquared += FMath::Square(point.Z - min.Z);
-		} else if (point.Z > max.Z) {
-			distSquared += FMath::Square(point.Z - max.Z);
-		}
-
-		return distSquared;
-	}
-
+	float ComputeSquaredDistanceFromBoxToPoint(const FVector3& min, const FVector3& max, const FVector3& point);
 }
+
+#include "FVector.inl"
 
 #endif //VISREAL_F_VECTOR3_H

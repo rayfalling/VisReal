@@ -22,7 +22,7 @@ namespace Engine::Core::Math {
 	#define KINDA_SMALL_NUMBER		(1.e-4f)
 	#define BIG_NUMBER				(3.4e+38f)
 	#define EULERS_NUMBER			(2.71828182845904523536f)
-	#define UE_GOLDEN_RATIO			(1.6180339887498948482045868343656381f)    /* Also known as divine proportion, golden mean, or golden section - related to the Fibonacci Sequence = (1 + sqrt(5)) / 2 * */
+	#define GOLDEN_RATIO			(1.6180339887498948482045868343656381f)    /* Also known as divine proportion, golden mean, or golden section - related to the Fibonacci Sequence = (1 + sqrt(5)) / 2 * */
 
 	// Copied from float.h
 	#define MAX_FLT					(3.402823466e+38F)
@@ -32,12 +32,12 @@ namespace Engine::Core::Math {
 	#define HALF_PI					(1.57079632679f)
 
 	// Common square roots
-	#define UE_SQRT_2				(1.4142135623730950488016887242097f)
-	#define UE_SQRT_3				(1.7320508075688772935274463415059f)
-	#define UE_INV_SQRT_2			(0.70710678118654752440084436210485f)
-	#define UE_INV_SQRT_3			(0.57735026918962576450914878050196f)
-	#define UE_HALF_SQRT_2			(0.70710678118654752440084436210485f)
-	#define UE_HALF_SQRT_3			(0.86602540378443864676372317075294f)
+	#define SQRT_2				(1.4142135623730950488016887242097f)
+	#define SQRT_3				(1.7320508075688772935274463415059f)
+	#define INV_SQRT_2			(0.70710678118654752440084436210485f)
+	#define INV_SQRT_3			(0.57735026918962576450914878050196f)
+	#define HALF_SQRT_2			(0.70710678118654752440084436210485f)
+	#define HALF_SQRT_3			(0.86602540378443864676372317075294f)
 
 
 	// Magic numbers for numerical precision.
@@ -69,7 +69,6 @@ namespace Engine::Core::Math {
 
 	#define THRESH_VECTOR_NORMALIZED			(0.01f)			/** Allowed error for a normalized vector (against squared magnitude) * */
 	#define THRESH_QUAT_NORMALIZED				(0.01f)			/** Allowed error for a normalized quaternion (against squared magnitude) * */
-
 
 	// Forward declarations.
 	class FVector2;
@@ -1016,10 +1015,10 @@ namespace Engine::Core::Math {
 		                                   float ConeAngleCos);
 
 		/** Find the point on the line segment from LineStart to LineEnd which is closest to Point * */
-		static FVector3 ClosestPointOnLine(const FVector3& LineStart, const FVector3& LineEnd, const FVector3& Point);
+		static FVector3 ClosestPointOnLine(const FVector3& lineStart, const FVector3& lineEnd, const FVector3& point);
 
 		/** Find the point on the infinite line between two points (LineStart, LineEnd) which is closest to Point * */
-		static FVector3 ClosestPointOnInfiniteLine(const FVector3& LineStart, const FVector3& LineEnd, const FVector3& Point);
+		static FVector3 ClosestPointOnInfiniteLine(const FVector3& lineStart, const FVector3& lineEnd, const FVector3& point);
 
 		/** Compute intersection point of three planes. Return 1 if valid, 0 if infinite. * */
 		static bool IntersectPlanes3(FVector3& I, const FPlane& P1, const FPlane& P2, const FPlane& P3);
@@ -1227,7 +1226,7 @@ namespace Engine::Core::Math {
 		 *
 		 * @return Whether the points are relatively coplanar, based on the tolerance
 		 * */
-		static bool PointsAreCoplanar(const TArray<FVector3>& Points, float Tolerance = 0.1f);
+		static bool PointsAreCoplanar(const Types::TArray<FVector3>& Points, float Tolerance = 0.1f);
 
 		/**
 		 * Truncates a floating point number to half if closer than the given tolerance.
@@ -1323,7 +1322,7 @@ namespace Engine::Core::Math {
 		 * @param	Val		The value to use
 		 * @return	FString	The human readable string
 		 * */
-		static FString FormatIntToHumanReadable(int32 Val);
+		static Types::FString FormatIntToHumanReadable(int32 Val);
 
 
 		// Utilities
@@ -1349,7 +1348,7 @@ namespace Engine::Core::Math {
 		 * @param	OutValue		Pointer to storage for the result.
 		 * @return				1 if successful, 0 if equation fails.
 		 * */
-		static bool Eval(FString Str, float& OutValue);
+		static bool Eval(Types::FString Str, float& OutValue);
 
 		/**
 		 * Computes the barycentric coordinates for a given point in a triangle - simpler version
@@ -1446,7 +1445,7 @@ namespace Engine::Core::Math {
 			const auto ret = static_cast<int32>(x * 255.999f);
 
 			if (ret < 0 || ret > 255) {
-				CoreLog::GetInstance().LogError(FString::Format("{},{}", __FILE__, __LINE__));
+				CoreLog::GetInstance().LogError(Types::FString::Format("{},{}", __FILE__, __LINE__));
 			}
 
 			return static_cast<uint8>(ret);

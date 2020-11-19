@@ -21,7 +21,7 @@ namespace Engine::Core::Types {
 	template <typename T, bool ThreadSafe = false>
 	class TArrayImpl {
 		friend class TArrayImpl<T, ThreadSafe>;
-		
+
 		public:
 			/* define index type */
 			#ifdef PLATFORM_64BITS
@@ -43,7 +43,15 @@ namespace Engine::Core::Types {
 			const static IndexType DefaultArraySize;
 			/* max array element size */
 			const static IndexType MaxArraySize = INTPTR_MAX;
+
+		public:
+			FORCEINLINE TArrayImpl();
 	};
+
+	template <typename T, bool ThreadSafe>
+	FORCEINLINE TArrayImpl<T, ThreadSafe>::TArrayImpl()
+		: _capacity(this->DefaultArraySize), _data(std::shared_ptr<T[]>(new T[this->_capacity](), std::default_delete<T[]>())) {
+	}
 
 	template <typename T, bool ThreadSafe>
 	const typename TArrayImpl<T, ThreadSafe>::IndexType TArrayImpl<T, ThreadSafe>::DefaultArraySize = 8;

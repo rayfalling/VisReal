@@ -10,17 +10,17 @@
 #include "Container/FString.h"
 
 namespace Engine::Core {
-	const static FString CORE_LOG_NAME = FString("VisReal Core");
-	const static FString ENGINE_START = FString("VisReal Engine Start.");
+	const static Types::FString CORE_LOG_NAME = Types::FString("VisReal Core");
+	const static Types::FString ENGINE_START = Types::FString("VisReal Engine Start.");
 
 	/* TArray Tips */
-	const static FString TARRAY_MAX_SIZE = FString("Growth size attach to max size, set to SIZE_T max value");
-	const static FString TARRAY_OUT_OF_INDEX_ERROR = FString("Index out of Array size");
-	const static FString TARRY_ADD_CONTAINER_ELEMENT = FString("Attempting to use an element which already comes from the container");
-	const static FString TARRAY_REMOVE_AT_SWAP_WARNING = FString("!!!This operation don't preserve the order.!!!");
+	const static Types::FString TARRAY_MAX_SIZE = Types::FString("Growth size attach to max size, set to SIZE_T max value");
+	const static Types::FString TARRAY_OUT_OF_INDEX_ERROR = Types::FString("Index out of Array size");
+	const static Types::FString TARRY_ADD_CONTAINER_ELEMENT = Types::FString("Attempting to use an element which already comes from the container");
+	const static Types::FString TARRAY_REMOVE_AT_SWAP_WARNING = Types::FString("!!!This operation don't preserve the order.!!!");
 
-	/* FString Tips */
-	const static FString FSTRING_OUT_OF_INDEX_ERROR = FString("Index out of FString length");
+	/* Types::FString Tips */
+	const static Types::FString F_STRING_OUT_OF_INDEX_ERROR = Types::FString("Index out of Types::FString length");
 
 	const static int32 INDEX_NONE = -1;
 }

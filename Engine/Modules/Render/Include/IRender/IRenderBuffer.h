@@ -7,8 +7,7 @@
 #ifndef VISREAL_I_RENDER_BUFFER_H
 #define VISREAL_I_RENDER_BUFFER_H
 
-#include "Container/FString.h"
-#include "Container/TArray.h"
+#include "CoreTypes.h"
 
 namespace Engine::Render::Interface {
 	/**

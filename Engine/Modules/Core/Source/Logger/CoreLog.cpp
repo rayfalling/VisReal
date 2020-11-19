@@ -27,9 +27,9 @@ Engine::Core::CoreLog::CoreLog() noexcept {
 	auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
 	consoleSink->set_level(spdlog::level::debug);
 
-	auto time = FTime::CurrentTime();
+	auto time = Types::FTime::CurrentTime();
 	const auto outFilePath = fmt::format("Logs/log-{}.txt", time.ToString());
-	auto fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(FString::String2Wstring(outFilePath), true);
+	auto fileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(Types::FString::String2Wstring(outFilePath), true);
 	fileSink->set_level(spdlog::level::debug);
 
 	_sinks.emplace_back(consoleSink);
@@ -42,67 +42,67 @@ Engine::Core::CoreLog::CoreLog() noexcept {
 	_logger->set_level(spdlog::level::info);
 }
 
-void Engine::Core::CoreLog::LogInfo(FString& message) {
+void Engine::Core::CoreLog::LogInfo(Types::FString& message) {
 	_logger->info(message.ToString());
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogInfo(FString&& message) {
+void Engine::Core::CoreLog::LogInfo(Types::FString&& message) {
 	_logger->info(message.ToString());
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogInfo(const FString& message) {
+void Engine::Core::CoreLog::LogInfo(const Types::FString& message) {
 	_logger->info(message.ToString());
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogWarning(FString& message) {
+void Engine::Core::CoreLog::LogWarning(Types::FString& message) {
 	_logger->warn(message.ToString());
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogWarning(FString&& message) {
+void Engine::Core::CoreLog::LogWarning(Types::FString&& message) {
 	_logger->warn(message.ToString());
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogWarning(const FString& message) {
+void Engine::Core::CoreLog::LogWarning(const Types::FString& message) {
 	_logger->warn(message.ToString());
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogError(FString& message) {
+void Engine::Core::CoreLog::LogError(Types::FString& message) {
 	_logger->error(message.ToString());
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogError(FString&& message) {
+void Engine::Core::CoreLog::LogError(Types::FString&& message) {
 	_logger->error(message.ToString());
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogError(const FString& message) {
+void Engine::Core::CoreLog::LogError(const Types::FString& message) {
 	_logger->error(message.ToString());
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogDebug(FString& message) {
+void Engine::Core::CoreLog::LogDebug(Types::FString& message) {
 	_logger->debug(message.ToString());
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogDebug(FString&& message) {
+void Engine::Core::CoreLog::LogDebug(Types::FString&& message) {
 	_logger->debug(message.ToString());
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::LogDebug(const FString& message) {
+void Engine::Core::CoreLog::LogDebug(const Types::FString& message) {
 	_logger->debug(message.ToString());
 	_logger->flush();
 }
 
-void Engine::Core::CoreLog::RegisterLoggerModule(FString& name) {
+void Engine::Core::CoreLog::RegisterLoggerModule(Types::FString& name) {
 
 }
 

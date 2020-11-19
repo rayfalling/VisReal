@@ -9,11 +9,13 @@
 #ifndef VISREAL_CORE_TYPES_H
 #define VISREAL_CORE_TYPES_H
 
-#include "Platform/PlatformTypes.h"
 #include "Container/FString.h"
 #include "Container/TArray.h"
 #include "Container/TMap.h"
+#include "Container/TSafeArray.h"
+#include "Platform/PlatformTypes.h"
 
-using namespace Engine::Core;
+using namespace Engine::Core::Types;
+using namespace Engine::Core::Math;
 
 #endif //VISREAL_CORE_TYPES_H

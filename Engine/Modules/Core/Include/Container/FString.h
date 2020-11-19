@@ -363,7 +363,7 @@ namespace Engine::Core::Types {
 			static FString Format(std::string& string, Args&& ...args);
 			template <typename... Args>
 			static FString Format(const std::string& string, Args&& ...args);
-			
+
 			/* use fmt to format and generate */
 			template <typename... Args>
 			static FString Format(std::wstring& string, Args&& ...args);
@@ -403,7 +403,7 @@ namespace Engine::Core::Types {
 		value._capacity = formatted.length();
 		return value;
 	}
-	
+
 	template <typename ... Args>
 	FString FString::Format(const std::wstring& string, Args&&... args) {
 		FString value;

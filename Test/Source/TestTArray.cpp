@@ -3,7 +3,7 @@
  * */
 
 #include "TestTArray.h"
-
+#include "CoreTypes.h"
 #include "Container/TArray.h"
 #include "Container/TSafeArray.h"
 

@@ -4,7 +4,7 @@
 
 #include "TestHash.h"
 
-
+#include "CoreTypes.h"
 #include "Container/TArray.h"
 #include "Logger/CoreLog.h"
 #include "Platform/Windows/WindowsPlatformMath.h"
@@ -18,7 +18,7 @@ void TestHash() {
 	logger.LogDebug(FString("Test Hash function......"));
 	const auto start = std::chrono::system_clock::now();
 	TArray<hash_t> array(10000000);
-	
+
 	for (auto i = 0; i < 10000000; ++i) {
 		array.Add(FHash::Hash(Math::FPlatformMath::Rand()));
 	}

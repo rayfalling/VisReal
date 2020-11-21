@@ -8,9 +8,17 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary/libs)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary)
 
+if(POLICY CMP0077)
+    cmake_policy(SET CMP0077 NEW) # automatic when 2.8.12 is required
+endif()
+
 # hacker for glfw uninstall target
 add_custom_target(uninstall)
-set_target_properties(uninstall PROPERTIES FOLDER CMakePredefinedTargets)
+set_target_properties(uninstall PROPERTIES FOLDER CMakeTargets)
+set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "CMakeTargets")
+
+file(GLOB_RECURSE CMAKE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/CMakeInclude/*.cmake)
+source_group(cmake FILES ${CMAKE_FILES})
 
 # include libs cmake
 include(CmakeInclude/Engine.cmake)

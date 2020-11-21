@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.17)
 # Project Name
 project("Engine.Render" C CXX)
 
+# Set CXX flags
+set(CMAKE_CXX_STANDARD 17)
+
 # include all header files
 set("ENGINE_RENDER_INCLUDE_DIR" ${CMAKE_CURRENT_SOURCE_DIR}/Include)
 include_directories(${ENGINE_RENDER_INCLUDE_DIR})

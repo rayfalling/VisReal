@@ -9,7 +9,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/Binary)
 
 if(POLICY CMP0077)
-    cmake_policy(SET CMP0077 NEW) # automatic when 2.8.12 is required
+    set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 endif()
 
 # hacker for glfw uninstall target

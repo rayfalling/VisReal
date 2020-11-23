@@ -18,6 +18,9 @@ namespace Engine {
 	/* Init render thread, logger, and other needed */
 	void InitRenderThread();
 
+	/* Terminate Render thread */
+	void TerminateRenderThread();
+
 	/* main render loop function */
 	void RenderLoop();
 }

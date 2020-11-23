@@ -8,12 +8,19 @@
 #include "RenderThread.h"
 
 bool Engine::InitEngine() {
+	atexit(Terminate);
+
 	/* Init Engine Logger */
 	Logger = Core::CoreLog::GetInstancePtr();
 	Logger->LogInfo(Core::ENGINE_START);
 
 	/* Start Render Thread */
 	InitRenderThread();
-	
+
 	return true;
+}
+
+void Engine::Terminate() {
+	TerminateRenderThread();
+	Logger->FlushAll();
 }

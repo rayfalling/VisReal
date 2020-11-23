@@ -2,7 +2,7 @@
  * Created by rayfalling on 2020/10/12.
  * */
 
- // ReSharper disable CppMemberFunctionMayBeStatic
+// ReSharper disable CppMemberFunctionMayBeStatic
 
 #pragma warning(disable:4068)
 #pragma clang diagnostic push
@@ -17,14 +17,20 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/basic_file_sink.h>
 
+#include "spdlog/spdlog.h"
+
 /* static shared_ptr to share logger in different library */
 std::shared_ptr<spdlog::logger> Engine::Core::CoreLog::_logger = std::shared_ptr<spdlog::logger>();
-std::vector<spdlog::sink_ptr>   Engine::Core::CoreLog::_sinks = std::vector<spdlog::sink_ptr>();
+std::vector<spdlog::sink_ptr> Engine::Core::CoreLog::_sinks = std::vector<spdlog::sink_ptr>();
 
 Engine::Core::CoreLog::CoreLog() {
 	if (_logger != nullptr)return;
 	/* Create sinks for logger */
+	#ifdef _WIN32
 	auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+	#else
+	auto consoleSink = std::make_shared<spdlog::sinks::wincolor_stdout_sink_mt>();
+	#endif
 	consoleSink->set_level(spdlog::level::debug);
 
 	auto time = Types::FTime::CurrentTime();
@@ -40,6 +46,8 @@ Engine::Core::CoreLog::CoreLog() {
 	/* TODO using custom map container*/
 	//_registerLoggers.insert(std::make_pair(coreLog,logger));
 	_logger->set_level(spdlog::level::info);
+	spdlog::flush_every(std::chrono::seconds(3));
+	_logger->enable_backtrace(1024);
 }
 
 void Engine::Core::CoreLog::LogInfo(Types::FString& message) {
@@ -121,6 +129,10 @@ void Engine::Core::CoreLog::SetLogLevel(const LogLevel logLevel) {
 			_logger->set_level(spdlog::level::err);
 			break;
 	}
+}
+
+void Engine::Core::CoreLog::FlushAll() {
+	_logger->flush();
 }
 
 Engine::Core::CoreLog::~CoreLog() noexcept = default;

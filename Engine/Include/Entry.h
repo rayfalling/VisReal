@@ -13,6 +13,9 @@ namespace Engine {
 
 	/* Init engine thread, logger, and other needed */
 	bool InitEngine();
+
+	/* Terminate Application */
+	void Terminate();
 }
 
 #endif //VISREAL_ENTRY_H

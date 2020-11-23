@@ -14,3 +14,9 @@ void Engine::RenderLoop() {
 		Renderer->Draw();
 	}
 }
+
+void Engine::TerminateRenderThread() {
+	ShouldRenderExit = true;
+	RenderThread.detach();
+	Renderer = nullptr;
+}

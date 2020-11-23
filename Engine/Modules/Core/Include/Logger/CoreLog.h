@@ -74,6 +74,9 @@ namespace Engine::Core {
 
 			void RegisterLoggerModule(Types::FString& name);
 			void SetLogLevel(LogLevel logLevel);
+
+			/* Flush all */
+			void FlushAll();
 	};
 }
 

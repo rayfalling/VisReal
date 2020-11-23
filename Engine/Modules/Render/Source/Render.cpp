@@ -22,5 +22,6 @@ Renderer::Renderer() noexcept {
 }
 
 Renderer::~Renderer() noexcept {
+	_renderManager->Shutdown();
 	_renderManager = nullptr;
 }

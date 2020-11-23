@@ -6,10 +6,12 @@
 
 #ifndef VISREAL_I_RENDER_MANAGER_H
 #define VISREAL_I_RENDER_MANAGER_H
+#include "Platform/PlatformTypes.h"
+#include "Screen/Screen.h"
 
 namespace Engine::Render::Interface {
 	/**
-	 * An Interface class to manager render device & buffers.
+	 * An Interface class to manager windows. 
 	 * Only virtual methods are provided. If you want this
 	 * class be a singleton class, please inherit
 	 * ISingletonObject in its divided class.
@@ -23,6 +25,10 @@ namespace Engine::Render::Interface {
 
 			virtual ~IRenderManager() = default;
 
+			/* protect data member */
+		protected:
+			bool _fullScreen = true;
+
 		public:
 			//Interface methods
 
@@ -31,6 +37,27 @@ namespace Engine::Render::Interface {
 
 			/* Static method to get only render device */
 			virtual IRenderManager* GetRenderManager() = 0;
+
+			/* Set current window size */
+			virtual void SetWindowSize(Screen& screen) = 0;
+
+			/* Set full screen mode */
+			virtual void SetFullScreen(bool full) = 0;
+
+			/* Set cursor visibility */
+			virtual void SetCursor(bool visible) = 0;
+
+			/* close current window */
+			virtual void Shutdown() = 0;
+
+			/* run window */
+			virtual void Run() = 0;
+
+			/* get full screen window size with dpi */
+			virtual Screen GetFullWindowSize() = 0;
+
+			/* get screen dpi */
+			virtual float GetWindowDpi() = 0;
 
 
 			// delete methods

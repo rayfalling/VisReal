@@ -20,7 +20,6 @@ namespace Engine::Render::OpenGL {
 	class GLWindowManager : public Core::ISingletonObject<GLWindowManager>, public Interface::IRenderManager {
 		public:
 			void SetWindowSize(int width, int height);
-			//TODO methods here
 
 			void Init() override;
 

@@ -22,15 +22,16 @@ namespace Engine::Core {
 
 	class CoreLog final : public ISingletonObject<CoreLog> {
 		friend class ISingletonObject<CoreLog>;
-		friend class std::shared_ptr<CoreLog>;
 
 		protected:
-			CoreLog() noexcept;
+			CoreLog();
 			~CoreLog() noexcept override;
 
-		private:
+		public:
 			CoreLog(const CoreLog&) = delete;
+			CoreLog(const CoreLog&&) = delete;
 			CoreLog& operator=(const CoreLog&) = delete;
+			CoreLog& operator=(CoreLog&&) = delete;
 
 		private:
 			/* Core logger, static for over dll use */

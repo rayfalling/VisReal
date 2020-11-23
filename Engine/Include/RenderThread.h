@@ -11,7 +11,7 @@
 
 namespace Engine {
 	static Render::Renderer* Renderer;
-	static std::thread       renderThread;
+	static std::thread RenderThread;
 	/* only when render should exit then set value true */
 	static bool ShouldRenderExit = false;
 

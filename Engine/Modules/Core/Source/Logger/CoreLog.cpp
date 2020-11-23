@@ -21,7 +21,7 @@
 std::shared_ptr<spdlog::logger> Engine::Core::CoreLog::_logger = std::shared_ptr<spdlog::logger>();
 std::vector<spdlog::sink_ptr>   Engine::Core::CoreLog::_sinks = std::vector<spdlog::sink_ptr>();
 
-Engine::Core::CoreLog::CoreLog() noexcept {
+Engine::Core::CoreLog::CoreLog() {
 	if (_logger != nullptr)return;
 	/* Create sinks for logger */
 	auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();

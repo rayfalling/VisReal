@@ -15,7 +15,7 @@ namespace Engine::Core {
 	template <typename T>
 	class ISingletonObject {
 		friend class std::shared_ptr<T>;
-		
+
 		public:
 			// Get Singleton Instance
 			static T& GetInstance();
@@ -31,14 +31,17 @@ namespace Engine::Core {
 		private:
 			// Use shared_ptr to make sure that the allocated memory for instance
 			// will be released when program exits (after main() ends).
-			static T*         _instance;
+			static T* _instance;
 			static std::mutex _mutex;
-		private:
+
+		public:
 			/** disallow copy external */
-			ISingletonObject(const ISingletonObject& other);
+			ISingletonObject(const ISingletonObject& other) = delete;
+			ISingletonObject(const ISingletonObject&& other) = delete;
 
 			/** disallow assign external */
-			const ISingletonObject& operator=(const ISingletonObject& other);
+			const ISingletonObject& operator=(const ISingletonObject& other) = delete;
+			const ISingletonObject& operator=(const ISingletonObject&& other) = delete;
 	};
 
 	template <typename T>
@@ -60,7 +63,7 @@ namespace Engine::Core {
 		}
 		return _instance;
 	}
-	
+
 	template <typename T>
 	ISingletonObject<T>::~ISingletonObject() noexcept = default;
 

@@ -18,7 +18,8 @@ namespace Engine::Render {
 	typedef Interface::IRenderManager RenderManager;
 
 	/* exposed to outer engine renderer */
-	class Renderer : public Engine::Core::ISingletonObject<Renderer> {
+	class Renderer : public Core::ISingletonObject<Renderer> {
+		// ReSharper disable once CppRedundantQualifier
 		friend class Engine::Core::ISingletonObject<Renderer>;
 		protected:
 			Renderer() noexcept;
@@ -34,7 +35,7 @@ namespace Engine::Render {
 
 		public:
 			/* Get appropriate render manager */
-			RenderManager* GetRenderManager();
+			RenderManager* GetRenderManager() const;
 
 			/* push draw command */
 			void AddDrawCommand();

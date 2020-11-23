@@ -5,8 +5,8 @@
 #include "RenderThread.h"
 
 void Engine::InitRenderThread() {
-	Renderer     = &Render::Renderer::GetInstance();
-	renderThread = std::thread(RenderLoop);
+	Renderer = &Render::Renderer::GetInstance();
+	RenderThread = std::thread(RenderLoop);
 }
 
 void Engine::RenderLoop() {

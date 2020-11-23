@@ -6,7 +6,7 @@
 
 namespace Engine::Render::OpenGL {
 
-	GLWindowManager::GLWindowManager() {
+	GLWindowManager::GLWindowManager() : _window(nullptr) {
 		//        glfwInit();
 		//        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		//        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);

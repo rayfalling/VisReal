@@ -3,11 +3,11 @@
  * */
 
 #include "Render.h"
+#include "DirectX/DxWindowManager.h"
 
 using namespace Engine::Render;
 
-RenderManager* Renderer::GetRenderManager() {
-	/* This must be initialed from construct */
+RenderManager* Renderer::GetRenderManager() const {
 	return _renderManager;
 }
 
@@ -16,7 +16,11 @@ void Renderer::Draw() {
 }
 
 Renderer::Renderer() noexcept {
+	_renderManager = DirectX::DxWindowManager::GetInstancePtr();
+	_renderManager->Init();
+	_renderManager->Run();
 }
 
 Renderer::~Renderer() noexcept {
+	_renderManager = nullptr;
 }

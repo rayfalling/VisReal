@@ -15,9 +15,11 @@ struct GRS_VERTEX {
 	XMFLOAT3 position;
 	XMFLOAT4 color;
 };
+#include <windows.h>
 
 int main() {
 	Engine::InitEngine();
+    // MessageBox( 0, L"Press OK", L"Hi", MB_SETFOREGROUND );
 
 
 	return 0;

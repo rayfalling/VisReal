@@ -36,15 +36,15 @@ namespace Engine::Render::OpenGL {
 		//        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 		/* Check if window is already created */
-		if (window != nullptr) {
+		if (_window != nullptr) {
 			return;
 		}
-		window = glfwCreateWindow(800, 600, "LearnOpenGL", nullptr, nullptr);
-		if (window == nullptr) {
+		_window = glfwCreateWindow(800, 600, "LearnOpenGL", nullptr, nullptr);
+		if (_window == nullptr) {
 			//            std::cout << "Failed to create GLFW window" << std::endl;
 			glfwTerminate();
 		}
-		glfwMakeContextCurrent(window);
+		glfwMakeContextCurrent(_window);
 
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 			//            std::cout << "Failed to initialize GLAD" << std::endl;
@@ -58,16 +58,19 @@ namespace Engine::Render::OpenGL {
 		glGetIntegerv(GL_MAJOR_VERSION, &majorVersion);
 
 		glViewport(0, 0, 800, 600);
-		while (!glfwWindowShouldClose(window)) {
-			glfwSwapBuffers(window);
+		while (!glfwWindowShouldClose(_window)) {
+			glfwSwapBuffers(_window);
 			glfwPollEvents();
 		}
 	}
 
 	void GLWindowManager::SetWindowSize(int width, int height) {
-		if (window == nullptr)
+		if (_window == nullptr)
 			return;
 		glViewport(0, 0, width, height);
+	}
+
+	void GLWindowManager::Init() {
 	}
 
 	void GLWindowManager::InitOpenGL(int width, int height, GLVersion version) {

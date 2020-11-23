@@ -14,15 +14,15 @@
 #include <GLFW/glfw3.h>
 #include "Object/ISingletonObject.h"
 #include "VersionCheck.h"
-
-using namespace Engine::Core;
+#include "IRender/IRenderManager.h"
 
 namespace Engine::Render::OpenGL {
-	class GLWindowManager : public ISingletonObject<GLWindowManager> {
+	class GLWindowManager : public Core::ISingletonObject<GLWindowManager>, public Interface::IRenderManager {
 		public:
 			void SetWindowSize(int width, int height);
 			//TODO methods here
 
+			void Init() override;
 
 		private:
 			GLWindowManager();
@@ -31,7 +31,7 @@ namespace Engine::Render::OpenGL {
 			void InitOpenGL(int width, int height, GLVersion version);
 
 			/* Current window to draw */
-			GLFWwindow* window;
+			GLFWwindow* _window;
 	};
 }
 

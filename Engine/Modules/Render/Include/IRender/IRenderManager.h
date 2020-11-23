@@ -19,14 +19,26 @@ namespace Engine::Render::Interface {
 	class IRenderManager {
 		protected:
 			/* Construct */
-			inline IRenderManager() = default;
+			IRenderManager() = default;
+
+			virtual ~IRenderManager() = default;
 
 		public:
+			//Interface methods
+
 			/* Init Render Device */
 			virtual void Init() = 0;
 
 			/* Static method to get only render device */
-			virtual IRenderManager GetRenderManager() = 0;
+			virtual IRenderManager* GetRenderManager() = 0;
+
+
+			// delete methods
+
+			IRenderManager(const IRenderManager& renderManager) = delete;
+			IRenderManager(IRenderManager&& renderManager) = delete;
+			IRenderManager& operator=(const IRenderManager& renderManager) = delete;
+			IRenderManager& operator=(IRenderManager&& renderManager) = delete;
 	};
 }
 

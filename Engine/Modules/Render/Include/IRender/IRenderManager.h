@@ -27,7 +27,7 @@ namespace Engine::Render::Interface {
 
 			/* protect data member */
 		protected:
-			bool _fullScreen = true;
+			bool _fullScreen = false;
 
 		public:
 			//Interface methods

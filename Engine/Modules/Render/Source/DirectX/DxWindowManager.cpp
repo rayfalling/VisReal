@@ -108,7 +108,7 @@ void DxWindowManager::CreateAppWindow(Screen& screen) {
 	screen.SetPositionY(static_cast<int32>(screenHeight / 2 - screen.GetHeight() / 2));
 
 	// create window
-	_hwnd = CreateWindow(Core::APPLICATION_NAME.GetData(), Core::APPLICATION_NAME.GetData(), WS_THICKFRAME,
+	_hwnd = CreateWindow(Core::APPLICATION_NAME.GetData(), Core::APPLICATION_NAME.GetData(), WS_OVERLAPPEDWINDOW,
 	                     screen.GetPositionX(), screen.GetPositionY(), screen.GetWidth(), screen.GetHeight(),
 	                     nullptr, nullptr, _hInstance, nullptr);
 
@@ -136,7 +136,7 @@ void DxWindowManager::FullScreen() {
 		             full.GetWidth(), full.GetHeight(),SWP_SHOWWINDOW);
 
 	} else {
-		SetWindowLongPtr(_hwnd, GWL_STYLE, WS_THICKFRAME);
+		SetWindowLongPtr(_hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 		SetWindowPos(_hwnd, HWND_TOP, _screen.GetPositionX(), _screen.GetPositionY(),
 		             _screen.GetWidth(), _screen.GetHeight(), SWP_SHOWWINDOW);
 	}

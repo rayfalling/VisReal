@@ -16,8 +16,6 @@ namespace Engine::Core {
 	const static Types::FString CORE_LOG_NAME = Types::FString("VisReal Core");
 	const static Types::FString ENGINE_START = Types::FString("VisReal Engine Started.");
 	const static Types::FString ENGINE_STOP = Types::FString("VisReal Engine Stopped.");
-	const static Types::FString EVENT_LOOP_START = Types::FString("VisReal Engine Event Loop Started.");
-	const static Types::FString EVENT_LOOP_STOP = Types::FString("VisReal Engine Event Loop Stopped.");
 
 	/* TArray Tips */
 	const static Types::FString TARRAY_MAX_SIZE = Types::FString("Growth size attach to max size, set to SIZE_T max value");

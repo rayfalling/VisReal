@@ -11,6 +11,8 @@
 
 namespace Engine::Event {
 	const static Core::Types::FString FUNCTION_NOT_REGISTER = Core::Types::FString("Function not registered, can not remove.");
+	const static Core::Types::FString EVENT_LOOP_START = Core::Types::FString("VisReal Engine Event Loop Started.");
+	const static Core::Types::FString EVENT_LOOP_STOP = Core::Types::FString("VisReal Engine Event Loop Stopped.");
 }
 
 #endif

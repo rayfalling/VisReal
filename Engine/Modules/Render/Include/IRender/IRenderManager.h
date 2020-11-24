@@ -6,7 +6,7 @@
 
 #ifndef VISREAL_I_RENDER_MANAGER_H
 #define VISREAL_I_RENDER_MANAGER_H
-#include "Platform/PlatformTypes.h"
+#include <thread>
 #include "Screen/Screen.h"
 
 namespace Engine::Render::Interface {
@@ -28,6 +28,7 @@ namespace Engine::Render::Interface {
 			/* protect data member */
 		protected:
 			bool _fullScreen = false;
+			std::thread _runThread;
 
 		public:
 			//Interface methods

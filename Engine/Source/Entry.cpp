@@ -17,6 +17,7 @@ bool Engine::InitEngine() {
 	/* Start Render Thread */
 	InitRenderThread();
 
+	//TODO Start main thread
 	return true;
 }
 

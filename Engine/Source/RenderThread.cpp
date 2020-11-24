@@ -17,6 +17,6 @@ void Engine::RenderLoop() {
 
 void Engine::TerminateRenderThread() {
 	ShouldRenderExit = true;
-	RenderThread.detach();
+	RenderThread.join();
 	Renderer = nullptr;
 }

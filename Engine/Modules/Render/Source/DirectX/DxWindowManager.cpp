@@ -5,6 +5,7 @@
 #include "DirectX/DxWindowManager.h"
 
 #include <shellapi.h>
+#include <thread>
 #include "Marco/Constant.h"
 
 using namespace Engine::Render::DirectX;
@@ -17,20 +18,8 @@ void DxWindowManager::Init() {
 }
 
 void DxWindowManager::Run() {
-	MSG msg;
-	ZeroMemory(&msg, sizeof(MSG));
-
-	auto done = false;
-	while (!done) {
-		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-
-		if (msg.message == WM_QUIT) {
-			done = true;
-		}
-	}
+	_quit = false;
+	_runThread = std::thread(&DxWindowManager::MessageLoop, this);
 }
 
 void DxWindowManager::SetWindowSize(Screen& screen) {
@@ -51,6 +40,10 @@ Engine::Render::Interface::IRenderManager* DxWindowManager::GetRenderManager() {
 }
 
 void DxWindowManager::Shutdown() {
+	_quit = true;
+	_runThread.join();
+	_runThread.detach();
+
 	DestroyWindow(_hwnd);
 	_hwnd = nullptr;
 	UnregisterClass(Core::APPLICATION_NAME.GetData(), _hInstance);
@@ -141,6 +134,23 @@ void DxWindowManager::FullScreen() {
 		             _screen.GetWidth(), _screen.GetHeight(), SWP_SHOWWINDOW);
 	}
 
+}
+
+void DxWindowManager::MessageLoop() const {
+	MSG msg;
+	ZeroMemory(&msg, sizeof(MSG));
+
+	auto done = false;
+	while (!done || _quit) {
+		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+
+		if (msg.message == WM_QUIT) {
+			done = true;
+		}
+	}
 }
 
 LRESULT MessageProcess(const HWND hwnd, const UINT uMessage, const WPARAM wParam, const LPARAM lParam) {

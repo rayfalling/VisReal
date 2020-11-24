@@ -6,7 +6,6 @@
 #include <wrl.h>
 
 #include "DirectX/DxWindowManager.h"
-#include "Logger/OutputDebugStringBuf .h"
 using namespace Microsoft;
 using namespace Microsoft::WRL;
 #include <dxgi1_6.h>

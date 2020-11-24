@@ -59,11 +59,17 @@ namespace Engine::Render::DirectX {
 			/* Set window size and position */
 			void FullScreen();
 
+			/* window message loop */
+			void MessageLoop() const;
+
 			/* data member */
 		private:
 			HINSTANCE _hInstance{};
 			HWND _hwnd{};
 			Screen _screen;
+
+			/* use for stop message loop */
+			bool _quit = false;
 	};
 }
 

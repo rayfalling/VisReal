@@ -12,13 +12,13 @@ RenderManager* Renderer::GetRenderManager() const {
 }
 
 void Renderer::Draw() {
-	Core::CoreLog::GetInstance().LogDebug(FString("Rendering Loop"));
+	Core::CoreLog::GetInstance().LogInfo(FString("Rendering Loop"));
 }
 
 Renderer::Renderer() noexcept {
 	_renderManager = DirectX::DxWindowManager::GetInstancePtr();
 	_renderManager->Init();
-	_renderManager->Run();
+	_renderManager->RegisterEvent();
 }
 
 Renderer::~Renderer() noexcept {

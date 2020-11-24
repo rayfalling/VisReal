@@ -28,7 +28,7 @@ namespace Engine::Render::DirectX {
 		public:
 			void Init() override;
 
-			void Run() override;
+			void RegisterEvent() override;
 
 			void SetWindowSize(Screen& screen) override;
 
@@ -63,7 +63,7 @@ namespace Engine::Render::DirectX {
 
 		public:
 			/* window message loop */
-			void MessageLoop();
+			static void MessageLoop();
 
 			/* data member */
 		private:

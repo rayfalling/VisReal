@@ -18,6 +18,9 @@ namespace Engine {
 
 	/* Terminate Application */
 	void Terminate();
+
+	/* Terminate main event loop */
+	void TerminateEventLoop();
 }
 
 #endif //VISREAL_ENTRY_H

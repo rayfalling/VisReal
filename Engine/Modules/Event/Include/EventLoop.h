@@ -25,7 +25,7 @@ namespace Engine::Event {
 			void UnregisterEvent(Func& function);
 
 			/* run event loop */
-			void Run();
+			void Run() const;
 
 			/* stop event loop */
 			void Stop();

@@ -25,7 +25,13 @@ bool Engine::InitEngine() {
 	return true;
 }
 
+void Engine::TerminateEventLoop() {
+	MessageLoop->Stop();
+}
+
 void Engine::Terminate() {
+	TerminateEventLoop();
 	TerminateRenderThread();
+	Core::CoreLog::GetInstance().LogInfo(Core::ENGINE_STOP);
 	Logger->FlushAll();
 }

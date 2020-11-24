@@ -25,6 +25,7 @@ void EventLoop::UnregisterEvent(Func& function) {
 }
 
 void EventLoop::Run() const {
+	CoreLog::GetInstance().LogInfo(EVENT_LOOP_START);
 	while (!_shouldExit) {
 		if (!_queue.Empty()) {
 			for (auto index = 0; index < _queue.GetSize(); index++) {
@@ -36,6 +37,7 @@ void EventLoop::Run() const {
 
 void EventLoop::Stop() {
 	_shouldExit = true;
+	CoreLog::GetInstance().LogInfo(EVENT_LOOP_STOP);
 }
 
 void EventLoop::Clear() {

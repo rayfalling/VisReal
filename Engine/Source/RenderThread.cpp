@@ -6,7 +6,7 @@
 
 void Engine::InitRenderThread() {
 	Renderer = &Render::Renderer::GetInstance();
-	RenderThread = std::thread(RenderLoop);
+	// RenderThread = std::thread(RenderLoop);
 }
 
 void Engine::RenderLoop() {
@@ -17,6 +17,6 @@ void Engine::RenderLoop() {
 
 void Engine::TerminateRenderThread() {
 	ShouldRenderExit = true;
-	RenderThread.join();
+	// RenderThread.join();
 	Renderer = nullptr;
 }

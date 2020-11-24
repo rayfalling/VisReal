@@ -52,8 +52,8 @@ namespace Engine::Render::Interface {
 			/* close current window */
 			virtual void Shutdown() = 0;
 
-			/* run window */
-			virtual void Run() = 0;
+			/* register event to event loop to handle window message */
+			virtual void RegisterEvent() = 0;
 
 			/* get full screen window size with dpi */
 			virtual Screen GetFullWindowSize() = 0;

@@ -14,19 +14,22 @@ using namespace Engine::Render::DirectX;
 
 void DxWindowManager::Init() {
 	const auto dpi = GetWindowDpi();
+	Core::CoreLog::GetInstance().LogInfo(Core::Types::FString::Format("Current display DPI scale is {}.", dpi));
 	Screen screen(1280, 720, 0, 0, dpi);
+	Core::CoreLog::GetInstance().LogInfo(Core::Types::FString::Format("Set window size to {}x{}.", screen.GetWidth(), screen.GetHeight()));
 	_screen = screen;
 	CreateAppWindow(screen);
 }
 
-void DxWindowManager::Run() {
-	_runFunction = [this] { MessageLoop(); };
+void DxWindowManager::RegisterEvent() {
+	_runFunction = &DxWindowManager::MessageLoop;
 	Event::EventLoop::GetInstance().RegisterEvent(_runFunction);
 }
 
 void DxWindowManager::SetWindowSize(Screen& screen) {
 	SetWindowLong(_hwnd, GWL_STYLE, WS_BORDER);
 	SetWindowPos(_hwnd, HWND_TOPMOST, 0, 0, screen.GetWidth(), screen.GetHeight(), SWP_SHOWWINDOW);
+	Core::CoreLog::GetInstance().LogInfo(Core::Types::FString::Format("Set window size to {}x{}.", screen.GetWidth(), screen.GetHeight()));
 }
 
 FORCEINLINE void DxWindowManager::SetCursor(const bool visible) {
@@ -114,6 +117,7 @@ void DxWindowManager::CreateAppWindow(Screen& screen) {
 	ShowWindow(_hwnd, SW_SHOW);
 	SetForegroundWindow(_hwnd);
 	SetFocus(_hwnd);
+	Core::CoreLog::GetInstance().LogInfo(Core::Types::FString("Window created."));
 }
 
 void DxWindowManager::SetDpiUnaware() {
@@ -131,11 +135,15 @@ void DxWindowManager::FullScreen() {
 		SetWindowLongPtr(_hwnd, GWL_STYLE, WS_POPUP);
 		SetWindowPos(_hwnd, HWND_TOP, full.GetPositionX(), full.GetPositionY(),
 		             full.GetWidth(), full.GetHeight(),SWP_SHOWWINDOW);
+		Core::CoreLog::GetInstance().LogInfo(Core::Types::FString("Window set to full screen"));
+
 
 	} else {
 		SetWindowLongPtr(_hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 		SetWindowPos(_hwnd, HWND_TOP, _screen.GetPositionX(), _screen.GetPositionY(),
 		             _screen.GetWidth(), _screen.GetHeight(), SWP_SHOWWINDOW);
+		Core::CoreLog::GetInstance().LogInfo(Core::Types::FString("Window set to normal"));
+
 	}
 }
 

@@ -9,8 +9,7 @@ add_compile_definitions(_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING)
 # Set CXX flags
 set(CMAKE_CXX_STANDARD 17)
 
-add_subdirectory(Modules/Core)
-add_subdirectory(Modules/Render)
+add_subdirectory(Modules)
 
 set("ENGINE_INCLUDE_DIR" ${CMAKE_CURRENT_SOURCE_DIR}/Include)
 include_directories(${ENGINE_INCLUDE_DIR}/)

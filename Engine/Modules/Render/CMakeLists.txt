@@ -34,4 +34,4 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER VisReal/Engine/Modules)
 # expose include headers
 target_include_directories(${PROJECT_NAME} PUBLIC ${ENGINE_RENDER_INCLUDE_DIR})
 
-target_link_libraries(${PROJECT_NAME} PUBLIC Engine.Core PRIVATE glad PRIVATE glfw)
+target_link_libraries(${PROJECT_NAME} PUBLIC Engine.Core PUBLIC Engine.Input PRIVATE glad PRIVATE glfw)

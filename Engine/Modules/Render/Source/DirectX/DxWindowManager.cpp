@@ -6,6 +6,8 @@
 
 #include <shellapi.h>
 #include <thread>
+
+#include "EventLoop.h"
 #include "Marco/Constant.h"
 
 using namespace Engine::Render::DirectX;
@@ -18,8 +20,8 @@ void DxWindowManager::Init() {
 }
 
 void DxWindowManager::Run() {
-	_quit = false;
-	_runThread = std::thread(&DxWindowManager::MessageLoop, this);
+	_runFunction = [this] { MessageLoop(); };
+	Event::EventLoop::GetInstance().RegisterEvent(_runFunction);
 }
 
 void DxWindowManager::SetWindowSize(Screen& screen) {
@@ -39,10 +41,12 @@ Engine::Render::Interface::IRenderManager* DxWindowManager::GetRenderManager() {
 	return this;
 }
 
+Engine::Render::Screen& DxWindowManager::GetScreen() {
+	return _screen;
+}
+
 void DxWindowManager::Shutdown() {
-	_quit = true;
-	_runThread.join();
-	_runThread.detach();
+	Event::EventLoop::GetInstance().UnregisterEvent(_runFunction);
 
 	DestroyWindow(_hwnd);
 	_hwnd = nullptr;
@@ -133,36 +137,38 @@ void DxWindowManager::FullScreen() {
 		SetWindowPos(_hwnd, HWND_TOP, _screen.GetPositionX(), _screen.GetPositionY(),
 		             _screen.GetWidth(), _screen.GetHeight(), SWP_SHOWWINDOW);
 	}
-
 }
 
-void DxWindowManager::MessageLoop() const {
+void DxWindowManager::MessageLoop() {
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
 
-	auto done = false;
-	while (!done || _quit) {
-		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
+	if (PeekMessage(&msg, nullptr, 0, 0,PM_REMOVE)) {
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
 
-		if (msg.message == WM_QUIT) {
-			done = true;
-		}
+	if (msg.message == WM_QUIT) {
+		exit(0);
 	}
 }
 
-LRESULT MessageProcess(const HWND hwnd, const UINT uMessage, const WPARAM wParam, const LPARAM lParam) {
+LRESULT MessageProcess(HWND hwnd, const UINT uMessage, const WPARAM wParam, const LPARAM lParam) {
 	switch (uMessage) {
+		case WM_SIZE:
+			DxWindowManager::GetInstance().GetScreen().SetWidth(LOWORD(lParam));
+			DxWindowManager::GetInstance().GetScreen().SetHeight(HIWORD(lParam));
+			return 0;
+		case WM_MOVE:
+			const auto points = MAKEPOINTS(lParam);
+			DxWindowManager::GetInstance().GetScreen().SetPosition(points.x, points.y);
+			return 0;
 		case WM_DESTROY:
 		case WM_CLOSE:
 			PostQuitMessage(0);
 			return 0;
-		default: {
+		default:
 			/*TODO add input system*/
 			return DefWindowProc(hwnd, uMessage, wParam, lParam);
-			// return ApplicationHandle->MessageHandler(hwnd, umessage, wparam, lparam);
-		}
 	}
 }

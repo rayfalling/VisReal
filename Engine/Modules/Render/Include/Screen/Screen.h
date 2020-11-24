@@ -48,6 +48,9 @@ namespace Engine::Render {
 			/* set width */
 			void SetWidth(int32 width);
 
+			/* set start position */
+			void SetPosition(int32 x, int32 y);
+
 			/* set start position in x axis */
 			void SetPositionX(int32 x);
 
@@ -101,11 +104,16 @@ namespace Engine::Render {
 		_width = static_cast<uint32>(static_cast<float>(width) * _dpiScale);
 	}
 
-	inline void Screen::SetPositionX(int32 x) {
+	inline void Screen::SetPosition(const int32 x, const int32 y) {
+		_positionX = x;
+		_positionY = y;
+	}
+
+	inline void Screen::SetPositionX(const int32 x) {
 		_positionX = x;
 	}
 
-	inline void Screen::SetPositionY(int32 y) {
+	inline void Screen::SetPositionY(const int32 y) {
 		_positionX = y;
 	}
 

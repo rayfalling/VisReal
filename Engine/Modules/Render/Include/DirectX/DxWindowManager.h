@@ -44,6 +44,8 @@ namespace Engine::Render::DirectX {
 
 			IRenderManager* GetRenderManager() override;
 
+			Screen& GetScreen();
+
 			/* private methods */
 		private:
 			DxWindowManager();
@@ -59,8 +61,9 @@ namespace Engine::Render::DirectX {
 			/* Set window size and position */
 			void FullScreen();
 
+		public:
 			/* window message loop */
-			void MessageLoop() const;
+			void MessageLoop();
 
 			/* data member */
 		private:

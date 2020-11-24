@@ -6,6 +6,7 @@
 #include "Entry.h"
 
 #include "RenderThread.h"
+#include "EventLoop.h"
 
 bool Engine::InitEngine() {
 	atexit(Terminate);
@@ -17,7 +18,10 @@ bool Engine::InitEngine() {
 	/* Start Render Thread */
 	InitRenderThread();
 
-	//TODO Start main thread
+	/* Main Event Loop */
+	MessageLoop = Event::EventLoop::GetInstancePtr();
+	MessageLoop->Run();
+
 	return true;
 }
 

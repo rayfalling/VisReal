@@ -6,10 +6,12 @@
 #define VISREAL_ENTRY_H
 
 #include "Logger/CoreLog.h"
+#include "EventLoop.h"
 
 namespace Engine {
 	/* Global static logger variable */
-	inline Core::CoreLog* Logger;
+	static Core::CoreLog* Logger;
+	static Event::EventLoop* MessageLoop;
 
 	/* Init engine thread, logger, and other needed */
 	bool InitEngine();

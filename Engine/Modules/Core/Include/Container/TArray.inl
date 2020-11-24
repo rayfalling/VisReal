@@ -53,7 +53,6 @@ FORCEINLINE Engine::Core::Types::TArray<T>& Engine::Core::Types::TArray<T>::oper
 	if (this != &array) {
 		this->_size = array._size;
 		this->_capacity = array._capacity;
-		std::atomic_exchange_explicit(&this->_data, array._data);
 		this->_data.swap(array._data);
 	}
 	return *this;
@@ -229,17 +228,6 @@ void Engine::Core::Types::TArray<T>::Clear() {
 
 template <typename T>
 template <typename ComparisonType>
-bool Engine::Core::Types::TArray<T>::Contains(const ComparisonType& item) {
-	for (T *data = GetData(), *dataEnd = data + this->_size; data != dataEnd; ++data) {
-		if (*data == item) {
-			return true;
-		}
-	}
-	return false;
-}
-
-template <typename T>
-template <typename ComparisonType>
 bool Engine::Core::Types::TArray<T>::Contains(const ComparisonType& item) const {
 	for (T *data = GetData(), *dataEnd = data + this->_size; data != dataEnd; ++data) {
 		if (*data == item) {
@@ -251,13 +239,18 @@ bool Engine::Core::Types::TArray<T>::Contains(const ComparisonType& item) const 
 
 template <typename T>
 template <typename Predicate>
-bool Engine::Core::Types::TArray<T>::ContainsByPredicate(Predicate predicate) {
+bool Engine::Core::Types::TArray<T>::ContainsByPredicate(Predicate predicate) const {
 	return Find(predicate) != nullptr;
 }
 
 template <typename T>
+bool Engine::Core::Types::TArray<T>::Empty() const {
+	return this->_size == 0;
+}
+
+template <typename T>
 template <typename Predicate>
-T* Engine::Core::Types::TArray<T>::Find(Predicate predicate) {
+const T* Engine::Core::Types::TArray<T>::Find(Predicate predicate) const {
 	for (T *data = GetData(), *dataEnd = data + this->_size; data != dataEnd; ++data) {
 		if (predicate(*data)) {
 			return data;
@@ -268,13 +261,7 @@ T* Engine::Core::Types::TArray<T>::Find(Predicate predicate) {
 
 template <typename T>
 template <typename Predicate>
-const T* Engine::Core::Types::TArray<T>::Find(Predicate predicate) const {
-	return const_cast<TArray*>(this)->Find(predicate);
-}
-
-template <typename T>
-template <typename Predicate>
-T* Engine::Core::Types::TArray<T>::FindLast(Predicate predicate) {
+const T* Engine::Core::Types::TArray<T>::FindLast(Predicate predicate) const {
 	for (T *start = GetData(), *data = start + this->_size; data != start;) {
 		--data;
 		if (predicate(*data)) {
@@ -286,72 +273,70 @@ T* Engine::Core::Types::TArray<T>::FindLast(Predicate predicate) {
 
 template <typename T>
 template <typename Predicate>
-const T* Engine::Core::Types::TArray<T>::FindLast(Predicate predicate) const {
-	return const_cast<TArray*>(this)->FindLast(predicate);
+typename Engine::Core::Types::TArray<T>::ReturnIndexType Engine::Core::Types::TArray<T>::IndexOf(T& element, Predicate predicate) const {
+	const T* start = GetData();
+	for (const T *data = start, *dataEnd = start + this->_size; data != dataEnd; ++data) {
+		if (predicate(*data, element)) {
+			return static_cast<ReturnIndexType>(data - start);
+		}
+	}
+	return INDEX_NONE;
 }
 
 template <typename T>
-typename Engine::Core::Types::TArray<T>::IndexType Engine::Core::Types::TArray<T>::IndexOf(T& element) {
+template <typename Predicate>
+typename Engine::Core::Types::TArray<T>::ReturnIndexType Engine::Core::Types::TArray<T>::IndexOf(T&& element, Predicate predicate) const {
+	const T* start = GetData();
+	for (const T *data = start, *dataEnd = start + this->_size; data != dataEnd; ++data) {
+		if (predicate(*data, element)) {
+			return static_cast<ReturnIndexType>(data - start);
+		}
+	}
+	return INDEX_NONE;
+}
+
+template <typename T>
+typename Engine::Core::Types::TArray<T>::ReturnIndexType Engine::Core::Types::TArray<T>::IndexOf(T& element) const {
 	const T* start = GetData();
 	for (const T *data = start, *dataEnd = start + this->_size; data != dataEnd; ++data) {
 		if (*data == element) {
-			return static_cast<int32>(data - start);
+			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
 	return INDEX_NONE;
 }
 
 template <typename T>
-typename Engine::Core::Types::TArray<T>::IndexType Engine::Core::Types::TArray<T>::IndexOf(T&& element) {
+typename Engine::Core::Types::TArray<T>::ReturnIndexType Engine::Core::Types::TArray<T>::IndexOf(T&& element) const {
 	const T* start = GetData();
 	for (const T *data = start, *dataEnd = start + this->_size; data != dataEnd; ++data) {
 		if (*data == element) {
-			return static_cast<int32>(data - start);
+			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
 	return INDEX_NONE;
 }
 
 template <typename T>
-typename Engine::Core::Types::TArray<T>::IndexType Engine::Core::Types::TArray<T>::IndexOf(T& element) const {
-	return const_cast<TArray*>(this)->IndexOf(element);
-}
-
-template <typename T>
-typename Engine::Core::Types::TArray<T>::IndexType Engine::Core::Types::TArray<T>::IndexOf(T&& element) const {
-	return const_cast<TArray*>(this)->IndexOf(element);
-}
-
-template <typename T>
-int32 Engine::Core::Types::TArray<T>::IndexLast(T& element) {
+typename Engine::Core::Types::TArray<T>::ReturnIndexType Engine::Core::Types::TArray<T>::IndexLast(T& element) const {
 	for (T *start = GetData(), *data = start + this->_size; data != start;) {
 		--data;
 		if (*data == element) {
-			return static_cast<int32>(data - start);
+			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
 	return INDEX_NONE;
 }
 
 template <typename T>
-typename Engine::Core::Types::TArray<T>::IndexType Engine::Core::Types::TArray<T>::IndexLast(T&& element) {
+typename Engine::Core::Types::TArray<T>::ReturnIndexType Engine::Core::Types::TArray<T>::IndexLast(T&& element) const {
 	for (T *start = GetData(), *data = start + this->_size; data != start;) {
 		--data;
 		if (*data == element) {
-			return static_cast<int32>(data - start);
+			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
 	return INDEX_NONE;
-}
-
-template <typename T>
-typename Engine::Core::Types::TArray<T>::IndexType Engine::Core::Types::TArray<T>::IndexLast(T& element) const {
-	return const_cast<TArray*>(this)->IndexLast(element);
-}
-
-template <typename T>
-typename Engine::Core::Types::TArray<T>::IndexType Engine::Core::Types::TArray<T>::IndexLast(T&& element) const {
-	return const_cast<TArray*>(this)->IndexLast(element);
 }
 
 template <typename T>

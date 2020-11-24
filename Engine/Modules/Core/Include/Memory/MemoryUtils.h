@@ -434,7 +434,7 @@ namespace Engine::Core {
 		}
 		else {
 			while (count) {
-				*dest = static_cast<ElementType&&>(*source);
+				*dest = static_cast<ElementType&&>(const_cast<ElementType&>(*source));
 				++dest;
 				++source;
 				--count;

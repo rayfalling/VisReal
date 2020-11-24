@@ -55,7 +55,6 @@ FORCEINLINE Engine::Core::Types::TSafeArray<T>& Engine::Core::Types::TSafeArray<
 	if (this != &array) {
 		this->_size = array->_size;
 		this->_capacity = array._capacity;
-		std::atomic_exchange_explicit(&this->_data, array._data);
 		this->_data.swap(array._data);
 	}
 	return *this;
@@ -273,8 +272,13 @@ bool Engine::Core::Types::TSafeArray<T>::ContainsByPredicate(Predicate predicate
 }
 
 template <typename T>
+bool Engine::Core::Types::TSafeArray<T>::Empty() const {
+	return this->_size == 0;
+}
+
+template <typename T>
 template <typename Predicate>
-T* Engine::Core::Types::TSafeArray<T>::Find(Predicate predicate) {
+const T* Engine::Core::Types::TSafeArray<T>::Find(Predicate predicate) const {
 	for (T *data = GetData(), *dataEnd = data + this->_size; data != dataEnd; ++data) {
 		if (predicate(*data)) {
 			return data;
@@ -285,13 +289,7 @@ T* Engine::Core::Types::TSafeArray<T>::Find(Predicate predicate) {
 
 template <typename T>
 template <typename Predicate>
-const T* Engine::Core::Types::TSafeArray<T>::Find(Predicate predicate) const {
-	return const_cast<TSafeArray*>(this)->Find(predicate);
-}
-
-template <typename T>
-template <typename Predicate>
-T* Engine::Core::Types::TSafeArray<T>::FindLast(Predicate predicate) {
+const T* Engine::Core::Types::TSafeArray<T>::FindLast(Predicate predicate) const {
 	for (T *start = GetData(), *data = start + this->_size; data != start;) {
 		--data;
 		if (predicate(*data)) {
@@ -303,72 +301,70 @@ T* Engine::Core::Types::TSafeArray<T>::FindLast(Predicate predicate) {
 
 template <typename T>
 template <typename Predicate>
-const T* Engine::Core::Types::TSafeArray<T>::FindLast(Predicate predicate) const {
-	return const_cast<TSafeArray*>(this)->FindLast(predicate);
+typename Engine::Core::Types::TSafeArray<T>::ReturnIndexType Engine::Core::Types::TSafeArray<T>::IndexOf(T& element, Predicate predicate) const {
+	const T* start = GetData();
+	for (const T *data = start, *dataEnd = start + this->_size; data != dataEnd; ++data) {
+		if (predicate(*data, element)) {
+			return static_cast<ReturnIndexType>(data - start);
+		}
+	}
+	return INDEX_NONE;
 }
 
 template <typename T>
-typename Engine::Core::Types::TSafeArray<T>::IndexType Engine::Core::Types::TSafeArray<T>::IndexOf(T& element) {
+template <typename Predicate>
+typename Engine::Core::Types::TSafeArray<T>::ReturnIndexType Engine::Core::Types::TSafeArray<T>::IndexOf(T&& element, Predicate predicate) const {
+	const T* start = GetData();
+	for (const T *data = start, *dataEnd = start + this->_size; data != dataEnd; ++data) {
+		if (predicate(*data, element)) {
+			return static_cast<ReturnIndexType>(data - start);
+		}
+	}
+	return INDEX_NONE;
+}
+
+template <typename T>
+typename Engine::Core::Types::TSafeArray<T>::ReturnIndexType Engine::Core::Types::TSafeArray<T>::IndexOf(T& element) const {
 	const T* start = GetData();
 	for (const T *data = start, *dataEnd = start + this->_size; data != dataEnd; ++data) {
 		if (*data == element) {
-			return static_cast<int32>(data - start);
+			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
 	return INDEX_NONE;
 }
 
 template <typename T>
-typename Engine::Core::Types::TSafeArray<T>::IndexType Engine::Core::Types::TSafeArray<T>::IndexOf(T&& element) {
+typename Engine::Core::Types::TSafeArray<T>::ReturnIndexType Engine::Core::Types::TSafeArray<T>::IndexOf(T&& element) const {
 	const T* start = GetData();
 	for (const T *data = start, *dataEnd = start + this->_size; data != dataEnd; ++data) {
 		if (*data == element) {
-			return static_cast<int32>(data - start);
+			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
 	return INDEX_NONE;
 }
 
 template <typename T>
-typename Engine::Core::Types::TSafeArray<T>::IndexType Engine::Core::Types::TSafeArray<T>::IndexOf(T& element) const {
-	return const_cast<TSafeArray*>(this)->IndexOf(element);
-}
-
-template <typename T>
-typename Engine::Core::Types::TSafeArray<T>::IndexType Engine::Core::Types::TSafeArray<T>::IndexOf(T&& element) const {
-	return const_cast<TSafeArray*>(this)->IndexOf(element);
-}
-
-template <typename T>
-int32 Engine::Core::Types::TSafeArray<T>::IndexLast(T& element) {
+typename Engine::Core::Types::TSafeArray<T>::ReturnIndexType Engine::Core::Types::TSafeArray<T>::IndexLast(T& element) const {
 	for (T *start = GetData(), *data = start + this->_size; data != start;) {
 		--data;
 		if (*data == element) {
-			return static_cast<int32>(data - start);
+			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
 	return INDEX_NONE;
 }
 
 template <typename T>
-typename Engine::Core::Types::TSafeArray<T>::IndexType Engine::Core::Types::TSafeArray<T>::IndexLast(T&& element) {
+typename Engine::Core::Types::TSafeArray<T>::ReturnIndexType Engine::Core::Types::TSafeArray<T>::IndexLast(T&& element) const {
 	for (T *start = GetData(), *data = start + this->_size; data != start;) {
 		--data;
 		if (*data == element) {
-			return static_cast<int32>(data - start);
+			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
 	return INDEX_NONE;
-}
-
-template <typename T>
-typename Engine::Core::Types::TSafeArray<T>::IndexType Engine::Core::Types::TSafeArray<T>::IndexLast(T& element) const {
-	return const_cast<TSafeArray*>(this)->IndexLast(element);
-}
-
-template <typename T>
-typename Engine::Core::Types::TSafeArray<T>::IndexType Engine::Core::Types::TSafeArray<T>::IndexLast(T&& element) const {
-	return const_cast<TSafeArray*>(this)->IndexLast(element);
 }
 
 template <typename T>

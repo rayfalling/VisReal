@@ -10,14 +10,9 @@
 #define VISREAL_T_SAFE_ARRAY_H
 
 #include <initializer_list>
-#include <memory>
 #include <mutex>
 
 #include "TArrayImpl.h"
-#include "Logger/CoreLog.h"
-#include "Marco/Constant.h"
-#include "Math/VisRealMath.h"
-#include "Memory/MemoryUtils.h"
 #include "Platform/PlatformTypes.h"
 
 namespace Engine::Core::Types {
@@ -152,10 +147,8 @@ namespace Engine::Core::Types {
 			 */
 			template <typename Predicate>
 			bool ContainsByPredicate(Predicate predicate);
-
-			/* Finds an element which matches a predicate functor. */
-			template <typename Predicate>
-			T* Find(Predicate predicate);
+			/* Check is the array is empty */
+			[[nodiscard]] bool Empty() const;
 
 			/* Finds an element which matches a predicate functor. */
 			template <typename Predicate>
@@ -163,51 +156,43 @@ namespace Engine::Core::Types {
 
 			/* Finds an element which matches a predicate functor. */
 			template <typename Predicate>
-			T* FindLast(Predicate predicate);
-
-			/* Finds an element which matches a predicate functor. */
-			template <typename Predicate>
 			const T* FindLast(Predicate predicate) const;
 
 			/**
-			 * get the index of given element
+			 * get the index of given element, equal by predicate function
 			 *
 			 * @return index in the array or -1 not found
 			 * */
-			IndexType IndexOf(T& element);
+			template <typename Predicate = std::function<bool(T, T)>>
+			ReturnIndexType IndexOf(T& element, Predicate predicate) const;
+
+			/**
+			 * get the index of given element, equal by predicate function
+			 *
+			 * @return index in the array or -1 not found
+			 * */
+			template <typename Predicate = std::function<bool(T, T)>>
+			ReturnIndexType IndexOf(T&& element, Predicate predicate) const;
 
 			/**
 			 * get the index of given element
 			 *
 			 * @return index in the array or -1 not found
 			 * */
-			IndexType IndexOf(T&& element);
+			ReturnIndexType IndexOf(T& element) const;
 
 			/**
 			 * get the index of given element
 			 *
 			 * @return index in the array or -1 not found
 			 * */
-			IndexType IndexOf(T& element) const;
-
-			/**
-			 * get the index of given element
-			 *
-			 * @return index in the array or -1 not found
-			 * */
-			IndexType IndexOf(T&& element) const;
+			ReturnIndexType IndexOf(T&& element) const;
 
 			/* Finds an element which matches a predicate functor. */
-			int32 IndexLast(T& element);
+			ReturnIndexType IndexLast(T& element) const;
 
 			/* Finds an element which matches a predicate functor. */
-			IndexType IndexLast(T&& element);
-
-			/* Finds an element which matches a predicate functor. */
-			IndexType IndexLast(T& element) const;
-
-			/* Finds an element which matches a predicate functor. */
-			IndexType IndexLast(T&& element) const;
+			ReturnIndexType IndexLast(T&& element) const;
 
 			/* Insert to index */
 			void Insert(IndexType index, const T& element);
@@ -277,5 +262,6 @@ namespace Engine::Core::Types {
 			CONSTEXPR void CheckCapacity();
 	};
 }
+
 #include "Container/TSafeArray.inl"
 #endif

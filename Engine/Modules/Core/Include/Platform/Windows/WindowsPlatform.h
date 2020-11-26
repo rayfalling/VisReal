@@ -11,7 +11,7 @@
 #ifndef VISREAL_WINDOWS_PLATFORM_H
 #define VISREAL_WINDOWS_PLATFORM_H
 
-#include "Platform/GenericPlatform.h"
+#include "Platform/Generic/GenericPlatform.h"
 
 namespace Engine::Core::Types {
 	// Base defines, must define these for the platform, there are no defaults

@@ -15,8 +15,8 @@
 #define VISREAL_GENERIC_PLATFORM_MATH_H
 
 #include <cmath>
-#include <Marco/Constant.h>
-#include "PlatformTypes.h"
+#include "Marco/Constant.h"
+#include "Platform/PlatformTypes.h"
 
 namespace Engine::Core::Math {
 	struct FGenericPlatformMath {

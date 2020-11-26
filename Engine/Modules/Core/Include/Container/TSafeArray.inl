@@ -17,7 +17,6 @@
 #include "Memory/MemoryUtils.h"
 #include "Platform/PlatformTypes.h"
 
-
 template <typename T>
 FORCEINLINE Engine::Core::Types::TSafeArray<T>::TSafeArray() {
 	this->_size = 0;

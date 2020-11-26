@@ -10,9 +10,9 @@
 #ifndef VISREAL_VISREAL_MATH_H
 #define VISREAL_VISREAL_MATH_H
 
-#include <cmath>
 #include "Platform/PlatformTypes.h"
 #include "VisRealMathUtility.h"
+#include <cmath>
 
 #endif //VISREAL_VISREAL_MATH_H
 #pragma clang diagnostic pop

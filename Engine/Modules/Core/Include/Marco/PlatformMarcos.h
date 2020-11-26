@@ -52,9 +52,9 @@ namespace Engine::Core {
 	#include <stddef.h> // needed for size_t
 	#endif
 
-	#include "Platform/GenericPlatform.h"
+	#include "Platform/Generic/GenericPlatform.h"
 
-	//------------------------------------------------------------------
+    //------------------------------------------------------------------
 	// Setup macros for static code analysis
 	//------------------------------------------------------------------
 	#ifndef PLATFORM_COMPILER_CLANG

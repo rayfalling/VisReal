@@ -13,7 +13,7 @@
 #define VISREAL_WINDOWS_PLATFORM_MATH_H
 
 #include <intrin.h>
-#include "Platform/GenericPlatformMath.h"
+#include "Platform/Generic/GenericPlatformMath.h"
 
 namespace Engine::Core::Math {
 	/**

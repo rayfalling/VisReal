@@ -12,7 +12,6 @@
 #include <initializer_list>
 
 #include "TArrayImpl.h"
-#include "Logger/CoreLog.h"
 #include "Platform/PlatformTypes.h"
 
 namespace Engine::Core::Types {

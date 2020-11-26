@@ -9,9 +9,9 @@
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "hicpp-signed-bitwise"
 
-#include "Platform/GenericPlatformMath.h"
-#include "Math/VisRealMathUtility.h"
+#include "Platform/Generic/GenericPlatformMath.h"
 #include "Logger/CoreLog.h"
+#include "Math/VisRealMathUtility.h"
 
 using namespace Engine::Core::Math;
 

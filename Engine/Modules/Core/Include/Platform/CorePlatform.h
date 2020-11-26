@@ -9,5 +9,6 @@
 
 #include "PreCompile/Platform.h"
 #include "PreCompile/PlatformTypes.h"
+#include "PreCompile/PlatformMath.h"
 
 #endif //VISREAL_CORE_PLATFORM_H

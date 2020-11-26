@@ -4,9 +4,6 @@
 
 #include "DirectX/DxWindowManager.h"
 
-#include <shellapi.h>
-#include <thread>
-
 #include "EventLoop.h"
 #include "Marco/Constant.h"
 

@@ -7,10 +7,10 @@
 #ifndef VISREAL_LOG_TRACE_H
 #define VISREAL_LOG_TRACE_H
 
+#include <spdlog/spdlog.h>
+
 #include "Object/ISingletonObject.h"
 #include "Container/FString.h"
-
-#include <spdlog/logger.h>
 
 namespace Engine::Core {
 	enum class LogLevel {

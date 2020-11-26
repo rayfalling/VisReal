@@ -2,6 +2,8 @@
  * Created by Rayfalling on 2020/11/26.
  * */
 
+#pragma once
+
 #ifndef VISREAL_PRE_PLATFORM_TYPES_H
 #define VISREAL_PRE_PLATFORM_TYPES_H
 

@@ -4,7 +4,7 @@
 
 #include "TestFString.h"
 
-#include "CoreTypes.h"
+#include "Core.h"
 #include "Container/TArray.h"
 #include "Logger/CoreLog.h"
 

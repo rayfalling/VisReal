@@ -6,6 +6,7 @@
 
 #ifndef VISREAL_I_RENDER_MANAGER_H
 #define VISREAL_I_RENDER_MANAGER_H
+
 #include <functional>
 #include "Screen/Screen.h"
 

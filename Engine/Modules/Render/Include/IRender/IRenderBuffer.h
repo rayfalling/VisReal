@@ -7,7 +7,7 @@
 #ifndef VISREAL_I_RENDER_BUFFER_H
 #define VISREAL_I_RENDER_BUFFER_H
 
-#include "CoreTypes.h"
+#include "Core.h"
 
 namespace Engine::Render::Interface {
 	/**

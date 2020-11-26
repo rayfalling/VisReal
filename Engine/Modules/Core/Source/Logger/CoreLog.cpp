@@ -11,13 +11,16 @@
 #pragma ide diagnostic ignored "exit-time-destructors"
 
 #include "Logger/CoreLog.h"
-#include "Marco/Constant.h"
-#include "Container/FTime.h"
 
+#ifdef MSVC
+#include <spdlog/sinks/msvc_sink.h>
+#else
 #include <spdlog/sinks/stdout_color_sinks.h>
+#endif
 #include <spdlog/sinks/basic_file_sink.h>
 
-#include "spdlog/spdlog.h"
+#include "Container/FTime.h"
+#include "Marco/Constant.h"
 
 /* static shared_ptr to share logger in different library */
 std::shared_ptr<spdlog::logger> Engine::Core::CoreLog::_logger = std::shared_ptr<spdlog::logger>();
@@ -26,10 +29,10 @@ std::vector<spdlog::sink_ptr> Engine::Core::CoreLog::_sinks = std::vector<spdlog
 Engine::Core::CoreLog::CoreLog() {
 	if (_logger != nullptr)return;
 	/* Create sinks for logger */
-	#ifdef _WIN32
-	auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+	#ifdef MSVC
+	auto consoleSink = std::make_shared<spdlog::sinks::windebug_sink_mt>();
 	#else
-	auto consoleSink = std::make_shared<spdlog::sinks::wincolor_stdout_sink_mt>();
+	auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
 	#endif
 	consoleSink->set_level(spdlog::level::debug);
 

@@ -4,7 +4,7 @@
 
 #include "TestHash.h"
 
-#include "CoreTypes.h"
+#include "Core.h"
 #include "Container/TArray.h"
 #include "Logger/CoreLog.h"
 #include "Platform/Windows/WindowsPlatformMath.h"

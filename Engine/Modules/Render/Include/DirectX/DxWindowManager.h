@@ -12,12 +12,7 @@
 
 #include "IRender/IRenderManager.h"
 #include "Object/ISingletonObject.h"
-#include "Platform/CorePlatform.h"
-
-/* accurate build */
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-
+#include "Platform/Windows/WindowsCore.h"
 #include "Screen/Screen.h"
 
 namespace Engine::Render::DirectX {

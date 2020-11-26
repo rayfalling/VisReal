@@ -53,7 +53,7 @@ void DxWindowManager::Shutdown() {
 
 	DestroyWindow(_hwnd);
 	_hwnd = nullptr;
-	UnregisterClass(Core::APPLICATION_NAME.GetData(), _hInstance);
+	UnregisterClass(Core::C_APPLICATION_NAME.GetData(), _hInstance);
 	_hInstance = nullptr;
 }
 
@@ -94,7 +94,7 @@ void DxWindowManager::CreateAppWindow(Screen& screen) {
 	window.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	window.hbrBackground = static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
 	window.lpszMenuName = nullptr;
-	window.lpszClassName = Core::APPLICATION_NAME.GetData();
+	window.lpszClassName = Core::C_APPLICATION_NAME.GetData();
 	window.cbSize = sizeof(WNDCLASSEX);
 
 	// register
@@ -108,7 +108,7 @@ void DxWindowManager::CreateAppWindow(Screen& screen) {
 	screen.SetPositionY(static_cast<int32>(screenHeight / 2 - screen.GetHeight() / 2));
 
 	// create window
-	_hwnd = CreateWindow(Core::APPLICATION_NAME.GetData(), Core::APPLICATION_NAME.GetData(), WS_OVERLAPPEDWINDOW,
+	_hwnd = CreateWindow(Core::C_APPLICATION_NAME.GetData(), Core::C_APPLICATION_NAME.GetData(), WS_OVERLAPPEDWINDOW,
 	                     screen.GetPositionX(), screen.GetPositionY(), screen.GetWidth(), screen.GetHeight(),
 	                     nullptr, nullptr, _hInstance, nullptr);
 

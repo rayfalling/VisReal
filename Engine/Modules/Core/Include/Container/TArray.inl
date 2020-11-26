@@ -14,7 +14,7 @@
 #include "Marco/Constant.h"
 #include "Math/VisRealMath.h"
 #include "Memory/MemoryUtils.h"
-#include "Platform/PlatformTypes.h"
+#include "Platform/PreCompile/Platform.h"
 
 template <typename T>
 FORCEINLINE Engine::Core::Types::TArray<T>::TArray() {
@@ -280,7 +280,7 @@ typename Engine::Core::Types::TArray<T>::ReturnIndexType Engine::Core::Types::TA
 			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 template <typename T>
@@ -292,7 +292,7 @@ typename Engine::Core::Types::TArray<T>::ReturnIndexType Engine::Core::Types::TA
 			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 template <typename T>
@@ -303,7 +303,7 @@ typename Engine::Core::Types::TArray<T>::ReturnIndexType Engine::Core::Types::TA
 			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 template <typename T>
@@ -314,7 +314,7 @@ typename Engine::Core::Types::TArray<T>::ReturnIndexType Engine::Core::Types::TA
 			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 template <typename T>
@@ -325,7 +325,7 @@ typename Engine::Core::Types::TArray<T>::ReturnIndexType Engine::Core::Types::TA
 			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 template <typename T>
@@ -336,7 +336,7 @@ typename Engine::Core::Types::TArray<T>::ReturnIndexType Engine::Core::Types::TA
 			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 template <typename T>
@@ -365,7 +365,7 @@ void Engine::Core::Types::TArray<T>::RemoveAt(const IndexType index) {
 
 template <typename T>
 void Engine::Core::Types::TArray<T>::RemoveAtSwap(const IndexType index) {
-	CoreLog::GetInstance().LogWarning(TARRAY_REMOVE_AT_SWAP_WARNING);
+	CoreLog::GetInstance().LogWarning(C_TARRAY_REMOVE_AT_SWAP_WARNING);
 	CheckIndex(index);
 	RemoveAtSwapImpl(index, 1);
 }
@@ -440,7 +440,7 @@ template <typename T>
 void Engine::Core::Types::TArray<T>::ResizeGrow(const IndexType size) {
 	this->_capacity = size;
 	if (this->_capacity > this->MaxArraySize) {
-		CoreLog::GetInstance().LogWarning(TARRAY_MAX_SIZE);
+		CoreLog::GetInstance().LogWarning(C_TARRAY_MAX_SIZE);
 		this->_capacity = this->MaxArraySize;
 	}
 	T* newPtr = new T[this->_capacity];
@@ -497,7 +497,7 @@ void Engine::Core::Types::TArray<T>::RemoveAtSwapImpl(IndexType index, IndexType
 template <typename T>
 CONSTEXPR void Engine::Core::Types::TArray<T>::CheckIndex(const IndexType index) const {
 	if (index > this->_size - 1 || this->_size == 0) {
-		CoreLog::GetInstance().LogError(TARRAY_OUT_OF_INDEX_ERROR);
+		CoreLog::GetInstance().LogError(C_TARRAY_OUT_OF_INDEX_ERROR);
 		PLATFORM_BREAK();
 	}
 }

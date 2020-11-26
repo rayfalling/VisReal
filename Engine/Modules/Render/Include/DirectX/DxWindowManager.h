@@ -12,7 +12,7 @@
 
 #include "IRender/IRenderManager.h"
 #include "Object/ISingletonObject.h"
-#include "Platform/PlatformTypes.h"
+#include "Platform/CorePlatform.h"
 
 /* accurate build */
 #define WIN32_LEAN_AND_MEAN

@@ -42,7 +42,7 @@ Engine::Core::CoreLog::CoreLog() {
 	_sinks.emplace_back(fileSink);
 
 	/* register core logger */
-	_logger = std::make_shared<spdlog::logger>(CORE_LOG_NAME.ToString(), begin(_sinks), end(_sinks));
+	_logger = std::make_shared<spdlog::logger>(C_CORE_LOG_NAME.ToString(), begin(_sinks), end(_sinks));
 	/* TODO using custom map container*/
 	//_registerLoggers.insert(std::make_pair(coreLog,logger));
 	_logger->set_level(spdlog::level::info);

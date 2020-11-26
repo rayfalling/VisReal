@@ -10,7 +10,6 @@
 #ifndef VISREAL_VISREAL_MATH_H
 #define VISREAL_VISREAL_MATH_H
 
-#include "Platform/PlatformTypes.h"
 #include "VisRealMathUtility.h"
 #include <cmath>
 

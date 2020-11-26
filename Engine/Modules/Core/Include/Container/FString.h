@@ -16,7 +16,6 @@
 #include <fmt/format.h>
 
 #include "Memory/MemoryUtils.h"
-#include "Platform/PlatformTypes.h"
 
 namespace Engine::Core::Types {
 

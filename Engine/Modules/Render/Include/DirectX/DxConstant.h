@@ -8,7 +8,8 @@
 #define VISREAL_DX_CONSTANT_H
 
 #include <string>
-#include "Platform/PlatformTypes.h"
+
+#include "Platform/CorePlatform.h"
 
 namespace Engine::Render::DirectX {
 	

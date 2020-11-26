@@ -13,7 +13,6 @@
 #include "Container/TArray.h"
 #include "Container/TMap.h"
 #include "Container/TSafeArray.h"
-#include "Platform/PlatformTypes.h"
 
 using namespace Engine::Core::Types;
 using namespace Engine::Core::Math;

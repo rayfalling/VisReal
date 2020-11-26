@@ -16,7 +16,6 @@
 
 #include <cmath>
 #include "Marco/Constant.h"
-#include "Platform/PlatformTypes.h"
 
 namespace Engine::Core::Math {
 	struct FGenericPlatformMath {

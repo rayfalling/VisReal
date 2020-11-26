@@ -16,7 +16,7 @@
 #include "TIsPointer.h"
 #include "TIsTriviallyCopyConstructible.h"
 #include "TRemoveCV.h"
-#include "Platform/PlatformTypes.h"
+#include "Platform/PreCompile/PlatformTypes.h"
 
 namespace Engine::Core {
 	/*-----------------------------------------------------------------------------

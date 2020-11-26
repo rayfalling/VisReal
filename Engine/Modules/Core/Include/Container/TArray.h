@@ -9,10 +9,11 @@
 #ifndef VISREAL_T_ARRAY_H
 #define VISREAL_T_ARRAY_H
 
+#include <functional>
 #include <initializer_list>
+#include <vector>
 
 #include "TArrayImpl.h"
-#include "Platform/PlatformTypes.h"
 
 namespace Engine::Core::Types {
 	template <typename T>
@@ -117,14 +118,6 @@ namespace Engine::Core::Types {
 
 			/* Clear all Element in Array */
 			void Clear();
-
-			/**
-			 * Checks if this array contains the element.
-			 *
-			 * @returns	True if found. False otherwise.
-			 */
-			template <typename ComparisonType>
-			bool Contains(const ComparisonType& item);
 
 			/**
 			 * Checks if this array contains the element.

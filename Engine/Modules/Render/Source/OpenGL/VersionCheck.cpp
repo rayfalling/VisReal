@@ -6,5 +6,5 @@
 #include "OpenGL/GLConstant.h"
 
 [[maybe_unused]] bool Engine::Render::OpenGL::CheckGLVersion(GLVersion& version) {
-	return version.major >= CMinGLVersion.major && version.minor >= CMinGLVersion.minor;
+	return version.major >= C_MIN_GL_VERSION.major && version.minor >= C_MIN_GL_VERSION.minor;
 }

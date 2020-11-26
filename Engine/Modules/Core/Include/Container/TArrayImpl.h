@@ -9,10 +9,9 @@
 #ifndef VISREAL_T_ARRAY_IMPL_H
 #define VISREAL_T_ARRAY_IMPL_H
 
-
 #include <memory>
 
-#include "Platform/PlatformTypes.h"
+#include "Platform/CorePlatform.h"
 
 namespace Engine::Core::Types {
 	/**

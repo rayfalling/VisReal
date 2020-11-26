@@ -7,7 +7,7 @@
 #ifndef VISREAL_T_IS_ARITHMETIC_H
 #define VISREAL_T_IS_ARITHMETIC_H
 
-#include "Platform/PlatformTypes.h"
+#include "Platform/PreCompile/PlatformTypes.h"
 
 namespace Engine::Core {
 	/**

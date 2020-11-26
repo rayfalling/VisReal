@@ -15,7 +15,6 @@
 #include "Marco/Constant.h"
 #include "Math/VisRealMath.h"
 #include "Memory/MemoryUtils.h"
-#include "Platform/PlatformTypes.h"
 
 template <typename T>
 FORCEINLINE Engine::Core::Types::TSafeArray<T>::TSafeArray() {
@@ -307,7 +306,7 @@ typename Engine::Core::Types::TSafeArray<T>::ReturnIndexType Engine::Core::Types
 			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 template <typename T>
@@ -319,7 +318,7 @@ typename Engine::Core::Types::TSafeArray<T>::ReturnIndexType Engine::Core::Types
 			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 template <typename T>
@@ -330,7 +329,7 @@ typename Engine::Core::Types::TSafeArray<T>::ReturnIndexType Engine::Core::Types
 			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 template <typename T>
@@ -341,7 +340,7 @@ typename Engine::Core::Types::TSafeArray<T>::ReturnIndexType Engine::Core::Types
 			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 template <typename T>
@@ -352,7 +351,7 @@ typename Engine::Core::Types::TSafeArray<T>::ReturnIndexType Engine::Core::Types
 			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 template <typename T>
@@ -363,7 +362,7 @@ typename Engine::Core::Types::TSafeArray<T>::ReturnIndexType Engine::Core::Types
 			return static_cast<ReturnIndexType>(data - start);
 		}
 	}
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 template <typename T>
@@ -395,7 +394,7 @@ void Engine::Core::Types::TSafeArray<T>::RemoveAt(const IndexType index) {
 
 template <typename T>
 void Engine::Core::Types::TSafeArray<T>::RemoveAtSwap(const IndexType index) {
-	CoreLog::GetInstance().LogWarning(TARRAY_REMOVE_AT_SWAP_WARNING);
+	CoreLog::GetInstance().LogWarning(C_TARRAY_REMOVE_AT_SWAP_WARNING);
 	std::lock_guard<std::mutex> lock(_mutex);
 	CheckIndex(index);
 	RemoveAtSwapImpl(index, 1);
@@ -477,7 +476,7 @@ template <typename T>
 void Engine::Core::Types::TSafeArray<T>::ResizeGrow(const IndexType size) {
 	this->_capacity = size;
 	if (this->_capacity > this->MaxArraySize) {
-		CoreLog::GetInstance().LogWarning(TARRAY_MAX_SIZE);
+		CoreLog::GetInstance().LogWarning(C_TARRAY_MAX_SIZE);
 		this->_capacity = this->MaxArraySize;
 	}
 	T* newPtr = new T[this->_capacity];

@@ -8,7 +8,8 @@
 #define VISREAL_HASH_H
 
 #include <xxhash.h>
-#include "Platform/PlatformTypes.h"
+
+#include "Platform/PreCompile/PlatformTypes.h"
 
 namespace Engine::Core {
 	#ifdef PLATFORM_64BITS

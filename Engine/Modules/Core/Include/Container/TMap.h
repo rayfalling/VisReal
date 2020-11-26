@@ -7,8 +7,9 @@
 #ifndef VISREAL_T_MAP_H
 #define VISREAL_T_MAP_H
 
-#include "Platform/PlatformTypes.h"
 #include <mutex>
+
+#include "Platform/CorePlatform.h"
 
 namespace Engine::Core::Types {
 	/* forward declaration for TArray */

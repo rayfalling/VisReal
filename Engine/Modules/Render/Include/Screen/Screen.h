@@ -5,7 +5,7 @@
 #ifndef VISREAL_SCREEN_H
 #define VISREAL_SCREEN_H
 
-#include "Platform/PlatformTypes.h"
+#include "Platform/CorePlatform.h"
 
 namespace Engine::Render {
 	/**

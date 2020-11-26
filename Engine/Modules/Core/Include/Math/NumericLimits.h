@@ -7,7 +7,7 @@
 #ifndef VISREAL_NUMERIC_LIMITS_H
 #define VISREAL_NUMERIC_LIMITS_H
 
-#include "Platform/PlatformTypes.h"
+#include "Platform/PreCompile/PlatformTypes.h"
 
 namespace Engine::Core::Math {
 

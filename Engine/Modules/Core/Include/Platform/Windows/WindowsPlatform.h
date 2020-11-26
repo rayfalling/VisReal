@@ -11,9 +11,7 @@
 #ifndef VISREAL_WINDOWS_PLATFORM_H
 #define VISREAL_WINDOWS_PLATFORM_H
 
-#include "Platform/Generic/GenericPlatform.h"
-
-namespace Engine::Core::Types {
+namespace Engine::Core {
 	// Base defines, must define these for the platform, there are no defaults
 	#define PLATFORM_DESKTOP                    1
 	#if defined( _WIN64 )
@@ -154,20 +152,5 @@ namespace Engine::Core::Types {
 	#ifndef ENABLE_WIN_ALLOC_TRACKING
 	#define ENABLE_WIN_ALLOC_TRACKING 0
 	#endif
-
-	/**
-	* Windows specific types
-	**/
-	struct FWindowsPlatformTypes : public GenericPlatform {
-		#ifdef PLATFORM_64BITS
-		typedef unsigned long long SIZE_T;
-		typedef long long SSIZE_T;
-		#else
-		typedef unsigned long SIZE_T;
-		typedef long SSIZE_T;
-		#endif
-	};
-
-	typedef FWindowsPlatformTypes FPlatformTypes;
 }
 #endif //VISREAL_WINDOWS_PLATFORM_H

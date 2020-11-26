@@ -7,7 +7,7 @@
 #ifndef VISREAL_PREPROCESSOR_HELPERS_H
 #define VISREAL_PREPROCESSOR_HELPERS_H
 
-namespace Engine::Core{
+namespace Engine::Core {
 	// Turns an preprocessor token into a real string (see UBT_COMPILED_PLATFORM)
 	#define PREPROCESSOR_TO_STRING(x) PREPROCESSOR_TO_STRING_INNER(x)
 	#define PREPROCESSOR_TO_STRING_INNER(x) #x

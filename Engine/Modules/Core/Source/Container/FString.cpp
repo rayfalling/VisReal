@@ -197,7 +197,7 @@ FString::ReturnIndexType FString::BruteForceSearch(const FString& string) const 
 	while (!isFind) {
 		auto* first = wmemchr(_string.get() + searchIndex, string[0], _length - searchIndex);
 		if (_length - searchIndex < length || !first)
-			return INDEX_NONE;
+			return C_INDEX_NONE;
 		searchIndex = currentIndex = first - _string.get();
 		for (auto index = 0u; index < length; index ++) {
 			if (_string[currentIndex + index] != string._string[index]) {
@@ -210,7 +210,7 @@ FString::ReturnIndexType FString::BruteForceSearch(const FString& string) const 
 	}
 	if (isFind)
 		return currentIndex;
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 FString::ReturnIndexType FString::BoyerMooreHorspoolSearch(const FString& string) const {
@@ -224,7 +224,7 @@ FString::ReturnIndexType FString::BoyerMooreHorspoolSearch(const FString& string
 			);
 	if (findPtr != _string.get() + _length)
 		return std::distance(_string.get(), findPtr);
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 
 }
 
@@ -504,7 +504,7 @@ FString::ReturnIndexType FString::IndexOf(const CHAR& ch) const {
 FString::ReturnIndexType FString::IndexOf(const WCHAR& ch) const {
 	auto* first = wmemchr(_string.get(), ch, _length);
 	if (first) return first - _string.get();
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 FString::ReturnIndexType FString::IndexOf(const FString& string) const {
@@ -538,13 +538,13 @@ FString::ReturnIndexType FString::LastIndexOf(const WCHAR& ch) const {
 		if (_string[index] == ch)
 			return index;
 	}
-	return INDEX_NONE;
+	return C_INDEX_NONE;
 }
 
 FString::ReturnIndexType FString::LastIndexOf(const FString& string) const {
 	auto* findPtr = std::find_end(_string.get(), _string.get() + _length, string._string.get(), string._string.get() + string._length);
 	if (findPtr == string._string.get() + string._length) {
-		return INDEX_NONE;
+		return C_INDEX_NONE;
 	}
 	return std::distance(_string.get(), findPtr);
 }
@@ -559,7 +559,7 @@ FString::ReturnIndexType FString::LastIndexOf(const std::wstring& string) const 
 
 FString FString::SubString(const IndexType start, const IndexType end) const {
 	if (start > end || end > _length) {
-		CoreLog::GetInstance().LogError(F_STRING_OUT_OF_INDEX_ERROR);
+		CoreLog::GetInstance().LogError(C_FSTRING_OUT_OF_INDEX_ERROR);
 	}
 	FString string(end - start + 1);
 	string._length = end - start + 1;
@@ -569,7 +569,7 @@ FString FString::SubString(const IndexType start, const IndexType end) const {
 
 FString FString::SubStringAt(const IndexType index, const IndexType count) const {
 	if (index + count > _length) {
-		CoreLog::GetInstance().LogError(F_STRING_OUT_OF_INDEX_ERROR);
+		CoreLog::GetInstance().LogError(C_FSTRING_OUT_OF_INDEX_ERROR);
 	}
 	FString string(count);
 	string._length = count;
@@ -636,7 +636,7 @@ FString& FString::ResizeShrink() {
 
 void FString::CheckIndex(const IndexType index) const {
 	if (index > _length - 1 || _length == 0) {
-		CoreLog::GetInstance().LogError(F_STRING_OUT_OF_INDEX_ERROR);
+		CoreLog::GetInstance().LogError(C_FSTRING_OUT_OF_INDEX_ERROR);
 	}
 }
 

@@ -9,11 +9,12 @@
 #ifndef VISREAL_T_SAFE_ARRAY_H
 #define VISREAL_T_SAFE_ARRAY_H
 
+#include <functional>
 #include <initializer_list>
 #include <mutex>
+#include <vector>
 
 #include "TArrayImpl.h"
-#include "Platform/PlatformTypes.h"
 
 namespace Engine::Core::Types {
 	template <typename T>

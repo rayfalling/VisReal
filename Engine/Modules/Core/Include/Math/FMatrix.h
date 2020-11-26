@@ -10,8 +10,7 @@
 #include "Axis.h"
 #include "VisRealMathUtility.h"
 #include "Container/FString.h"
-#include "Marco/PlatformMarcos.h"
-#include "Platform/PlatformTypes.h"
+#include "Platform/Generic/GenericPlatform.h"
 
 namespace Engine::Core::Math {
 	class FVector3;

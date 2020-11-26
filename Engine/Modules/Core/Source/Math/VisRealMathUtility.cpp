@@ -20,9 +20,9 @@ const uint32 FMath::BitFlag[32] = {
 };
 
 // const FIntPoint FIntPoint::ZeroValue(0, 0);
-// const FIntPoint FIntPoint::NoneValue(INDEX_NONE, INDEX_NONE);
+// const FIntPoint FIntPoint::NoneValue(C_INDEX_NONE, C_INDEX_NONE);
 // const FIntVector FIntVector::ZeroValue(0, 0, 0);
-// const FIntVector FIntVector::NoneValue(INDEX_NONE, INDEX_NONE, INDEX_NONE);
+// const FIntVector FIntVector::NoneValue(C_INDEX_NONE, C_INDEX_NONE, C_INDEX_NONE);
 //
 // FRotator FVector3::ToOrientationRotator() const {
 // 	FRotator R;
@@ -2269,7 +2269,7 @@ FVector3 FMath::ClosestPointOnInfiniteLine(const FVector3& lineStart, const FVec
 // 			const FVector3& Pos = Points[i];
 //
 // 			// Iterate over all clusters to find closes one
-// 			int32 NearestClusterIndex = INDEX_NONE;
+// 			int32 NearestClusterIndex = C_INDEX_NONE;
 // 			float NearestClusterDistSqr = BIG_NUMBER;
 // 			for (int32 j = 0; j < Clusters.Num(); j++) {
 // 				const float DistSqr = (Pos - Clusters[j]).SizeSquared();
@@ -2279,7 +2279,7 @@ FVector3 FMath::ClosestPointOnInfiniteLine(const FVector3& lineStart, const FVec
 // 				}
 // 			}
 // 			// Update its info with this point
-// 			if (NearestClusterIndex != INDEX_NONE) {
+// 			if (NearestClusterIndex != C_INDEX_NONE) {
 // 				ClusterData[NearestClusterIndex].ClusterPosAccum += Pos;
 // 				ClusterData[NearestClusterIndex].ClusterSize++;
 // 			}

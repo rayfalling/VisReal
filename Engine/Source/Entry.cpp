@@ -13,7 +13,7 @@ bool Engine::InitEngine() {
 
 	/* Init Engine Logger */
 	Logger = Core::CoreLog::GetInstancePtr();
-	Logger->LogInfo(Core::ENGINE_START);
+	Logger->LogInfo(Core::C_ENGINE_START);
 
 	/* Start Render Thread */
 	InitRenderThread();
@@ -32,6 +32,6 @@ void Engine::TerminateEventLoop() {
 void Engine::Terminate() {
 	TerminateEventLoop();
 	TerminateRenderThread();
-	Core::CoreLog::GetInstance().LogInfo(Core::ENGINE_STOP);
+	Core::CoreLog::GetInstance().LogInfo(Core::C_ENGINE_STOP);
 	Logger->FlushAll();
 }

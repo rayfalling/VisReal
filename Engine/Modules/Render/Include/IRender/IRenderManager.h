@@ -7,7 +7,6 @@
 #ifndef VISREAL_I_RENDER_MANAGER_H
 #define VISREAL_I_RENDER_MANAGER_H
 #include <functional>
-#include <thread>
 #include "Screen/Screen.h"
 
 namespace Engine::Render::Interface {

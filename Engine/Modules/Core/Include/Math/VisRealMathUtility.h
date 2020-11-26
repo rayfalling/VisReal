@@ -7,11 +7,10 @@
 #ifndef VISREAL_VISREAL_MATH_UTILITY_H
 #define VISREAL_VISREAL_MATH_UTILITY_H
 
-#ifdef MSVC
-// include windows platform types
-#include "Platform/Windows/WindowsPlatformMath.h"
-#endif
 #include "Logger/CoreLog.h"
+#include "Platform/PreCompile/Platform.h"
+#include "Platform/PreCompile/PlatformMath.h"
+#include "Platform/PreCompile/PlatformTypes.h"
 
 // ReSharper disable CppClangTidyCppcoreguidelinesMacroUsage
 namespace Engine::Core::Math {

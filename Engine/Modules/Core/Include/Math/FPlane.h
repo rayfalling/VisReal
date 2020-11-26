@@ -9,7 +9,7 @@
 #define VISREAL_F_PLANE_H
 
 #include "FVector.h"
-#include "Marco/PlatformMarcos.h"
+#include "Platform/Generic/GenericPlatform.h"
 
 // ReSharper disable CppClangTidyClangDiagnosticFloatEqual
 namespace Engine::Core::Math {

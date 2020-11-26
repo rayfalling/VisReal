@@ -11,9 +11,8 @@
 #include "NumericLimits.h"
 #include "VisRealMathUtility.h"
 #include "fmt/CustomTypesFormatter.h"
-#include "Marco/PlatformMarcos.h"
 #include "Object/Object.h"
-#include "Platform/PlatformTypes.h"
+#include "Platform/Generic/GenericPlatform.h"
 
 namespace Engine::Core::Math {
 	class FPlane;

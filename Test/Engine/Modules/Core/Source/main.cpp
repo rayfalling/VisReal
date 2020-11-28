@@ -7,7 +7,7 @@
 #include "TestTArray.h"
 
 int main() {
-	Engine::InitEngine();
+	// Engine::InitEngine();
 	TestFString();
 	TestTArray();
 	TestHash();

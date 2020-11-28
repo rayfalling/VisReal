@@ -12,12 +12,11 @@
 
 #include "Logger/CoreLog.h"
 
+#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/sinks/basic_file_sink.h>
 #ifdef MSVC
 #include <spdlog/sinks/msvc_sink.h>
-#else
-#include <spdlog/sinks/stdout_color_sinks.h>
 #endif
-#include <spdlog/sinks/basic_file_sink.h>
 
 #include "Container/FTime.h"
 #include "Marco/Constant.h"
@@ -29,11 +28,7 @@ std::vector<spdlog::sink_ptr> Engine::Core::CoreLog::_sinks = std::vector<spdlog
 Engine::Core::CoreLog::CoreLog() {
 	if (_logger != nullptr)return;
 	/* Create sinks for logger */
-	#ifdef MSVC
-	auto consoleSink = std::make_shared<spdlog::sinks::windebug_sink_mt>();
-	#else
 	auto consoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-	#endif
 	consoleSink->set_level(spdlog::level::debug);
 
 	auto time = Types::FTime::CurrentTime();
@@ -43,6 +38,12 @@ Engine::Core::CoreLog::CoreLog() {
 
 	_sinks.emplace_back(consoleSink);
 	_sinks.emplace_back(fileSink);
+
+	#ifdef MSVC
+	auto outputSink = std::make_shared<spdlog::sinks::windebug_sink_mt>();
+	outputSink->set_level(spdlog::level::debug);
+	_sinks.emplace_back(outputSink);
+	#endif
 
 	/* register core logger */
 	_logger = std::make_shared<spdlog::logger>(C_CORE_LOG_NAME.ToString(), begin(_sinks), end(_sinks));

@@ -36,7 +36,7 @@ namespace Engine::Core {
 	#if PLATFORM_COMPILER_HAS_TCHAR_WMAIN
 	#define INT32_MAIN_INT32_ARGC_TCHAR_ARGV() int32 wmain(int32 ArgC, TCHAR* ArgV[])
 	#else
-	 INT32_MAIN_INT32_ARGC_TCHAR_ARGV() \
+	INT32_MAIN_INT32_ARGC_TCHAR_ARGV() \
 	int32 tchar_main(int32 ArgC, TCHAR* ArgV[]); \
 	int32 main(int32 ArgC, CHAR* Utf8ArgV[]) \
 	{ \

@@ -1,18 +1,18 @@
-[submodule "libs/glfw"]
-	path = libs/glfw
+[submodule "Library/glfw"]
+	path = Library/glfw
 	url = https://github.com/glfw/glfw.git
-[submodule "libs/glad"]
-	path = libs/glad
+[submodule "Library/glad"]
+	path = Library/glad
 	url = https://github.com/Dav1dde/glad.git
-[submodule "libs/DirectXShaderCompiler"]
-	path = libs/DirectXShaderCompiler
+[submodule "Library/DirectXShaderCompiler"]
+	path = Library/DirectXShaderCompiler
 	url = https://github.com/microsoft/DirectXShaderCompiler.git
-[submodule "libs/spdlog"]
-	path = libs/spdlog
+[submodule "Library/spdlog"]
+	path = Library/spdlog
 	url = https://github.com/gabime/spdlog.git
-[submodule "libs/xxhash"]
-	path = libs/xxhash
+[submodule "Library/xxhash"]
+	path = Library/xxhash
 	url = https://github.com/Cyan4973/xxHash.git
-[submodule "libs/fmt"]
-	path = libs/fmt
+[submodule "Library/fmt"]
+	path = Library/fmt
 	url = https://github.com/fmtlib/fmt.git

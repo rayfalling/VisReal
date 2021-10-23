@@ -9,8 +9,8 @@ if (BUILD_SHARED_LIBS)
     set(SPDLOG_BUILD_SHARED ON)
 endif(BUILD_SHARED_LIBS)
 
-set(SPDLOG_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/libs/spdlog/include)
+set(SPDLOG_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/Library/spdlog/include)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/libs/spdlog)
+add_subdirectory(${CMAKE_SOURCE_DIR}/Library/spdlog)
 
-set_target_properties(spdlog PROPERTIES FOLDER VisReal/Engine/libs)
+set_target_properties(spdlog PROPERTIES FOLDER VisReal/Engine/Library)

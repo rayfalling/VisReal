@@ -76,6 +76,7 @@ struct FFiletimeMisc
 	static FORCEINLINE double ToSeconds(const FILETIME& Filetime)
 	{
 		// return double(TicksFromFileTime(Filetime)) / double(ETimespan::TicksPerSecond);
+		return 0;
 	}
 };
 
@@ -116,5 +117,6 @@ bool Engine::Core::FWindowsPlatformTime::UpdateCPUTime(float /*DeltaTime*/)
 
 Engine::Core::FCpuTime Engine::Core::FWindowsPlatformTime::GetCPUTime()
 {
+	return FCpuTime(0,0);
 	// return FCpuTime(CPUTimePctRelative / (float)FPlatformMisc::NumberOfCoresIncludingHyperthreads(), CPUTimePctRelative);
 }

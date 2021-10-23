@@ -5,6 +5,6 @@ if (${TARGET_ARCH} STREQUAL "x64")
     option(-A x64)
 endif (${TARGET_ARCH} STREQUAL "x64")
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/libs/glad)
+add_subdirectory(${CMAKE_SOURCE_DIR}/Library/glad)
 
-set_target_properties(glad glad-generate-files PROPERTIES FOLDER VisReal/Engine/libs)
+set_target_properties(glad glad-generate-files PROPERTIES FOLDER VisReal/Engine/Library)

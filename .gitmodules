@@ -16,3 +16,6 @@
 [submodule "Library/fmt"]
 	path = Library/fmt
 	url = https://github.com/fmtlib/fmt.git
+[submodule "Library/rpmalloc/src"]
+	path = Library/rpmalloc/src
+	url = https://github.com/mjansson/rpmalloc.git

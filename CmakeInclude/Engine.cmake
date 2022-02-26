@@ -19,6 +19,7 @@ include(${CMAKE_SOURCE_DIR}/CmakeInclude/glad.cmake)
 include(${CMAKE_SOURCE_DIR}/CmakeInclude/glfw.cmake)
 include(${CMAKE_SOURCE_DIR}/CmakeInclude/spdlog.cmake)
 include(${CMAKE_SOURCE_DIR}/CmakeInclude/xxhash.cmake)
+include(${CMAKE_SOURCE_DIR}/CmakeInclude/rpmalloc.cmake)
 include(${CMAKE_SOURCE_DIR}/CmakeInclude/FindD3D12.cmake)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/Engine)

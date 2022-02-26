@@ -3,16 +3,17 @@
 #include "Entry.h"
 #include "TestFString.h"
 #include "TestHash.h"
+#include "TestReferenceObject.h"
 #include "TestTMap.h"
 #include "TestTArray.h"
 
 int main() {
 	// Engine::InitEngine();
+	TestReferenceObject();
 	TestFString();
 	TestTArray();
 	TestHash();
 	TestTMap();
-	
 
 	//    glfwInit();
 	//    // commit this to use max support opengl version

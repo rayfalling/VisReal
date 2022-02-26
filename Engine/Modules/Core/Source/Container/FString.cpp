@@ -8,8 +8,8 @@
 
 #include "Container/FString.h"
 
+#include <algorithm>
 #include <cstdlib>
-#include <iostream>
 #include "Container/TArray.h"
 #include "Marco/Constant.h"
 #include "Memory/MemoryUtils.h"
@@ -229,7 +229,7 @@ FString::ReturnIndexType FString::BoyerMooreHorspoolSearch(const FString& string
 }
 
 FString& FString::Append(const FString& string) {
-	std::unique_lock<std::mutex> lock(_mutex);
+	std::unique_lock lock(_mutex);
 	if (_capacity < string.Length() + _length) {
 		_capacity = string.Length() + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -245,7 +245,7 @@ FString& FString::Append(const FString& string) {
 }
 
 FString& FString::Append(FString&& string) {
-	std::unique_lock<std::mutex> lock(_mutex);
+	std::unique_lock lock(_mutex);
 	if (_capacity < string.Length() + _length) {
 		_capacity = string.Length() + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -295,7 +295,7 @@ FString& FString::Append(std::string&& string) {
 }
 
 FString& FString::Append(const std::wstring& string) {
-	std::unique_lock<std::mutex> lock(_mutex);
+	std::unique_lock lock(_mutex);
 	if (_capacity < string.length() + _length) {
 		_capacity = string.length() + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -311,7 +311,7 @@ FString& FString::Append(const std::wstring& string) {
 }
 
 FString& FString::Append(std::wstring&& string) {
-	std::unique_lock<std::mutex> lock(_mutex);
+	std::unique_lock lock(_mutex);
 	if (_capacity < string.length() + _length) {
 		_capacity = string.length() + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -373,7 +373,7 @@ FString& FString::AppendChar(CHAR&& ch) {
 }
 
 FString& FString::AppendChar(const WCHAR& ch) {
-	std::unique_lock<std::mutex> lock(_mutex);
+	std::unique_lock lock(_mutex);
 	if (_capacity < 1 + _length) {
 		_capacity = 1 + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -389,7 +389,7 @@ FString& FString::AppendChar(const WCHAR& ch) {
 }
 
 FString& FString::AppendChar(WCHAR&& ch) {
-	std::unique_lock<std::mutex> lock(_mutex);
+	std::unique_lock lock(_mutex);
 	if (_capacity < 1 + _length) {
 		_capacity = 1 + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -604,13 +604,14 @@ FString& FString::TrimEnd() {
 }
 
 FString& FString::Replace(FString& pattern, FString& replace) {
-	std::unique_lock<std::mutex> lock(_mutex);
+	std::unique_lock lock(_mutex);
 	/* TODO */
+	assert(false);
 	return *this;
 }
 
 FString& FString::Remove(const IndexType index) {
-	std::unique_lock<std::mutex> lock(_mutex);
+	std::unique_lock lock(_mutex);
 	CheckIndex(index);
 	MoveAssignItems(_string.get() + index, _string.get() + index + 1, _length - index - 1);
 	_length = _length - 1;
@@ -618,7 +619,7 @@ FString& FString::Remove(const IndexType index) {
 }
 
 FString& FString::RemoveRange(const IndexType index, const IndexType count) {
-	std::unique_lock<std::mutex> lock(_mutex);
+	std::unique_lock lock(_mutex);
 	CheckIndex(index);
 	CheckIndex(index + count);
 	MoveAssignItems(_string.get() + index, _string.get() + index + count, _length - index - count);

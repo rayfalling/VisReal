@@ -6,6 +6,7 @@
 
 #include "Core.h"
 #include "Container/TArray.h"
+#include "Hash/Hash.h"
 #include "Logger/CoreLog.h"
 #include "Platform/Windows/WindowsPlatformMath.h"
 

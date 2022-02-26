@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.17)
 
 set(SPDLOG_ENABLE_PCH ON)
 set(SPDLOG_WCHAR_SUPPORT ON)

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.17)
 
 message("Detect Platform: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
 

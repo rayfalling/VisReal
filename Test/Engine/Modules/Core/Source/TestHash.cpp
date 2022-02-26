@@ -16,7 +16,7 @@ void TestHash() {
 	logger.SetLogLevel(LogLevel::Debug);
 
 	logger.LogDebug(FString("Test Hash function......"));
-	const auto start = std::chrono::system_clock::now();
+	const auto     start = std::chrono::system_clock::now();
 	TArray<hash_t> array(10000000);
 
 	for (auto i = 0; i < 10000000; ++i) {

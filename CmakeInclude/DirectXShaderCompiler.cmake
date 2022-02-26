@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.17)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/Library/DirectXShaderCompiler)
 

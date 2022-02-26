@@ -25,7 +25,7 @@ void DxWindowManager::RegisterEvent() {
 
 void DxWindowManager::SetWindowSize(Screen& screen) {
 	SetWindowLong(_hwnd, GWL_STYLE, WS_BORDER);
-	SetWindowPos(_hwnd, HWND_TOPMOST, 0, 0, screen.GetWidth(), screen.GetHeight(), SWP_SHOWWINDOW);
+	SetWindowPos(_hwnd, HWND_TOPMOST, 0, 0, static_cast<int>(screen.GetWidth()), static_cast<int>(screen.GetHeight()), SWP_SHOWWINDOW);
 	Core::CoreLog::GetInstance().LogInfo(Core::Types::FString::Format("Set window size to {}x{}.", screen.GetWidth(), screen.GetHeight()));
 }
 
@@ -55,7 +55,7 @@ void DxWindowManager::Shutdown() {
 }
 
 Engine::Render::Screen DxWindowManager::GetFullWindowSize() {
-	Screen screen;
+	Screen      screen;
 	auto* const hdc = GetDC(nullptr);
 	screen.SetRawWidth(GetDeviceCaps(hdc, DESKTOPHORZRES));
 	screen.SetRawHeight(GetDeviceCaps(hdc, DESKTOPVERTRES));
@@ -66,7 +66,7 @@ Engine::Render::Screen DxWindowManager::GetFullWindowSize() {
 
 float DxWindowManager::GetWindowDpi() {
 	auto* const hdc = GetDC(nullptr);
-	const auto dpi = static_cast<float>(GetDeviceCaps(hdc, DESKTOPHORZRES)) / static_cast<float>(GetSystemMetrics(SM_CXSCREEN));
+	const auto  dpi = static_cast<float>(GetDeviceCaps(hdc, DESKTOPHORZRES)) / static_cast<float>(GetSystemMetrics(SM_CXSCREEN));
 	ReleaseDC(nullptr, hdc);
 	return dpi;
 }
@@ -105,9 +105,11 @@ void DxWindowManager::CreateAppWindow(Screen& screen) {
 	screen.SetPositionY(static_cast<int32>(screenHeight / 2 - screen.GetHeight() / 2));
 
 	// create window
-	_hwnd = CreateWindow(Core::C_APPLICATION_NAME.GetData(), Core::C_APPLICATION_NAME.GetData(), WS_OVERLAPPEDWINDOW,
-	                     screen.GetPositionX(), screen.GetPositionY(), screen.GetWidth(), screen.GetHeight(),
-	                     nullptr, nullptr, _hInstance, nullptr);
+	_hwnd = CreateWindow(
+		Core::C_APPLICATION_NAME.GetData(), Core::C_APPLICATION_NAME.GetData(), WS_OVERLAPPEDWINDOW,
+		screen.GetPositionX(), screen.GetPositionY(), screen.GetWidth(), screen.GetHeight(),
+		nullptr, nullptr, _hInstance, nullptr
+	);
 
 	FullScreen();
 
@@ -130,15 +132,19 @@ void DxWindowManager::FullScreen() {
 	if (_fullScreen) {
 		auto full = GetFullWindowSize();
 		SetWindowLongPtr(_hwnd, GWL_STYLE, WS_POPUP);
-		SetWindowPos(_hwnd, HWND_TOP, full.GetPositionX(), full.GetPositionY(),
-		             full.GetWidth(), full.GetHeight(),SWP_SHOWWINDOW);
+		SetWindowPos(
+			_hwnd, HWND_TOP, static_cast<int>(full.GetPositionX()), static_cast<int>(full.GetPositionY()),
+			static_cast<int>(full.GetWidth()), static_cast<int>(full.GetHeight()),SWP_SHOWWINDOW
+		);
 		Core::CoreLog::GetInstance().LogInfo(Core::Types::FString("Window set to full screen"));
 
 
 	} else {
 		SetWindowLongPtr(_hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
-		SetWindowPos(_hwnd, HWND_TOP, _screen.GetPositionX(), _screen.GetPositionY(),
-		             _screen.GetWidth(), _screen.GetHeight(), SWP_SHOWWINDOW);
+		SetWindowPos(
+			_hwnd, HWND_TOP, static_cast<int>(_screen.GetPositionX()), static_cast<int>(_screen.GetPositionY()),
+			static_cast<int>(_screen.GetWidth()), static_cast<int>(_screen.GetHeight()), SWP_SHOWWINDOW
+		);
 		Core::CoreLog::GetInstance().LogInfo(Core::Types::FString("Window set to normal"));
 
 	}

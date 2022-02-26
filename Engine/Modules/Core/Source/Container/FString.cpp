@@ -191,9 +191,9 @@ TCHAR* FString::GetData() const {
 }
 
 FString::ReturnIndexType FString::BruteForceSearch(const FString& string) const {
-	IndexType currentIndex = 0, searchIndex = 0;
+	IndexType  currentIndex = 0, searchIndex = 0;
 	const auto length = string._length;
-	auto isFind = false;
+	auto       isFind = false;
 	while (!isFind) {
 		auto* first = wmemchr(_string.get() + searchIndex, string[0], _length - searchIndex);
 		if (_length - searchIndex < length || !first)
@@ -215,13 +215,13 @@ FString::ReturnIndexType FString::BruteForceSearch(const FString& string) const 
 
 FString::ReturnIndexType FString::BoyerMooreHorspoolSearch(const FString& string) const {
 	auto* const findPtr = std::search(
-			_string.get(),
-			_string.get() + _length,
-			std::boyer_moore_horspool_searcher<wchar_t*>(
-					string._string.get(),
-					string._string.get() + string._length
-					)
-			);
+		_string.get(),
+		_string.get() + _length,
+		std::boyer_moore_horspool_searcher(
+			string._string.get(),
+			string._string.get() + string._length
+		)
+	);
 	if (findPtr != _string.get() + _length)
 		return std::distance(_string.get(), findPtr);
 	return C_INDEX_NONE;
@@ -261,8 +261,8 @@ FString& FString::Append(FString&& string) {
 }
 
 FString& FString::Append(const std::string& string) {
-	std::unique_lock<std::mutex> lock(_mutex);
-	const auto wStr = String2Wstring(string);
+	std::unique_lock lock(_mutex);
+	const auto       wStr = String2Wstring(string);
 	if (_capacity < string.length() + _length) {
 		_capacity = wStr.length() + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -278,8 +278,8 @@ FString& FString::Append(const std::string& string) {
 }
 
 FString& FString::Append(std::string&& string) {
-	std::unique_lock<std::mutex> lock(_mutex);
-	const auto wStr = String2Wstring(string);
+	std::unique_lock lock(_mutex);
+	const auto       wStr = String2Wstring(string);
 	if (_capacity < string.length() + _length) {
 		_capacity = wStr.length() + _length;
 		auto newData = std::shared_ptr<TCHAR[]>(new TCHAR[_capacity + 1], std::default_delete<TCHAR[]>());
@@ -327,8 +327,8 @@ FString& FString::Append(std::wstring&& string) {
 }
 
 FString& FString::AppendChar(const CHAR& ch) {
-	std::unique_lock<std::mutex> lock(_mutex);
-	TCHAR wstring;
+	std::unique_lock lock(_mutex);
+	TCHAR            wstring;
 	#ifndef _CRT_SECURE_NO_WARNINGS
 	#define _CRT_SECURE_NO_WARNINGS
 	std::mbstowcs(&wstring, &ch, 1);
@@ -350,8 +350,8 @@ FString& FString::AppendChar(const CHAR& ch) {
 }
 
 FString& FString::AppendChar(CHAR&& ch) {
-	std::unique_lock<std::mutex> lock(_mutex);
-	TCHAR wstring;
+	std::unique_lock lock(_mutex);
+	TCHAR            wstring;
 	#ifndef _CRT_SECURE_NO_WARNINGS
 	#define _CRT_SECURE_NO_WARNINGS
 	std::mbstowcs(&wstring, &ch, 1);
@@ -454,7 +454,7 @@ bool FString::EndWith(const std::wstring& string) const {
 
 TArray<FString> FString::Split(const CHAR& separator) const {
 	TArray<FString> array;
-	IndexType it = 0, start = it;
+	IndexType       it = 0, start = it;
 	while (it < _length) {
 		if (*(_string.get() + it) == separator) {
 			array.Add(this->SubString(start, it - 1));
@@ -502,8 +502,8 @@ FString::ReturnIndexType FString::IndexOf(const CHAR& ch) const {
 }
 
 FString::ReturnIndexType FString::IndexOf(const WCHAR& ch) const {
-	auto* first = wmemchr(_string.get(), ch, _length);
-	if (first) return first - _string.get();
+	if (auto*            first = wmemchr(_string.get(), ch, _length))
+		return first - _string.get();
 	return C_INDEX_NONE;
 }
 
@@ -627,8 +627,8 @@ FString& FString::RemoveRange(const IndexType index, const IndexType count) {
 }
 
 FString& FString::ResizeShrink() {
-	std::unique_lock<std::mutex> lock(_mutex);
-	const auto newPtr = std::shared_ptr<TCHAR[]>(new TCHAR[_length + 1], std::default_delete<TCHAR[]>());
+	std::unique_lock lock(_mutex);
+	const auto       newPtr = std::shared_ptr<TCHAR[]>(new TCHAR[_length + 1], std::default_delete<TCHAR[]>());
 	MoveAssignItems(newPtr.get(), _string.get(), _length + 1);
 	this->_capacity = _length;
 	return *this;

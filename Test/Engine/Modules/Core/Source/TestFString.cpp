@@ -16,7 +16,7 @@ void TestFString() {
 
 	logger.LogDebug(FString("Test FString function"));
 	const auto start = std::chrono::system_clock::now();
-	FString string(80);
+	FString    string(80);
 	string.Append("Test string. ");
 	logger.LogDebug(string);
 
@@ -31,7 +31,7 @@ void TestFString() {
 
 	/* test find function */
 	const FString searchString("This is a test string for find correct index in a binary world.");
-	auto index = searchString.IndexOf(FString("test find"));
+	auto          index = searchString.IndexOf(FString("test find"));
 
 	if (string == searchString) {
 

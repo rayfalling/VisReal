@@ -31,7 +31,7 @@ namespace Engine::Core {
 		private:
 			// Use shared_ptr to make sure that the allocated memory for instance
 			// will be released when program exits (after main() ends).
-			static T* _instance;
+			static T*         _instance;
 			static std::mutex _mutex;
 
 		public:

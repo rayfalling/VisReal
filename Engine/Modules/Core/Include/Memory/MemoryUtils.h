@@ -50,8 +50,7 @@ namespace Engine::Core {
 	void DefaultConstructItems(void* address, SizeType count) {
 		if constexpr (TIsZeroConstructType<ElementType>::Value) {
 			std::memset(address, 0, sizeof(ElementType) * count);
-		}
-		else {
+		} else {
 			auto* element = static_cast<ElementType*>(address);
 			while (count) {
 				new(element) ElementType;
@@ -198,8 +197,7 @@ namespace Engine::Core {
 	void ConstructItems(void* dest, const SourceElementType* source, SizeType count) {
 		if constexpr (TIsBitwiseConstructible<DestinationElementType, SourceElementType>::Value) {
 			std::memcpy(dest, source, sizeof(SourceElementType) * count);
-		}
-		else {
+		} else {
 			while (count) {
 				new(dest) DestinationElementType(*source);
 				++static_cast<DestinationElementType*&>(dest);
@@ -251,8 +249,7 @@ namespace Engine::Core {
 	void CopyAssignItems(ElementType* dest, const ElementType* source, SizeType count) {
 		if constexpr (TIsTriviallyCopyAssignable<ElementType>::Value) {
 			std::memcpy(dest, source, sizeof(ElementType) * count);
-		}
-		else {
+		} else {
 			while (count) {
 				*dest = *source;
 				++dest;
@@ -313,8 +310,7 @@ namespace Engine::Core {
 			 * different (i.e. safer) implementations anyway. */
 
 			std::memmove(dest, source, sizeof(SourceElementType) * count);
-		}
-		else {
+		} else {
 			while (count) {
 				// We need a typedef here because VC won't compile the destructor call below if SourceElementType itself has a member called SourceElementType
 				typedef SourceElementType RelocateConstructItemsElementTypeTypedef;
@@ -379,8 +375,7 @@ namespace Engine::Core {
 	void MoveConstructItems(void* dest, const ElementType* source, SizeType count) {
 		if constexpr (TIsTriviallyCopyConstructible<ElementType>::Value) {
 			std::memmove(dest, source, sizeof(ElementType) * count);
-		}
-		else {
+		} else {
 			while (count) {
 				new(dest) ElementType(static_cast<ElementType&&>(*source));
 				++static_cast<ElementType*&>(dest);
@@ -431,8 +426,7 @@ namespace Engine::Core {
 	void MoveAssignItems(ElementType* dest, const ElementType* source, SizeType count) {
 		if constexpr (TIsTriviallyCopyAssignable<ElementType>::Value) {
 			std::memmove(dest, source, sizeof(ElementType) * count);
-		}
-		else {
+		} else {
 			while (count) {
 				*dest = static_cast<ElementType&&>(const_cast<ElementType&>(*source));
 				++dest;
@@ -476,8 +470,7 @@ namespace Engine::Core {
 	bool CompareItems(const ElementType* A, const ElementType* B, SizeType count) {
 		if constexpr (TTypeTraits<ElementType>::IsBytewiseComparable) {
 			return !std::memcmp(A, B, sizeof(ElementType) * count);
-		}
-		else {
+		} else {
 			while (count) {
 				if (!(*A == *B)) {
 					return false;

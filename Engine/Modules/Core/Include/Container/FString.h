@@ -40,10 +40,10 @@ namespace Engine::Core::Types {
 		/* define index type */
 		#ifdef PLATFORM_64BITS
 		typedef uint64 IndexType;
-		typedef int64 ReturnIndexType;
+		typedef int64  ReturnIndexType;
 		#else
 		typedef uint32 IndexType;
-		typedef int32 ReturnIndexType;
+		typedef int32  ReturnIndexType;
 		#endif
 
 		private:
@@ -371,9 +371,9 @@ namespace Engine::Core::Types {
 	};
 
 	template <typename ... Args>
-	FString FString::Format(std::string& string, Args&&... args) {
+	FString FString::Format(std::string& string, Args&&...args) {
 		FString value;
-		auto formatted = String2Wstring(fmt::format(string, std::forward<Args>(args)...));
+		auto    formatted = String2Wstring(fmt::format(string, std::forward<Args>(args)...));
 		value._string = std::shared_ptr<TCHAR[]>(new TCHAR[formatted.length() + 1], std::default_delete<TCHAR[]>());
 		CopyAssignItems(value._string.get(), formatted.c_str(), formatted.length() + 1);
 		value._length = formatted.length();
@@ -382,9 +382,9 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename ... Args>
-	FString FString::Format(const std::string& string, Args&&... args) {
+	FString FString::Format(const std::string& string, Args&&...args) {
 		FString value;
-		auto formatted = String2Wstring(fmt::format(string, std::forward<Args>(args)...));
+		auto    formatted = String2Wstring(fmt::format(string, std::forward<Args>(args)...));
 		value._string = std::shared_ptr<TCHAR[]>(new TCHAR[formatted.length() + 1], std::default_delete<TCHAR[]>());
 		CopyAssignItems(value._string.get(), formatted.c_str(), formatted.length() + 1);
 		value._length = formatted.length();
@@ -393,9 +393,9 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename ... Args>
-	FString FString::Format(std::wstring& string, Args&&... args) {
+	FString FString::Format(std::wstring& string, Args&&...args) {
 		FString value;
-		auto formatted = String2Wstring(fmt::format(Wstring2String(string), std::forward<Args>(args)...));
+		auto    formatted = String2Wstring(fmt::format(Wstring2String(string), std::forward<Args>(args)...));
 		value._string = std::shared_ptr<TCHAR[]>(new TCHAR[formatted.length() + 1], std::default_delete<TCHAR[]>());
 		MoveAssignItems(value._string.get(), formatted.c_str(), formatted.length() + 1);
 		value._length = formatted.length();
@@ -404,9 +404,9 @@ namespace Engine::Core::Types {
 	}
 
 	template <typename ... Args>
-	FString FString::Format(const std::wstring& string, Args&&... args) {
+	FString FString::Format(const std::wstring& string, Args&&...args) {
 		FString value;
-		auto formatted = String2Wstring(fmt::format(Wstring2String(string), std::forward<Args>(args)...));
+		auto    formatted = String2Wstring(fmt::format(Wstring2String(string), std::forward<Args>(args)...));
 		value._string = std::shared_ptr<TCHAR[]>(new TCHAR[formatted.length() + 1], std::default_delete<TCHAR[]>());
 		MoveAssignItems(value._string.get(), formatted.c_str(), formatted.length() + 1);
 		value._length = formatted.length();

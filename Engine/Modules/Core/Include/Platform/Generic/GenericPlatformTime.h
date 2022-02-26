@@ -110,7 +110,6 @@ namespace Engine::Core {
 		}
 
 		protected:
-
 			static double SecondsPerCycle;
 			static double SecondsPerCycle64;
 	};

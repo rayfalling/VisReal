@@ -17,7 +17,7 @@ namespace Engine::Core {
 	class ENGINE_CORE_EXPORTS Object {
 		protected:
 			FString _name;
-			uint64 _id;
+			uint64  _id;
 
 		private:
 			inline static std::atomic<uint64> _currentId{0};
